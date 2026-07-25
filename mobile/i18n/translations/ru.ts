@@ -1538,10 +1538,10 @@ const ruJSON = {
   add_comment_placeholder: 'Добавить комментарий...',
   create_category: 'Create Category',
   delete_row_confirm_message: 'Вы уверены, что хотите удалить эту строку?',
-  review_prompt_title: 'Вам нравится Atlas CMMS?',
+  review_prompt_title: 'Вам нравится CriticalAsset Maintain?',
   feedback_title: 'Помогите нам стать лучше',
   feedback_description1:
-    'Нам жаль это слышать. Ваш отзыв помогает нам улучшать Atlas.',
+    'Нам жаль это слышать. Ваш отзыв помогает нам улучшать CriticalAsset Maintain.',
   feedback_placeholder: 'Расскажите, что пошло не так или как мы можем улучшиться…',
   send: 'Отправить',
   edit_additional_cost: 'Редактировать стоимость',

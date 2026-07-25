@@ -40,15 +40,33 @@ Mechanical string/asset substitution, "Atlas"/"Atlas CMMS"/"Grash" →
   `frontend/src/components/MobileAppDownloadDialog`,
   `frontend/src/hooks/useMobileAppPrompt.ts`) — self-hosted "upgrade" CTAs
   now open a `mailto:support@criticalasset.com` link instead of Atlas's
-  Paddle checkout page; the mobile app install prompt is disabled since
-  CriticalAsset Maintain has no mobile app yet (phase 2 per the build plan).
+  Paddle checkout page; the mobile app install prompt (`useMobileAppPrompt`)
+  stays disabled until the mobile app is actually published — re-enable it
+  and point `MobileAppDownloadDialog`'s store URLs at the real listings once
+  that's live.
+
+## Mobile (`mobile/`) — phase 2, in progress
+
+Rebranded (bundle id `com.criticalasset.maintain`, name, icons, colors,
+API URL) and verified building locally via `xcodebuild` (Debug/simulator —
+BUILD SUCCEEDED). Firebase apps registered under the existing
+`critical-asset-e5b6f` project (config files are gitignored, not in the
+repo). Apple: bundle ID registered, TestFlight pipeline ready at
+`mobile/scripts/testflight.sh` + `mobile/scripts/asc.env.example` — needs
+one manual step (creating the App Store Connect app record; the API has no
+"create app" endpoint) before a TestFlight build can be cut. Android: a
+dedicated release keystore was generated (backed up in Secret Manager as
+`criticalasset-maintain-android-keystore`/`-password`, never committed) and
+wired into `android/app/build.gradle`, but the build was not locally
+verified (no Android SDK in the environment this pass ran in) and Play
+Store publishing needs a Google Play Console service account this fork
+doesn't have credentials for yet.
 
 ## Out of scope for this pass
 
-- **`home/`** (the Next.js marketing site) and **`mobile/`** (React Native
-  app) are not part of this deployment's topology (only `api` and `frontend`
-  ship, per the build plan) and were left un-rebranded. Revisit if either
-  is ever deployed.
+- **`home/`** (the Next.js marketing site) is not part of this deployment's
+  topology (only `api` and `frontend` ship, per the build plan) and was
+  left un-rebranded.
 - **`dev-docs/*.md`** (internal setup guides) still contain upstream naming
   in places; not user-facing, not shipped in either built artifact.
 - **Internal code identifiers** are unchanged: the Java package

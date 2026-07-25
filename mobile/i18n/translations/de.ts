@@ -14,8 +14,8 @@ const deJSON = {
   COMPLETE: 'Abgeschlossen ',
   'home.built': 'Entwickelt, um die Wartungsverwaltung zu erleichtern ',
   home_description:
-    'Wenn Whiteboards und Haftnotizen Chaos sind und Sie eine CMMS-Software benötigen, die einfach genug ist, damit Ihr Team sie tatsächlich nutzt - probieren Sie Atlas ',
-  try_grash: 'Probieren Sie Atlas ',
+    'Wenn Whiteboards und Haftnotizen Chaos sind und Sie eine CMMS-Software benötigen, die einfach genug ist, damit Ihr Team sie tatsächlich nutzt - probieren Sie CriticalAsset Maintain ',
+  try_grash: 'Probieren Sie CriticalAsset Maintain ',
   login: 'Einloggen ',
   start_trial: 'Kostenlose Testversion starten ',
   'home.what': 'Was ',
@@ -24,7 +24,7 @@ const deJSON = {
     'Erstellen Sie effiziente, zuverlässige Workflows, die Ihnen die Kontrolle über die Wartung geben. Generieren, zuweisen und verfolgen Sie Arbeitsaufträge. Kontrollieren Sie Inventar. Und erhalten Sie zuverlässige automatisierte Berichte, die die Sichtbarkeit verbessern und Verantwortlichkeit schaffen. ',
   key_features: 'Hauptfunktionen ',
   key_features_description:
-    'Einige der Funktionen, die Atlas zu einem der besten heute verfügbaren CMMS machen ',
+    'Einige der Funktionen, die CriticalAsset Maintain zu einem der besten heute verfügbaren CMMS machen ',
   contribute: 'Beitragen ',
   work_orders: 'Arbeitsaufträge ',
   request_system: 'Arbeitsanforderungssystem ',
@@ -38,7 +38,7 @@ const deJSON = {
   'work-orders.descriptions.0':
     'Sind Sie es leid, Berge von Papierkram und verlorene Arbeitsaufträge zu haben? All diese verlorenen Gegenstände wirken sich direkt auf das Endergebnis und Ihren Ruf aus. ',
   'work-orders.descriptions.1':
-    'Mit Atlas können Sie alle Ihre Arbeitsaufträge, PMs und andere Aufgaben einfach und schnell in einem zentralen Datenbanksystem organisieren, das überall auf jedem Gerät zugänglich ist. ',
+    'Mit CriticalAsset Maintain können Sie alle Ihre Arbeitsaufträge, PMs und andere Aufgaben einfach und schnell in einem zentralen Datenbanksystem organisieren, das überall auf jedem Gerät zugänglich ist. ',
   'work-orders.checks.0':
     'Alle Ihre Aufgaben anzeigen, einschließlich WOs, PMs und Arbeitsanforderungen ',
   'work-orders.checks.1':
@@ -53,7 +53,7 @@ const deJSON = {
   'work-requests.descriptions.0':
     'Sind Sie es leid, das alte Telefon- und E-Mail-System zu verwenden, das zu VERLORENEN Tickets, ständigen täglichen Unterbrechungen und doppelter Arbeit führt? ',
   'work-requests.descriptions.1':
-    'Die Wartungsmanagementlösung von Atlas ermöglicht es jedem, den Sie autorisieren, ein Problem an Ihre Wartungsabteilung zu melden, indem er einfach einen QR-Code (Barcode) scannt oder eine URL besucht und seine Anfrage über seine mobilen Geräte eingibt. ',
+    'Die Wartungsmanagementlösung von CriticalAsset Maintain ermöglicht es jedem, den Sie autorisieren, ein Problem an Ihre Wartungsabteilung zu melden, indem er einfach einen QR-Code (Barcode) scannt oder eine URL besucht und seine Anfrage über seine mobilen Geräte eingibt. ',
   'work-requests.checks.0': 'Niemals wieder Arbeit verlieren. ',
   'work-requests.checks.1':
     'Zeit, die für die Bearbeitung von Arbeitsanforderungen aufgewendet wird, um bis zu 34 % reduzieren. ',
@@ -80,7 +80,7 @@ const deJSON = {
   'eam.descriptions.0':
     'Frustriert, die chaotische Unordnung der Unternehmensausrüstung zu organisieren, sich zu fragen, ob die Ausrüstung richtig gepflegt wurde, nicht zu wissen, was sie kosten, um sie zu warten, und all die anderen Kopfschmerzen, die mit der Verwaltung von Anlagen einhergehen? ',
   'eam.descriptions.1':
-    'Das Enterprise Asset Management-Modul von Atlas CMMS kann für 10 bis 1.000.000 Anlagen verwendet werden, sodass Sie genau das verfolgen können, was Sie möchten, auf die Weise, wie Sie es möchten, in einer benutzerfreundlichen und durchsuchbaren Baumstruktur. ',
+    'Das Enterprise Asset Management-Modul von CriticalAsset Maintain kann für 10 bis 1.000.000 Anlagen verwendet werden, sodass Sie genau das verfolgen können, was Sie möchten, auf die Weise, wie Sie es möchten, in einer benutzerfreundlichen und durchsuchbaren Baumstruktur. ',
   'eam.checks.0':
     'Kennen Sie den Zustand Ihrer Anlagen jederzeit und was sie kosten ',
   'eam.checks.1': 'Komplette und detaillierte Wartungsprotokolle anzeigen. ',
@@ -95,7 +95,7 @@ const deJSON = {
   'pm.descriptions.0':
     'Hören Sie auf, wertvolle Stunden mit dem manuellen Verteilen von PM-Checklisten zu verschwenden und Ihrem Team nachzugehen, um sicherzustellen, dass die Arbeit erledigt wird. ',
   'pm.descriptions.1':
-    'Atlas ermöglicht es Ihnen, die PM-Planung einfach zu automatisieren, sodass die richtige Arbeit zur richtigen Zeit an den richtigen Techniker für das richtige Asset geliefert wird. ',
+    'CriticalAsset Maintain ermöglicht es Ihnen, die PM-Planung einfach zu automatisieren, sodass die richtige Arbeit zur richtigen Zeit an den richtigen Techniker für das richtige Asset geliefert wird. ',
   'pm.checks.0':
     'PM-Planung automatisieren, um täglich, wöchentlich, monatlich, jährlich oder basierend auf Ereignissen oder Zählerständen zu sein. ',
   'pm.checks.1':
@@ -111,7 +111,7 @@ const deJSON = {
   'part.descriptions.0':
     'Nicht sicher, welche Teile Sie auf Lager haben oder wo sie verwendet werden? Wissen Sie nicht, wann Ihre Teile ausgehen oder ob Ihre Techniker die notwendigen Teile haben, um ihre Aufgaben zu erledigen? ',
   'part.descriptions.1':
-    'Wir haben das Teilemanagement von Atlas entwickelt, um diese Probleme und mehr zu lösen: ',
+    'Wir haben das Teilemanagement von CriticalAsset Maintain entwickelt, um diese Probleme und mehr zu lösen: ',
   'part.checks.0':
     'Erhalten Sie sofortige Push- und E-Mail-Benachrichtigungen, wenn die Menge eines Teils niedrig ist. Halten Sie die richtige Anzahl von Teilen auf Lager, indem Sie sofortige und automatische Push/E-Mail-Benachrichtigungen erhalten, wenn die Menge eines Teils unter einem benutzerdefinierten Schwellenwert liegt. ',
   'part.checks.1':
@@ -133,9 +133,9 @@ const deJSON = {
   'dashboard.descriptions.0':
     'Lassen Sie uns ehrlich sein, der erste Schritt zur Verbesserung Ihrer Abläufe besteht darin, das Gute, das Schlechte und das Hässliche zu kennen. ',
   'dashboard.descriptions.1':
-    'Mit den benutzerdefinierten Dashboards von Atlas können Sie endlich beginnen, dieses berüchtigte „schwarze Loch der Wartung“ zu verstehen und datengestützte Pläne in die Tat umzusetzen, was zu reduzierten Arbeitskosten, verringerten Ausfallzeiten und mehr führt. ',
+    'Mit den benutzerdefinierten Dashboards von CriticalAsset Maintain können Sie endlich beginnen, dieses berüchtigte „schwarze Loch der Wartung“ zu verstehen und datengestützte Pläne in die Tat umzusetzen, was zu reduzierten Arbeitskosten, verringerten Ausfallzeiten und mehr führt. ',
   'dashboard.descriptions.2':
-    'Mit den benutzerdefinierten Dashboards von Atlas erhalten Sie … ',
+    'Mit den benutzerdefinierten Dashboards von CriticalAsset Maintain erhalten Sie … ',
   'dashboard.checks.0': 'Wissen Sie, wo Ihr Geld ausgegeben wird und warum ',
   'dashboard.checks.1':
     'Wissen Sie, welches Asset am meisten kostet und warum ',
@@ -143,12 +143,12 @@ const deJSON = {
   'dashboard.checks.3':
     'Berichte anzeigen, die automatisch basierend auf Ihrer Metrik generiert und aktualisiert werden ',
   'dashboard.checks.4':
-    'Berichte anzeigen, die leicht über Excel-Tabellen, PDFs oder innerhalb von Atlas geteilt werden können ',
+    'Berichte anzeigen, die leicht über Excel-Tabellen, PDFs oder innerhalb von CriticalAsset Maintain geteilt werden können ',
   'dashboard.checks.5': 'Und vieles mehr ... ',
   'home.smarter': 'Intelligenter ',
   'home.work': 'Arbeit ',
   'home.smarter_description':
-    'Atlas macht es Technikern unglaublich einfach, effizient zu arbeiten, indem es ihnen Zugang zu den Werkzeugen und Daten gibt, die sie benötigen, um Arbeit zu erledigen – alles aus der Handfläche. ',
+    'CriticalAsset Maintain macht es Technikern unglaublich einfach, effizient zu arbeiten, indem es ihnen Zugang zu den Werkzeugen und Daten gibt, die sie benötigen, um Arbeit zu erledigen – alles aus der Handfläche. ',
   leading_maintenance:
     'Führung auf dem Weg zu einer besseren Zukunft für Wartung und Zuverlässigkeit ',
   //register'
@@ -294,7 +294,7 @@ const deJSON = {
   save: 'Speichern ',
   customers: 'Auftragnehmer ',
   no_labor:
-    'Es wurden noch keine Arbeitskosten hinzugefügt. Sie werden hier angezeigt, wenn ein Benutzer Zeit protokolliert und ein Stundensatz in Atlas gespeichert ist. ',
+    'Es wurden noch keine Arbeitskosten hinzugefügt. Sie werden hier angezeigt, wenn ein Benutzer Zeit protokolliert und ein Stundensatz in CriticalAsset Maintain gespeichert ist. ',
   not_assigned: 'Nicht zugewiesen ',
   no_additional_cost: 'Es wurden noch keine zusätzlichen Kosten hinzugefügt ',
   parts: 'Teile ',
@@ -901,7 +901,7 @@ const deJSON = {
   external_id: 'Externe ID ',
   permissions: 'Berechtigungen ',
   create_role_description:
-    'Diese Rolle kann alles tun, was ein Administrator in Atlas tun kann, aber Sie können einige wichtige Berechtigungen unten anpassen. ',
+    'Diese Rolle kann alles tun, was ein Administrator in CriticalAsset Maintain tun kann, aber Sie können einige wichtige Berechtigungen unten anpassen. ',
   create_and_edit: 'Erstellen/Bearbeiten ',
   to_access: 'Zugriff ',
   role_delete_success: 'Die Rolle wurde erfolgreich gelöscht ',
@@ -1130,7 +1130,7 @@ const deJSON = {
   plan: 'Plan ',
   current_plan: 'Aktueller Plan ',
   number_users_who_will_use_grash:
-    'Anzahl der Benutzer, die Atlas verwenden werden ',
+    'Anzahl der Benutzer, die CriticalAsset Maintain verwenden werden ',
   admin_role: 'Admin ',
   technical_role: 'Technisch ',
   limited_technical_role: 'Begrenzter Techniker ',
@@ -1293,7 +1293,7 @@ const deJSON = {
   and_optional: 'Und (Optional) ',
   then: 'Dann ',
   workflow_description:
-    'Erstellen Sie benutzerdefinierte Workflows so einfach wie Wenn, Und, Dann. Sparen Sie Zeit und weisen Sie Ihre Arbeitsaufträge automatisch durch Workflows zu, um Atlas an die Arbeitsweise Ihres Teams anzupassen.\\nAlle Pläne können bis zu 1 benutzerdefinierten Workflow erstellen. Um zusätzliche Workflows hinzuzufügen, upgraden Sie auf unseren Business-Plan ',
+    'Erstellen Sie benutzerdefinierte Workflows so einfach wie Wenn, Und, Dann. Sparen Sie Zeit und weisen Sie Ihre Arbeitsaufträge automatisch durch Workflows zu, um CriticalAsset Maintain an die Arbeitsweise Ihres Teams anzupassen.\\nAlle Pläne können bis zu 1 benutzerdefinierten Workflow erstellen. Um zusätzliche Workflows hinzuzufügen, upgraden Sie auf unseren Business-Plan ',
   CREATE_PURCHASE_ORDER: 'Bestellung erstellen ',
   PART_IS: 'Das Teil ist ',
   QUANTITY_INFERIOR: 'Die Menge ist kleiner als ',
@@ -1357,7 +1357,7 @@ const deJSON = {
   upgrade: 'Upgrade ',
   downgrade: 'Downgrade ',
   upgrade_description:
-    'Sie haben Ihr Abonnement gerade aktualisiert. Sie müssen die deaktivierten Benutzer aktivieren, die Atlas möglicherweise verwenden. Sie können dies nur einmal für das aktuelle Abonnement tun. Bitte wählen Sie sorgfältig aus ',
+    'Sie haben Ihr Abonnement gerade aktualisiert. Sie müssen die deaktivierten Benutzer aktivieren, die CriticalAsset Maintain möglicherweise verwenden. Sie können dies nur einmal für das aktuelle Abonnement tun. Bitte wählen Sie sorgfältig aus ',
   enable_users: 'Benutzer aktivieren ',
   max_users_description: 'Sie können bis zu {{maxUsers}} Benutzer aktivieren ',
   downgrade_description:
@@ -1562,10 +1562,10 @@ const deJSON = {
   add_comment_placeholder: 'Kommentar hinzufügen...',
   create_category: 'Create Category',
   delete_row_confirm_message: 'Sind Sie sicher, dass Sie diese Zeile löschen möchten?',
-  review_prompt_title: 'Gefällt Ihnen Atlas CMMS?',
+  review_prompt_title: 'Gefällt Ihnen CriticalAsset Maintain?',
   feedback_title: 'Helfen Sie uns, besser zu werden',
   feedback_description1:
-    'Das tut uns leid. Ihr Feedback hilft uns, Atlas zu verbessern.',
+    'Das tut uns leid. Ihr Feedback hilft uns, CriticalAsset Maintain zu verbessern.',
   feedback_placeholder: 'Teilen Sie uns mit, was nicht funktioniert hat oder wie wir uns verbessern können…',
   send: 'Senden',
   edit_additional_cost: 'Kosten bearbeiten',

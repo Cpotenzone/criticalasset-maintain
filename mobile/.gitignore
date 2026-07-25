@@ -3,6 +3,9 @@ node_modules/
 dist/
 npm-debug.*
 *.jks
+*.keystore
+android/keystore/
+android/keystore.properties
 *.p8
 *.p12
 *.key
@@ -23,3 +26,4 @@ ios/**/GoogleService-Info.plist
 .env*
 
 .metro-health-check*
+scripts/asc.env

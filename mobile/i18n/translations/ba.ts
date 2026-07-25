@@ -14,8 +14,8 @@ const locale = {
   COMPLETE: 'Završeno',
   'home.built': 'Napravljeno da olakša upravljanje održavanjem',
   home_description:
-    'Kada su bijele table i ljepljive bilješke haos, a potreban vam je CMMS softver koji je dovoljno jednostavan da ga vaš tim zaista koristi - isprobajte Atlas',
-  try_grash: 'Isprobajte Atlas',
+    'Kada su bijele table i ljepljive bilješke haos, a potreban vam je CMMS softver koji je dovoljno jednostavan da ga vaš tim zaista koristi - isprobajte CriticalAsset Maintain',
+  try_grash: 'Isprobajte CriticalAsset Maintain',
   login: 'Prijava',
   start_trial: 'Započnite besplatni probni period',
   'home.what': 'Šta',
@@ -24,7 +24,7 @@ const locale = {
     'Izgradite efikasne, pouzdane tokove posla koji vam daju kontrolu nad održavanjem. Generišite, dodijelite i pratite radne naloge. Kontrolišite inventar. I dobijte pouzdane automatske izvještaje koji poboljšavaju vidljivost i stvaraju odgovornost.',
   key_features: 'Ključne karakteristike',
   key_features_description:
-    'Neke od karakteristika koje čine Atlas jednim od najboljih dostupnih CMMS-a danas',
+    'Neke od karakteristika koje čine CriticalAsset Maintain jednim od najboljih dostupnih CMMS-a danas',
   contribute: 'Doprinesite',
   work_orders: 'Radni nalozi',
   request_system: 'Sistem zahtjeva za rad',
@@ -38,7 +38,7 @@ const locale = {
   'work-orders.descriptions.0':
     'Dosta vam je gomile papira i izgubljenih radnih naloga? Svi ti izgubljeni predmeti direktno utiču na profit i vašu reputaciju.',
   'work-orders.descriptions.1':
-    'Sa Atlasom možete lako i brzo organizovati sve svoje radne naloge, preventivno održavanje (PM) i ostale zadatke unutar vašeg tima u centralizovanoj bazi podataka kojoj se može pristupiti bilo gdje na bilo kojem uređaju.',
+    'Sa CriticalAsset Maintainom možete lako i brzo organizovati sve svoje radne naloge, preventivno održavanje (PM) i ostale zadatke unutar vašeg tima u centralizovanoj bazi podataka kojoj se može pristupiti bilo gdje na bilo kojem uređaju.',
   'work-orders.checks.0':
     'Pregledajte sve svoje zadatke uključujući RN (radne naloge), PM i zahtjeve za rad',
   'work-orders.checks.1':
@@ -54,7 +54,7 @@ const locale = {
   'work-requests.descriptions.0':
     'Dosta vam je starog sistema telefona i e-pošte koji rezultira IZGUBLJENIM tiketima, stalnim dnevnim prekidima i dupliranim radom?',
   'work-requests.descriptions.1':
-    'Atlasovo rješenje za upravljanje održavanjem omogućava svakome koga ovlastite da podnese problem vašem odjelu održavanja jednostavnim skeniranjem QR koda ili posjetom URL-u i unosom zahtjeva putem mobilnog uređaja.',
+    'CriticalAsset Maintainovo rješenje za upravljanje održavanjem omogućava svakome koga ovlastite da podnese problem vašem odjelu održavanja jednostavnim skeniranjem QR koda ili posjetom URL-u i unosom zahtjeva putem mobilnog uređaja.',
   'work-requests.checks.0': 'Nikada više ne gubite posao.',
   'work-requests.checks.1':
     'Smanjite vrijeme utrošeno na obradu zahtjeva za rad do 34%.',
@@ -82,7 +82,7 @@ const locale = {
   'eam.descriptions.0':
     'Frustrirani ste pokušavajući organizovati haotičan nered opreme u kompaniji, pitajući se da li je oprema pravilno održavana, ne znajući koliko košta njeno održavanje i sve druge glavobolje koje dolaze sa upravljanjem imovinom?',
   'eam.descriptions.1':
-    'Atlas CMMS modul za upravljanje imovinom može se koristiti za bilo koji broj od 10 do 1.000.000 sredstava, omogućavajući vam da pratite tačno ono što želite, na način na koji želite, u jednostavnoj i pretraživoj strukturi stabla.',
+    'CriticalAsset Maintain modul za upravljanje imovinom može se koristiti za bilo koji broj od 10 do 1.000.000 sredstava, omogućavajući vam da pratite tačno ono što želite, na način na koji želite, u jednostavnoj i pretraživoj strukturi stabla.',
   'eam.checks.0':
     'Znajte zdravlje svoje imovine u svakom trenutku i koliko vas košta',
   'eam.checks.1': 'Pregledajte kompletne i detaljne dnevnike održavanja.',
@@ -99,7 +99,7 @@ const locale = {
   'pm.descriptions.0':
     'Prestanite gubiti dragocjene sate na ručnu distribuciju kontrolnih lista za PM i praćenje tima kako biste bili sigurni da je posao obavljen.',
   'pm.descriptions.1':
-    'Atlas vam omogućava da lako automatizujete planiranje PM-a tako da se pravi posao automatski isporučuje u pravo vrijeme pravom tehničaru za pravo sredstvo.',
+    'CriticalAsset Maintain vam omogućava da lako automatizujete planiranje PM-a tako da se pravi posao automatski isporučuje u pravo vrijeme pravom tehničaru za pravo sredstvo.',
   'pm.checks.0':
     'Automatizujte planiranje PM-a na dnevnom, sedmičnom, mjesečnom, godišnjem nivou, ili na osnovu događaja ili očitanja brojila.',
   'pm.checks.1':
@@ -116,7 +116,7 @@ const locale = {
   'part.descriptions.0':
     'Niste sigurni koje dijelove imate na zalihi ili gdje se koriste? Ne znate kada će vam ponestati dijelova ili hoće li vaši tehničari imati potrebne dijelove za obavljanje posla?',
   'part.descriptions.1':
-    'Dizajnirali smo Atlasovo upravljanje dijelovima da riješi te probleme i više:',
+    'Dizajnirali smo CriticalAsset Maintainovo upravljanje dijelovima da riješi te probleme i više:',
   'part.checks.0':
     'Dobijte trenutne obavijesti kada je količina dijela niska. Održavajte pravi broj dijelova na zalihi primanjem automatskih obavještenja kada je količina ispod postavljenog praga.',
   'part.checks.1':
@@ -138,20 +138,20 @@ const locale = {
   'dashboard.descriptions.0':
     'Budimo realni, prvi korak ka poboljšanju operacija je poznavanje dobrog, lošeg i ružnog.',
   'dashboard.descriptions.1':
-    'Sa Atlasovim prilagođenim kontrolnim panelima možete konačno početi razumjeti tu zloglasnu „crnu rupu održavanja“ i početi primjenjivati planove zasnovane na podacima, što rezultira smanjenim troškovima rada, smanjenim zastojem i više.',
-  'dashboard.descriptions.2': 'Sa Atlasovim prilagođenim panelima moći ćete…',
+    'Sa CriticalAsset Maintainovim prilagođenim kontrolnim panelima možete konačno početi razumjeti tu zloglasnu „crnu rupu održavanja“ i početi primjenjivati planove zasnovane na podacima, što rezultira smanjenim troškovima rada, smanjenim zastojem i više.',
+  'dashboard.descriptions.2': 'Sa CriticalAsset Maintainovim prilagođenim panelima moći ćete…',
   'dashboard.checks.0': 'Znati gdje se troši vaš novac i zašto',
   'dashboard.checks.1': 'Znati koja imovina najviše košta i zašto',
   'dashboard.checks.2': 'Kreirati vlastite prilagođene KPI-ove.',
   'dashboard.checks.3':
     'Pregledati izvještaje koji se automatski generišu i ažuriraju na osnovu vaših metrika',
   'dashboard.checks.4':
-    'Pregledati izvještaje koji se lako dijele putem Excel tabela, PDF-ova ili unutar Atlasa',
+    'Pregledati izvještaje koji se lako dijele putem Excel tabela, PDF-ova ili unutar CriticalAsset Maintaina',
   'dashboard.checks.5': 'I još mnogo toga...',
   'home.smarter': 'Pametniji',
   'home.work': 'Rad',
   'home.smarter_description':
-    'Atlas čini rad nevjerovatno lakim za tehničare dajući im pristup alatima i podacima koji su im potrebni — sve na dlanu.',
+    'CriticalAsset Maintain čini rad nevjerovatno lakim za tehničare dajući im pristup alatima i podacima koji su im potrebni — sve na dlanu.',
   leading_maintenance:
     'Predvodnik ka boljoj budućnosti za održavanje i pouzdanost',
   //register
@@ -291,7 +291,7 @@ const locale = {
   save: 'Sačuvaj',
   customers: 'Izvođači',
   no_labor:
-    'Troškovi rada još nisu dodani. Pojavit će se ovdje kada korisnik evidentira vrijeme i ima unesenu satnicu u Atlasu.',
+    'Troškovi rada još nisu dodani. Pojavit će se ovdje kada korisnik evidentira vrijeme i ima unesenu satnicu u CriticalAsset Maintainu.',
   not_assigned: 'Nije dodijeljeno',
   no_additional_cost: 'Dodatni troškovi još nisu dodani',
   parts: 'Dijelovi',
@@ -1072,7 +1072,7 @@ const locale = {
   your_payment_secure: 'Vaši podaci o plaćanju su šifrovani i sigurni.',
   plan: 'Paket',
   current_plan: 'Trenutni paket',
-  number_users_who_will_use_grash: 'Broj korisnika koji će koristiti Atlas',
+  number_users_who_will_use_grash: 'Broj korisnika koji će koristiti CriticalAsset Maintain',
   admin_role: 'Admin',
   technical_role: 'Tehnički',
   limited_technical_role: 'Ograničeni tehnički',
@@ -1232,7 +1232,7 @@ const locale = {
   and_optional: 'I (opciono)',
   then: 'Tada',
   workflow_description:
-    'Kreirajte prilagođene tokove posla jednostavno kao Ako, I, Tada. Uštedite vrijeme i automatski dodijelite radne naloge kako biste prilagodili Atlas načinu na koji vaš tim radi.\nSvi paketi mogu kreirati do 1 prilagođeni tok posla. Da biste dodali više, nadogradite na naš Business paket',
+    'Kreirajte prilagođene tokove posla jednostavno kao Ako, I, Tada. Uštedite vrijeme i automatski dodijelite radne naloge kako biste prilagodili CriticalAsset Maintain načinu na koji vaš tim radi.\nSvi paketi mogu kreirati do 1 prilagođeni tok posla. Da biste dodali više, nadogradite na naš Business paket',
   CREATE_PURCHASE_ORDER: 'Kreiraj narudžbenicu',
   PART_IS: 'Dio je',
   QUANTITY_INFERIOR: 'Količina je manja od',
@@ -1296,7 +1296,7 @@ const locale = {
   upgrade: 'Nadogradi',
   downgrade: 'Unazadi',
   upgrade_description:
-    'Upravo ste nadogradili svoj paket pretplate. Potrebno je da omogućite onemogućene korisnike koji će koristiti Atlas. Ovo možete uraditi samo jednom za trenutnu pretplatu. Molimo birajte pažljivo',
+    'Upravo ste nadogradili svoj paket pretplate. Potrebno je da omogućite onemogućene korisnike koji će koristiti CriticalAsset Maintain. Ovo možete uraditi samo jednom za trenutnu pretplatu. Molimo birajte pažljivo',
   enable_users: 'Omogući korisnike',
   max_users_description: 'Možete omogućiti do {{maxUsers}} korisnika',
   downgrade_description:
@@ -1485,10 +1485,10 @@ const locale = {
   you_need_a_license: 'Potrebna vam je licenca za pristup ovoj funkciji',
   create_category: 'Create Category',
   delete_row_confirm_message: 'Jeste li sigurni da želite izbrisati ovaj red?',
-  review_prompt_title: 'Uživate li u Atlas CMMS-u?',
+  review_prompt_title: 'Uživate li u CriticalAsset Maintain-u?',
   feedback_title: 'Pomozite nam da se poboljšamo',
   feedback_description1:
-    'Žao nam je što to čujemo. Vaše povratne informacije nam pomažu da Atlas bude bolji.',
+    'Žao nam je što to čujemo. Vaše povratne informacije nam pomažu da CriticalAsset Maintain bude bolji.',
   feedback_placeholder: 'Recite nam šta nije u redu ili kako možemo da se poboljšamo…',
   send: 'Pošalji',
   edit_additional_cost: 'Uredi trošak',

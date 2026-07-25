@@ -14,8 +14,8 @@ const locale = {
   COMPLETE: '完成',
   'home.built': '为简化维护管理而打造',
   home_description:
-    '当白板和便签变成混乱，而你需要一款团队真正能用的简易CMMS软件时——试试Atlas',
-  try_grash: '试用Atlas',
+    '当白板和便签变成混乱，而你需要一款团队真正能用的简易CMMS软件时——试试CriticalAsset Maintain',
+  try_grash: '试用CriticalAsset Maintain',
   login: '登录',
   start_trial: '开始免费试用',
   'home.what': '什么',
@@ -23,7 +23,7 @@ const locale = {
   'home.you_will_have_description':
     '构建高效、可靠的工作流程，让您掌控维护。生成、分配并跟踪工单。管理库存。获取可靠的自动报告，提升可见性并建立责任制。',
   key_features: '主要功能',
-  key_features_description: '使Atlas成为当今最佳CMMS之一的部分功能',
+  key_features_description: '使CriticalAsset Maintain成为当今最佳CMMS之一的部分功能',
   contribute: '贡献',
   work_orders: '工单',
   request_system: '工作请求系统',
@@ -37,7 +37,7 @@ const locale = {
   'work-orders.descriptions.0':
     '厌倦了成堆的纸质文件和丢失的工单？所有这些丢失的项目都会直接影响利润和您的声誉。',
   'work-orders.descriptions.1':
-    '使用Atlas，您可以轻松快速地组织团队中的所有工单、预防性维护和其他任务，集中存储在可在任何设备任何地点访问的数据库中。',
+    '使用CriticalAsset Maintain，您可以轻松快速地组织团队中的所有工单、预防性维护和其他任务，集中存储在可在任何设备任何地点访问的数据库中。',
   'work-orders.checks.0': '查看所有任务，包括工单、预防性维护和工作请求',
   'work-orders.checks.1': '设置任务优先级，确保重要工作优先完成。',
   'work-orders.checks.2': '查看当前和即将到来的任务日历。',
@@ -49,7 +49,7 @@ const locale = {
   'work-requests.descriptions.0':
     '厌倦了使用老旧的电话和邮件系统，导致工单丢失、频繁中断和重复工作？',
   'work-requests.descriptions.1':
-    'Atlas的维护管理解决方案允许您授权的任何人通过扫描二维码（条形码）或访问网址，在移动设备上输入请求，向维护部门提交问题。',
+    'CriticalAsset Maintain的维护管理解决方案允许您授权的任何人通过扫描二维码（条形码）或访问网址，在移动设备上输入请求，向维护部门提交问题。',
   'work-requests.checks.0': '再也不会丢失工单。',
   'work-requests.checks.1': '处理工作请求的时间减少高达34%。',
   'work-requests.checks.2':
@@ -69,7 +69,7 @@ const locale = {
   'eam.descriptions.0':
     '是否为组织公司设备的混乱局面感到沮丧，不确定设备是否得到妥善维护，不知道维护成本，以及管理资产带来的各种头疼问题？',
   'eam.descriptions.1':
-    'Atlas CMMS的企业资产管理模块可用于管理10至1,000,000个资产，让您以易于使用且可搜索的树状结构，按您想要的方式精确跟踪所需内容。',
+    'CriticalAsset Maintain的企业资产管理模块可用于管理10至1,000,000个资产，让您以易于使用且可搜索的树状结构，按您想要的方式精确跟踪所需内容。',
   'eam.checks.0': '随时了解资产健康状况及其成本',
   'eam.checks.1': '查看完整详细的维护日志。',
   'eam.checks.2': '通过无限自定义字段，仅跟踪您需要的信息',
@@ -81,7 +81,7 @@ const locale = {
   'pm.descriptions.0':
     '停止浪费宝贵时间手动分发预防性维护检查表并跟进团队确保工作完成。',
   'pm.descriptions.1':
-    'Atlas让您轻松自动化预防性维护计划，确保正确的工作在正确的时间自动分配给正确的技术人员和正确的资产。',
+    'CriticalAsset Maintain让您轻松自动化预防性维护计划，确保正确的工作在正确的时间自动分配给正确的技术人员和正确的资产。',
   'pm.checks.0':
     '自动化预防性维护计划，可设为每日、每周、每月、每年，或基于事件或计量读数。',
   'pm.checks.1': '预防性维护创建或到期时自动推送和邮件通知。',
@@ -95,7 +95,7 @@ const locale = {
   'part.description.short': '了解备件何时将耗尽',
   'part.descriptions.0':
     '不确定库存中有哪些备件或它们被使用在哪里？不知道备件何时会耗尽，或技术人员是否拥有完成工作所需的备件？',
-  'part.descriptions.1': '我们设计了Atlas的备件管理来解决这些及更多问题：',
+  'part.descriptions.1': '我们设计了CriticalAsset Maintain的备件管理来解决这些及更多问题：',
   'part.checks.0':
     '备件数量低时即时推送和邮件通知。通过自定义阈值，保持适当的备件库存。',
   'part.checks.1':
@@ -113,18 +113,18 @@ const locale = {
   'dashboard.descriptions.0':
     '说实话，改善运营的第一步是了解好的、坏的和糟糕的情况。',
   'dashboard.descriptions.1':
-    '通过Atlas的自定义仪表盘，您终于可以开始理解那个神秘的“维护黑洞”，并开始实施数据支持的计划，从而降低人工成本，减少停机时间等。',
-  'dashboard.descriptions.2': '通过Atlas的自定义仪表盘，您将能够…',
+    '通过CriticalAsset Maintain的自定义仪表盘，您终于可以开始理解那个神秘的“维护黑洞”，并开始实施数据支持的计划，从而降低人工成本，减少停机时间等。',
+  'dashboard.descriptions.2': '通过CriticalAsset Maintain的自定义仪表盘，您将能够…',
   'dashboard.checks.0': '了解资金的花费去向及原因',
   'dashboard.checks.1': '了解哪个资产成本最高及原因',
   'dashboard.checks.2': '创建您自己的自定义关键绩效指标（KPI）。',
   'dashboard.checks.3': '查看基于您的指标自动生成和更新的报告',
-  'dashboard.checks.4': '查看可通过Excel表格、PDF或Atlas内轻松共享的报告',
+  'dashboard.checks.4': '查看可通过Excel表格、PDF或CriticalAsset Maintain内轻松共享的报告',
   'dashboard.checks.5': '以及更多功能…',
   'home.smarter': '更智能',
   'home.work': '工作',
   'home.smarter_description':
-    'Atlas让技术人员轻松高效地工作，提供完成工作所需的工具和数据——尽在掌中。',
+    'CriticalAsset Maintain让技术人员轻松高效地工作，提供完成工作所需的工具和数据——尽在掌中。',
   leading_maintenance: '引领维护与可靠性迈向更美好的未来',
   //register
   premium_included: '包含高级功能',
@@ -256,7 +256,7 @@ const locale = {
   save: '保存',
   customers: '承包商',
   no_labor:
-    '尚未添加人工成本。当用户记录时间且在Atlas中有小时费率时，人工成本将显示在此处。',
+    '尚未添加人工成本。当用户记录时间且在CriticalAsset Maintain中有小时费率时，人工成本将显示在此处。',
   not_assigned: '未分配',
   no_additional_cost: '尚未添加额外费用',
   parts: '零件',
@@ -760,7 +760,7 @@ const locale = {
   external_id: '外部ID',
   permissions: '权限',
   create_role_description:
-    '此角色可执行Atlas中管理员的所有操作，但您可以自定义以下重要权限。',
+    '此角色可执行CriticalAsset Maintain中管理员的所有操作，但您可以自定义以下重要权限。',
   create_and_edit: '创建/编辑',
   to_access: '访问',
   role_delete_success: '角色删除成功',
@@ -961,7 +961,7 @@ const locale = {
   your_payment_secure: '您的支付数据已加密且安全。',
   plan: '方案',
   current_plan: '当前方案',
-  number_users_who_will_use_grash: '将使用Atlas的用户数量',
+  number_users_who_will_use_grash: '将使用CriticalAsset Maintain的用户数量',
   admin_role: '管理员',
   technical_role: '技术人员',
   limited_technical_role: '有限技术人员',
@@ -1177,7 +1177,7 @@ const locale = {
   upgrade: '升级',
   downgrade: '降级',
   upgrade_description:
-    '您已升级订阅计划。您需要启用可能使用Atlas的被禁用用户。当前订阅仅能执行此操作一次，请谨慎选择',
+    '您已升级订阅计划。您需要启用可能使用CriticalAsset Maintain的被禁用用户。当前订阅仅能执行此操作一次，请谨慎选择',
   enable_users: '启用用户',
   max_users_description: '您最多可启用 {{maxUsers}} 位用户',
   downgrade_description:
@@ -1365,10 +1365,10 @@ const locale = {
   Statistics: '统计',
   create_category: 'Create Category',
   delete_row_confirm_message: '您确定要删除此行吗？',
-  review_prompt_title: '您喜欢Atlas CMMS吗？',
+  review_prompt_title: '您喜欢CriticalAsset Maintain吗？',
   feedback_title: '帮助我们改进',
   feedback_description1:
-    '很抱歉听到这个消息。您的反馈有助于我们把Atlas做得更好。',
+    '很抱歉听到这个消息。您的反馈有助于我们把CriticalAsset Maintain做得更好。',
   feedback_placeholder: '告诉我们哪里出了问题，或者我们如何改进…',
   send: '发送',
   edit_additional_cost: '编辑费用',

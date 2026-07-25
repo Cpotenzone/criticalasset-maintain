@@ -14,8 +14,8 @@ const locale = {
   COMPLETE: 'Komplett',
   'home.built': 'Byggd för att göra underhållshantering enklare',
   home_description:
-    'När whiteboardtavlor och post-it-lappar är kaos, och du behöver en CMMS-programvara som är tillräckligt enkel för ditt team att faktiskt använda – prova Atlas',
-  try_grash: 'Prova Atlas',
+    'När whiteboardtavlor och post-it-lappar är kaos, och du behöver en CMMS-programvara som är tillräckligt enkel för ditt team att faktiskt använda – prova CriticalAsset Maintain',
+  try_grash: 'Prova CriticalAsset Maintain',
   login: 'Logga in',
   start_trial: 'Starta en gratis provperiod',
   'home.what': 'Vad',
@@ -24,7 +24,7 @@ const locale = {
     'Bygg effektiva och tillförlitliga arbetsflöden som ger dig kontroll över underhållet. Generera, tilldela och spåra arbetsordrar. Kontrollera lagerhållning. Och få tillförlitliga automatiserade rapporter som förbättrar synligheten och skapar ansvarsskyldighet.',
   key_features: 'Viktiga funktioner',
   key_features_description:
-    'Några av de funktioner som gör Atlas till en av de bästa CMMS som finns idag',
+    'Några av de funktioner som gör CriticalAsset Maintain till en av de bästa CMMS som finns idag',
   contribute: 'Medverka',
   work_orders: 'Arbetsordrar',
   request_system: 'System för arbetsförfrågningar',
@@ -38,7 +38,7 @@ const locale = {
   'work-orders.descriptions.0':
     'Trött på massor av pappersarbete och borttappade arbetsordrar? Alla dessa borttappade saker påverkar direkt resultatet och ditt rykte.',
   'work-orders.descriptions.1':
-    'Med Atlas kan du enkelt och snabbt organisera alla dina arbetsordrar, projektledningar och andra uppgifter i hela teamet i en centraliserad databas som kan nås var som helst och på vilken enhet som helst.',
+    'Med CriticalAsset Maintain kan du enkelt och snabbt organisera alla dina arbetsordrar, projektledningar och andra uppgifter i hela teamet i en centraliserad databas som kan nås var som helst och på vilken enhet som helst.',
   'work-orders.checks.0':
     'Visa alla dina uppgifter inklusive arbetsuppgifter, projektledningar och arbetsförfrågningar',
   'work-orders.checks.1':
@@ -54,7 +54,7 @@ const locale = {
   'work-requests.descriptions.0':
     'Trött på att använda det gamla telefon- och e-postsystemet som resulterar i FÖRLORADE ärenden, ständiga dagliga avbrott och dubbelarbete?',
   'work-requests.descriptions.1':
-    'Atlas lösning för underhållshantering låter alla du godkänner rapportera ett problem till din underhållsavdelning genom att helt enkelt skanna en QR-kod (streckkod) eller besöka en URL och skriva in sin förfrågan via sina mobila enheter.',
+    'CriticalAsset Maintain lösning för underhållshantering låter alla du godkänner rapportera ett problem till din underhållsavdelning genom att helt enkelt skanna en QR-kod (streckkod) eller besöka en URL och skriva in sin förfrågan via sina mobila enheter.',
   'work-requests.checks.0': 'Förlora aldrig jobbet igen.',
   'work-requests.checks.1':
     'Minska tiden som läggs på att hantera arbetsförfrågningar med upp till 34 %.',
@@ -80,7 +80,7 @@ const locale = {
   'eam.descriptions.0':
     'Frustrerad över att försöka organisera den kaotiska röran av företagets utrustning, undra om utrustningen har tagits om ordentligt, inte veta vad den kostar att underhålla och alla andra huvudvärk som följer med att hantera tillgångar?',
   'eam.descriptions.1':
-    'Atlas CMMS Enterprise Asset Management-modul kan användas för allt mellan 10 och 1 000 000 tillgångar, vilket gör att du kan spåra exakt vad du vill, på det sätt du vill, i en lättanvänd och sökbar trädstruktur.',
+    'CriticalAsset Maintain Enterprise Asset Management-modul kan användas för allt mellan 10 och 1 000 000 tillgångar, vilket gör att du kan spåra exakt vad du vill, på det sätt du vill, i en lättanvänd och sökbar trädstruktur.',
   'eam.checks.0':
     'Känn till dina tillgångars tillstånd vid varje tidpunkt och vad de kostar dig',
   'eam.checks.1': 'Visa kompletta och detaljerade underhållsloggar.',
@@ -94,7 +94,7 @@ const locale = {
   'pm.descriptions.0':
     'Sluta slösa värdefulla timmar på att manuellt distribuera PM-checklistor och följa upp med ditt team för att säkerställa att arbetet är klart.',
   'pm.descriptions.1':
-    'Med Atlas kan du enkelt automatisera PM-schemaläggning så att rätt arbete automatiskt levereras vid rätt tidpunkt till rätt tekniker för rätt tillgång.',
+    'Med CriticalAsset Maintain kan du enkelt automatisera PM-schemaläggning så att rätt arbete automatiskt levereras vid rätt tidpunkt till rätt tekniker för rätt tillgång.',
   'pm.checks.0':
     'Automatisera PM-schemaläggning så att den är daglig, veckovis, månadsvis, årlig eller baserad på händelser eller mätaravläsningar.',
   'pm.checks.1':
@@ -110,7 +110,7 @@ const locale = {
   'part.descriptions.0':
     'Är du osäker på vilka delar du har i lager eller var de används? Vet du inte när dina delar kommer att ta slut eller om dina tekniker kommer att ha de delar som behövs för att utföra sina jobb?',
   'part.descriptions.1':
-    'Vi utformade Atlas reservdelshantering för att lösa dessa problem och mer:',
+    'Vi utformade CriticalAsset Maintain reservdelshantering för att lösa dessa problem och mer:',
   'part.checks.0':
     'Få omedelbara push- och e-postmeddelanden när en dels kvantitet är låg. Håll rätt antal delar i lager genom att få omedelbara och automatiska push-/e-postmeddelanden när kvantiteten av en del understiger ett anpassat tröskelvärde.',
   'part.checks.1':
@@ -131,21 +131,21 @@ const locale = {
   'dashboard.descriptions.0':
     'Låt oss inse det, det första steget för att förbättra din verksamhet är att känna till det goda, det dåliga och det fula.',
   'dashboard.descriptions.1':
-    'Med Atlas anpassade dashboards kan du äntligen börja förstå det där skändliga "svarta hålet av underhåll" och börja omsätta databaserade planer i praktiken, vilket resulterar i minskade arbetskostnader, minskad driftstopp och mer.',
+    'Med CriticalAsset Maintain anpassade dashboards kan du äntligen börja förstå det där skändliga "svarta hålet av underhåll" och börja omsätta databaserade planer i praktiken, vilket resulterar i minskade arbetskostnader, minskad driftstopp och mer.',
   'dashboard.descriptions.2':
-    'Med Atlas anpassade dashboards får du tillgång till …',
+    'Med CriticalAsset Maintain anpassade dashboards får du tillgång till …',
   'dashboard.checks.0': 'Vet var dina pengar spenderas och varför',
   'dashboard.checks.1': 'Vet vilken tillgång som kostar mest och varför',
   'dashboard.checks.2': 'Skapa dina egna anpassade KPI:er.',
   'dashboard.checks.3':
     'Visa rapporter som genereras och uppdateras automatiskt baserat på ditt mätvärde',
   'dashboard.checks.4':
-    'Visa rapporter som enkelt delas via Excel-ark, PDF-filer eller inom Atlas',
+    'Visa rapporter som enkelt delas via Excel-ark, PDF-filer eller inom CriticalAsset Maintain',
   'dashboard.checks.5': 'Och så mycket mer ...',
   'home.smarter': 'Smartare',
   'home.work': 'Arbete',
   'home.smarter_description':
-    'Atlas gör det otroligt enkelt för tekniker att arbeta effektivt genom att ge dem tillgång till de verktyg och data de behöver för att få jobbet gjort – allt direkt från handflatan.',
+    'CriticalAsset Maintain gör det otroligt enkelt för tekniker att arbeta effektivt genom att ge dem tillgång till de verktyg och data de behöver för att få jobbet gjort – allt direkt från handflatan.',
   leading_maintenance:
     'Vi banar väg för en bättre framtid för underhåll och tillförlitlighet',
   premium_included: 'Premiumfunktioner ingår',
@@ -280,7 +280,7 @@ const locale = {
   save: 'Spara',
   customers: 'Entreprenörer',
   no_labor:
-    'Inga arbetskostnader har lagts till ännu. De visas här när en användare loggar tid och har en timpris lagrad i Atlas.',
+    'Inga arbetskostnader har lagts till ännu. De visas här när en användare loggar tid och har en timpris lagrad i CriticalAsset Maintain.',
   not_assigned: 'Inte tilldelad',
   no_additional_cost: 'Inga extra kostnader har ännu lagts till',
   parts: 'Delar',
@@ -839,7 +839,7 @@ const locale = {
   external_id: 'Externt ID',
   permissions: 'Behörigheter',
   create_role_description:
-    'Den här rollen kan göra allt en administratör kan göra i Atlas, men du kan anpassa några viktiga behörigheter nedan.',
+    'Den här rollen kan göra allt en administratör kan göra i CriticalAsset Maintain, men du kan anpassa några viktiga behörigheter nedan.',
   create_and_edit: 'Skapa/Redigera',
   to_access: 'Tillträde',
   role_delete_success: 'Rollen har raderats',
@@ -1054,7 +1054,7 @@ const locale = {
   plan: 'Planera',
   current_plan: 'Nuvarande plan',
   number_users_who_will_use_grash:
-    'Antal användare som kommer att använda Atlas',
+    'Antal användare som kommer att använda CriticalAsset Maintain',
   admin_role: 'Administration',
   technical_role: 'Teknisk',
   limited_technical_role: 'Begränsad teknisk',
@@ -1215,7 +1215,7 @@ const locale = {
   and_optional: 'Och (valfritt)',
   then: 'Sedan',
   workflow_description:
-    'Skapa anpassade arbetsflöden lika enkelt som Om, Och, Sedan. Spara tid och tilldela enkelt dina arbetsordrar automatiskt via arbetsflöden för att anpassa Atlas efter hur ditt team arbetar.\nAlla planer kan skapa upp till ett anpassat arbetsflöde. För att lägga till ytterligare arbetsflöden, uppgradera till vårt företagsplan.',
+    'Skapa anpassade arbetsflöden lika enkelt som Om, Och, Sedan. Spara tid och tilldela enkelt dina arbetsordrar automatiskt via arbetsflöden för att anpassa CriticalAsset Maintain efter hur ditt team arbetar.\nAlla planer kan skapa upp till ett anpassat arbetsflöde. För att lägga till ytterligare arbetsflöden, uppgradera till vårt företagsplan.',
   CREATE_PURCHASE_ORDER: 'Skapa en inköpsorder',
   PART_IS: 'Delen är',
   QUANTITY_INFERIOR: 'Mängden är sämre än',
@@ -1279,7 +1279,7 @@ const locale = {
   upgrade: 'Uppgradera',
   downgrade: 'Nedvärdera',
   upgrade_description:
-    'Du har precis uppgraderat din prenumeration. Du måste aktivera de inaktiverade användare som kan komma att använda Atlas. Du kan bara göra detta en gång för den aktuella prenumerationen. Välj noggrant.',
+    'Du har precis uppgraderat din prenumeration. Du måste aktivera de inaktiverade användare som kan komma att använda CriticalAsset Maintain. Du kan bara göra detta en gång för den aktuella prenumerationen. Välj noggrant.',
   enable_users: 'Aktivera användare',
   max_users_description: 'Du kan aktivera upp till {{maxUsers}} användare',
   downgrade_description:
@@ -1479,10 +1479,10 @@ const locale = {
   add_comment_placeholder: 'Lägg till en kommentar...',
   create_category: 'Create Category',
   delete_row_confirm_message: 'Är du säker på att du vill ta bort den här raden?',
-  review_prompt_title: 'Tycker du om Atlas CMMS?',
+  review_prompt_title: 'Tycker du om CriticalAsset Maintain?',
   feedback_title: 'Hjälp oss att förbättras',
   feedback_description1:
-    'Vi är ledsna att höra det. Din feedback hjälper oss att göra Atlas bättre.',
+    'Vi är ledsna att höra det. Din feedback hjälper oss att göra CriticalAsset Maintain bättre.',
   feedback_placeholder: 'Berätta vad som gick fel eller hur vi kan förbättras…',
   send: 'Skicka',
   edit_additional_cost: 'Redigera kostnad',

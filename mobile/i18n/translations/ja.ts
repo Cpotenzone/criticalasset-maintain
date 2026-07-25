@@ -14,8 +14,8 @@ const locale = {
   COMPLETE: '完了',
   'home.built': 'メンテナンス管理をより簡単にするために構築されました',
   home_description:
-    'ホワイトボードや付箋が混沌としているとき、チームが実際に使えるほど簡単なCMMSソフトウェアが必要なときは、Atlasをお試しください',
-  try_grash: 'Atlasを試す',
+    'ホワイトボードや付箋が混沌としているとき、チームが実際に使えるほど簡単なCMMSソフトウェアが必要なときは、CriticalAsset Maintainをお試しください',
+  try_grash: 'CriticalAsset Maintainを試す',
   login: 'ログイン',
   start_trial: '無料トライアルを開始',
   'home.what': '何',
@@ -24,7 +24,7 @@ const locale = {
     'メンテナンスを管理できる、効率的で信頼性の高いワークフローを構築します。作業指示書を生成、割り当て、追跡します。在庫を管理します。そして、可視性を向上させ、説明責任を生み出す信頼性の高い自動レポートを入手します。',
   key_features: '主な機能',
   key_features_description:
-    'Atlasを今日利用できる最高のCMMSの1つにしている機能の一部',
+    'CriticalAsset Maintainを今日利用できる最高のCMMSの1つにしている機能の一部',
   contribute: '貢献する',
   work_orders: '作業指示書',
   request_system: '作業依頼システム',
@@ -38,7 +38,7 @@ const locale = {
   'work-orders.descriptions.0':
     '大量の書類と紛失した作業指示書にうんざりしていませんか？それらの紛失したアイテムはすべて、最終的な収益と評判に直接影響します。',
   'work-orders.descriptions.1':
-    'Atlasを使用すると、どこからでもどのデバイスからでもアクセスできる一元化されたデータベースで、チーム全体のすべての作業指示書、PM、その他のタスクを簡単かつ迅速に整理できます。',
+    'CriticalAsset Maintainを使用すると、どこからでもどのデバイスからでもアクセスできる一元化されたデータベースで、チーム全体のすべての作業指示書、PM、その他のタスクを簡単かつ迅速に整理できます。',
   'work-orders.checks.0': 'WO、PM、作業依頼を含むすべてのタスクを表示する',
   'work-orders.checks.1':
     '適切な作業が最初に行われるようにタスクの優先順位を設定する。',
@@ -52,7 +52,7 @@ const locale = {
   'work-requests.descriptions.0':
     'チケットの紛失、毎日の絶え間ない中断、重複した作業につながる古い電話とメールシステムの使用にうんざりしていませんか？',
   'work-requests.descriptions.1':
-    'Atlasのメンテナンス管理ソリューションを使用すると、承認した誰もがQRコード（バーコード）をスキャンするか、URLにアクセスしてモバイルデバイスからリクエストを入力するだけで、メンテナンス部門に問題を提出できます。',
+    'CriticalAsset Maintainのメンテナンス管理ソリューションを使用すると、承認した誰もがQRコード（バーコード）をスキャンするか、URLにアクセスしてモバイルデバイスからリクエストを入力するだけで、メンテナンス部門に問題を提出できます。',
   'work-requests.checks.0': '二度と作業を失わない。',
   'work-requests.checks.1': '作業依頼の処理に費やす時間を最大34%削減する。',
   'work-requests.checks.2':
@@ -76,7 +76,7 @@ const locale = {
   'eam.descriptions.0':
     '会社の機器の混沌とした状態を整理しようとしてイライラしていませんか？機器が適切に手入れされているか、維持にどれくらいの費用がかかるか分からず、資産管理に伴う他のすべての頭痛の種に悩んでいませんか？',
   'eam.descriptions.1':
-    'Atlas CMMSのエンタープライズ資産管理モジュールは、10から1,000,000の資産に対応でき、使いやすく検索可能なツリー構造で、必要なものを必要な方法で正確に追跡できます。',
+    'CriticalAsset Maintainのエンタープライズ資産管理モジュールは、10から1,000,000の資産に対応でき、使いやすく検索可能なツリー構造で、必要なものを必要な方法で正確に追跡できます。',
   'eam.checks.0':
     '資産の状態を常に把握し、それらがどれくらいの費用がかかっているかを知る',
   'eam.checks.1': '完全で詳細なメンテナンスログを表示する。',
@@ -89,7 +89,7 @@ const locale = {
   'pm.descriptions.0':
     'PMチェックリストを手動で配布したり、チームに作業が完了したことを確認するためにフォローアップしたりする貴重な時間を無駄にするのはやめましょう。',
   'pm.descriptions.1':
-    'Atlasを使用すると、PMスケジューリングを簡単に自動化できるため、適切な作業が適切なタイミングで適切な技術者に適切な資産に対して自動的に配信されます。',
+    'CriticalAsset Maintainを使用すると、PMスケジューリングを簡単に自動化できるため、適切な作業が適切なタイミングで適切な技術者に適切な資産に対して自動的に配信されます。',
   'pm.checks.0':
     'PMスケジューリングを日次、週次、月次、年次、またはイベントやメーターの読み取りに基づいて自動化する。',
   'pm.checks.1':
@@ -106,7 +106,7 @@ const locale = {
   'part.descriptions.0':
     '在庫にどのような部品があるか、どこで使用されているか分かりませんか？部品がいつなくなるか、技術者が必要な部品を持っているか分かりませんか？',
   'part.descriptions.1':
-    'Atlasの部品管理は、これらの問題を解決するために設計されました。',
+    'CriticalAsset Maintainの部品管理は、これらの問題を解決するために設計されました。',
   'part.checks.0':
     '部品の数量が少なくなったときに、即座にプッシュおよびメール通知を受け取る。部品の数量がカスタム設定されたしきい値を下回ったときに、即座に自動プッシュ/メール通知を受け取ることで、適切な数の部品を在庫に保つ。',
   'part.checks.1':
@@ -127,8 +127,8 @@ const locale = {
   'dashboard.descriptions.0':
     '正直に言って、業務を改善するための最初のステップは、良い点、悪い点、醜い点を知ることです。',
   'dashboard.descriptions.1':
-    'Atlasのカスタムダッシュボードを使用すると、悪名高い「メンテナンスのブラックホール」を理解し始め、データに基づいた計画を実行に移すことができます。これにより、人件費の削減、ダウンタイムの短縮などが実現します。',
-  'dashboard.descriptions.2': 'Atlasのカスタムダッシュボードを使用すると…',
+    'CriticalAsset Maintainのカスタムダッシュボードを使用すると、悪名高い「メンテナンスのブラックホール」を理解し始め、データに基づいた計画を実行に移すことができます。これにより、人件費の削減、ダウンタイムの短縮などが実現します。',
+  'dashboard.descriptions.2': 'CriticalAsset Maintainのカスタムダッシュボードを使用すると…',
   'dashboard.checks.0': 'どこに、なぜお金が使われているかを知る',
   'dashboard.checks.1':
     'どの資産が最も費用がかかっているか、なぜそうなのかを知る',
@@ -136,12 +136,12 @@ const locale = {
   'dashboard.checks.3':
     'メトリックに基づいて自動的に生成および更新されるレポートを表示する',
   'dashboard.checks.4':
-    'Excelシート、PDF、またはAtlas内で簡単に共有できるレポートを表示する',
+    'Excelシート、PDF、またはCriticalAsset Maintain内で簡単に共有できるレポートを表示する',
   'dashboard.checks.5': 'その他にもたくさん…',
   'home.smarter': 'よりスマートな',
   'home.work': '作業',
   'home.smarter_description':
-    'Atlasは、技術者が作業を完了するために必要なツールとデータにアクセスできるようにすることで、技術者が効率的に作業することを非常に簡単にします。これらすべては手のひらから行えます。',
+    'CriticalAsset Maintainは、技術者が作業を完了するために必要なツールとデータにアクセスできるようにすることで、技術者が効率的に作業することを非常に簡単にします。これらすべては手のひらから行えます。',
   leading_maintenance: 'メンテナンスと信頼性のより良い未来への道をリードする',
   //register
   premium_included: 'プレミアム機能が含まれています',
@@ -281,7 +281,7 @@ const locale = {
   save: '保存',
   customers: '請負業者',
   no_labor:
-    'まだ人件費は追加されていません。ユーザーが時間を記録し、Atlasに時給が保存されるとここに表示されます。',
+    'まだ人件費は追加されていません。ユーザーが時間を記録し、CriticalAsset Maintainに時給が保存されるとここに表示されます。',
   not_assigned: '未割り当て',
   no_additional_cost: 'まだ追加費用は追加されていません',
   parts: '部品',
@@ -852,7 +852,7 @@ const locale = {
   external_id: '外部ID',
   permissions: '権限',
   create_role_description:
-    'この役割は、Atlasで管理者ができることすべてを実行できますが、以下の重要な権限をカスタマイズできます。',
+    'この役割は、CriticalAsset Maintainで管理者ができることすべてを実行できますが、以下の重要な権限をカスタマイズできます。',
   create_and_edit: '作成/編集',
   to_access: 'アクセス',
   role_delete_success: '役割が正常に削除されました',
@@ -1070,7 +1070,7 @@ const locale = {
   your_payment_secure: 'お客様の支払いデータは暗号化され、安全です。',
   plan: 'プラン',
   current_plan: '現在のプラン',
-  number_users_who_will_use_grash: 'Atlasを使用するユーザー数',
+  number_users_who_will_use_grash: 'CriticalAsset Maintainを使用するユーザー数',
   admin_role: '管理者',
   technical_role: '技術者',
   limited_technical_role: '限定技術者',
@@ -1230,7 +1230,7 @@ const locale = {
   and_optional: 'かつ（オプション）',
   then: 'ならば',
   workflow_description:
-    '「もし、かつ、ならば」のように簡単にカスタムワークフローを作成できます。時間を節約し、ワークフローを通じて作業指示書を自動的に割り当てることで、チームの運用方法に合わせてAtlasをカスタマイズできます。\nすべてのプランで最大1つのカスタムワークフローを作成できます。追加のワークフローを追加するには、ビジネスプランにアップグレードしてください。',
+    '「もし、かつ、ならば」のように簡単にカスタムワークフローを作成できます。時間を節約し、ワークフローを通じて作業指示書を自動的に割り当てることで、チームの運用方法に合わせてCriticalAsset Maintainをカスタマイズできます。\nすべてのプランで最大1つのカスタムワークフローを作成できます。追加のワークフローを追加するには、ビジネスプランにアップグレードしてください。',
   CREATE_PURCHASE_ORDER: '発注書を作成',
   PART_IS: '部品は',
   QUANTITY_INFERIOR: '数量が以下である',
@@ -1293,7 +1293,7 @@ const locale = {
   upgrade: 'アップグレード',
   downgrade: 'ダウングレード',
   upgrade_description:
-    'サブスクリプションプランをアップグレードしました。Atlasを使用する可能性のある無効なユーザーを有効にする必要があります。これは現在のサブスクリプションで一度しか実行できません。慎重に選択してください。',
+    'サブスクリプションプランをアップグレードしました。CriticalAsset Maintainを使用する可能性のある無効なユーザーを有効にする必要があります。これは現在のサブスクリプションで一度しか実行できません。慎重に選択してください。',
   enable_users: 'ユーザーを有効にする',
   max_users_description: '最大{{maxUsers}}人のユーザーを有効にできます',
   downgrade_description:
@@ -1492,10 +1492,10 @@ const locale = {
   add_comment_placeholder: 'コメントを追加...',
   id_required: 'IDは必須です',
   delete_row_confirm_message: 'この行を削除してもよろしいですか？',
-  review_prompt_title: 'Atlas CMMSをお楽しみいただけていますか？',
+  review_prompt_title: 'CriticalAsset Maintainをお楽しみいただけていますか？',
   feedback_title: '改善にご協力ください',
   feedback_description1:
-    'お気に召さなかったようで残念です。お客さまのフィードバックがAtlasの改善につながります。',
+    'お気に召さなかったようで残念です。お客さまのフィードバックがCriticalAsset Maintainの改善につながります。',
   feedback_placeholder: '何が問題だったか、またはどのように改善できるかをお聞かせください…',
   send: '送信',
   edit_additional_cost: '費用を編集',
