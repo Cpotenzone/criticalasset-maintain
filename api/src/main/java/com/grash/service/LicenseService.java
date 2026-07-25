@@ -75,9 +75,16 @@ public class LicenseService {
         return hasEntitlement(LicenseEntitlement.SSO);
     }
 
+    /**
+     * CriticalAsset Maintain is AGPL-3.0-only self-hosted (see NOTICE.md) — there
+     * is no commercial license tier to gate against, so every entitlement Atlas
+     * CMMS would otherwise sell (branding, SSO, usage-limit lifts) is just
+     * available. Upstream's Keygen/Paddle validation in getLicensingState() is
+     * left in place (never invoked with a real key since LICENSE_KEY is never
+     * set) rather than deleted, so a future licensed mode stays possible.
+     */
     public boolean hasEntitlement(LicenseEntitlement entitlement) {
-        LicensingState state = getLicensingState();
-        return state.isValid() && state.getEntitlements().contains(entitlement.toString());
+        return true;
     }
 
     private boolean isCacheValid() {

@@ -15,9 +15,16 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import useAuth from 'src/hooks/useAuth';
 import UpgradeTwoToneIcon from '@mui/icons-material/UpgradeTwoTone';
 import QuestionMarkTwoToneIcon from '@mui/icons-material/QuestionMarkTwoTone';
-import { homeUrl, isCloudVersion } from '../../../../config';
+import CodeTwoToneIcon from '@mui/icons-material/CodeTwoTone';
+import {
+  homeUrl,
+  isCloudVersion,
+  appVersion,
+  sourceCodeUrl
+} from '../../../../config';
 import { useContext } from 'react';
 import { CompanySettingsContext } from '../../../../contexts/CompanySettingsContext';
+import mailToLink from 'mailto-link';
 
 const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -76,7 +83,10 @@ function SidebarFooter() {
             {...(isCloudVersion
               ? { to: '/app/subscription/plans' }
               : {
-                  href: 'https://atlas-cmms.com/pricing?type=selfhosted',
+                  href: mailToLink({
+                    to: 'support@criticalasset.com',
+                    subject: 'Plan upgrade'
+                  }),
                   target: '_blank',
                   rel: 'noopener noreferrer'
                 })}
@@ -97,9 +107,30 @@ function SidebarFooter() {
               color: `${theme.colors.alpha.trueWhite[100]}`
             }
           }}
-          onClick={() => window.open('https://grashjs.github.io/user-guide')}
+          onClick={() =>
+            window.open(
+              `https://github.com/Cpotenzone/criticalasset-maintain/tree/${appVersion}/dev-docs`
+            )
+          }
         >
           <QuestionMarkTwoToneIcon fontSize="small" />
+        </IconButton>
+      </LightTooltip>
+      <LightTooltip placement="top" arrow title={t('source_code')}>
+        <IconButton
+          sx={{
+            background: `${theme.colors.alpha.trueWhite[10]}`,
+            color: `${theme.colors.alpha.trueWhite[70]}`,
+            transition: `${theme.transitions.create(['all'])}`,
+
+            '&:hover': {
+              background: `${alpha(theme.colors.alpha.trueWhite[100], 0.2)}`,
+              color: `${theme.colors.alpha.trueWhite[100]}`
+            }
+          }}
+          onClick={() => window.open(sourceCodeUrl, '_blank', 'noopener,noreferrer')}
+        >
+          <CodeTwoToneIcon fontSize="small" />
         </IconButton>
       </LightTooltip>
       {user.superAccountRelations.length === 0 && (

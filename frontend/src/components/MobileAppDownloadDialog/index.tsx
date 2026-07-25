@@ -15,9 +15,9 @@ interface MobileAppDownloadDialogProps {
   onClose: () => void;
 }
 
-const PLAY_STORE_URL =
-  'https://play.google.com/store/apps/details?id=com.atlas.cmms';
-const APP_STORE_URL = 'https://apps.apple.com/us/app/atlas-cmms/id6751547284';
+// Not yet published — CriticalAsset Maintain mobile app is phase 2.
+const PLAY_STORE_URL = '';
+const APP_STORE_URL = '';
 
 export default function MobileAppDownloadDialog({
   open,

@@ -1,7 +1,7 @@
 {
-  "name": "grash",
+  "name": "criticalasset-maintain",
   "version": "0.1.0",
-  "title": "Atlas CMMS",
+  "title": "CriticalAsset Maintain",
   "description": "Free Open Source CMMS.",
   "private": true,
   "dependencies": {

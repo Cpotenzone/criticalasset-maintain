@@ -1,10 +1,10 @@
-name: atlas-cmms
+name: criticalasset-maintain
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: atlas_db
+    container_name: maintain_db
     environment:
-      POSTGRES_DB: atlas
+      POSTGRES_DB: maintain
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PWD}
     expose:
@@ -13,8 +13,8 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   api:
-    image: intelloop/atlas-cmms-backend
-    container_name: atlas-cmms-backend
+    build: ./api
+    container_name: criticalasset-maintain-backend
     depends_on:
       - postgres
       - minio
@@ -22,7 +22,7 @@ services:
       - ./logo:/app/static/images
       - ./config:/app/static/config
     environment:
-      DB_URL: postgres/atlas
+      DB_URL: postgres/maintain
       DB_USER: ${POSTGRES_USER}
       DB_PWD: ${POSTGRES_PWD}
       PUBLIC_API_URL: ${PUBLIC_SERVER_URL}/api
@@ -39,7 +39,7 @@ services:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
       JWT_SECRET_KEY: ${JWT_SECRET_KEY}
       MINIO_ENDPOINT: http://minio:9000
-      MINIO_BUCKET: atlas-bucket
+      MINIO_BUCKET: maintain-bucket
       MINIO_ACCESS_KEY: ${MINIO_USER}
       MINIO_SECRET_KEY: ${MINIO_PASSWORD}
       STORAGE_TYPE: ${STORAGE_TYPE:-minio} #gpc|minio
@@ -91,8 +91,8 @@ services:
       - "8080"
 
   frontend:
-    image: intelloop/atlas-cmms-frontend
-    container_name: atlas-cmms-frontend
+    build: ./frontend
+    container_name: criticalasset-maintain-frontend
     environment:
       API_URL: /api
       GOOGLE_KEY: ${GOOGLE_KEY:- }
@@ -106,7 +106,7 @@ services:
       CUSTOM_COLORS: ${CUSTOM_COLORS:- }
       BRAND_CONFIG: ${BRAND_CONFIG:- }
       DEMO_LINK: ${DEMO_LINK:- }
-      HOME_URL: ${HOME_URL:-https://atlas-cmms.com}
+      HOME_URL: ${HOME_URL:-https://www.criticalasset.com}
       PADDLE_SECRET_TOKEN: ${PADDLE_SECRET_TOKEN:- }
       PADDLE_ENVIRONMENT: ${PADDLE_ENVIRONMENT:-sandbox}
       RECAPTCHA_SITE_KEY: ${RECAPTCHA_SITE_KEY:- }
@@ -118,7 +118,7 @@ services:
 
   minio:
     image: minio/minio:RELEASE.2025-04-22T22-12-26Z
-    container_name: atlas_minio
+    container_name: maintain_minio
     environment:
       MINIO_ROOT_USER: ${MINIO_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD}
@@ -131,7 +131,7 @@ services:
 
   nginx:
     image: nginx:1.27-alpine
-    container_name: atlas_nginx
+    container_name: maintain_nginx
     depends_on:
       - frontend
       - api

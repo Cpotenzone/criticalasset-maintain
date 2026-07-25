@@ -2,9 +2,9 @@
 
 ## Security
 
-The security of Atlas CMMS is very important. Since Atlas CMMS is often self-hosted and may manage sensitive operational data, security vulnerabilities are treated with high priority.
+The security of CriticalAsset Maintain is very important. Since CriticalAsset Maintain is often self-hosted and may manage sensitive operational data, security vulnerabilities are treated with high priority.
 
-If you believe you have discovered a security vulnerability in Atlas CMMS, please report it responsibly as described below.
+If you believe you have discovered a security vulnerability in CriticalAsset Maintain, please report it responsibly as described below.
 
 ---
 
@@ -14,8 +14,8 @@ If you believe you have discovered a security vulnerability in Atlas CMMS, pleas
 
 Instead, please report them privately by one of the following methods:
 
-- Email: contact@atlas-cmms.com
-- GitHub Security Advisory: https://github.com/grashjs/cmms/security/advisories/new
+- Email: support@criticalasset.com
+- GitHub Security Advisory: https://github.com/Cpotenzone/criticalasset-maintain/security/advisories/new
 
 You should receive a response within **48 hours** acknowledging your report.
 
@@ -33,7 +33,7 @@ Please include as much of the following information as possible:
 
 - File paths or code locations involved
 
-- Version of Atlas CMMS affected
+- Version of CriticalAsset Maintain affected
 
 - Step-by-step instructions to reproduce the issue
 
@@ -71,7 +71,7 @@ We follow **responsible disclosure practices** and will:
 
 ## Security Best Practices for Self-Hosting
 
-When running Atlas CMMS:
+When running CriticalAsset Maintain:
 
 - Keep your Docker images up to date
 - Use strong database passwords
@@ -81,4 +81,4 @@ When running Atlas CMMS:
 
 ---
 
-Thank you for helping make Atlas CMMS more secure.
+Thank you for helping make CriticalAsset Maintain more secure.

@@ -1349,6 +1349,7 @@ const locale = {
   resolved: 'Resolved',
   average: 'Average',
   documentation: 'Documentation',
+  source_code: 'Source code',
   days_before_pm_notification:
     'Pre-work order notifications for scheduled ones',
   estimated_start_date: 'Expected start date',

@@ -131,7 +131,10 @@ function CompanyPlan(props: CompanyPlanProps) {
             {...(isCloudVersion
               ? { to: '/app/subscription/plans' }
               : {
-                  href: 'https://atlas-cmms.com/pricing?type=selfhosted',
+                  href: mailToLink({
+                    to: 'support@criticalasset.com',
+                    subject: 'Plan upgrade'
+                  }),
                   target: '_blank',
                   rel: 'noopener noreferrer'
                 })}

@@ -1455,6 +1455,7 @@ const trJSON = {
   resolved: 'Çözüldü',
   average: 'Ortalama',
   documentation: 'Dokümantasyon',
+  source_code: 'Source code',
   days_before_pm_notification:
     'Planlananlar için iş öncesi sipariş bildirimleri',
   estimated_start_date: 'Beklenen Başlangıç Tarihi',
@@ -1714,18 +1715,18 @@ const trJSON = {
     'Birden fazla sektörde bakım ekipleri tarafından güvenilmektedir',
   cut_costs_performance:
     'Performanstan ödün vermeden bakım yazılımı maliyetlerini düşürün',
-  'free_cmms.title': 'Atlas Ücretsiz CMMS Yazılımı | Kredi kartı gerekmez',
+  'free_cmms.title': 'CriticalAsset Maintain Ücretsiz CMMS Yazılımı | Kredi kartı gerekmez',
   'free_cmms.description':
     'Ücretsiz CMMS yazılımı — deneme sürümü değil. Bakım, varlık ve iş emirlerini anında yönetin. Kredi kartı gerekmez.',
   'free_cmms.keywords':
     'ücretsiz cmms, bakım yönetim yazılımı, ücretsiz iş emri yazılımı, varlık takibi, önleyici bakım',
   'overview.description':
-    "Atlas CMMS, iş emirlerini, önleyici bakımı, varlıkları ve tesisleri yönetmek için ücretsiz, açık kaynaklı bir CMMS'dir. Bakım operasyonlarınızı bugün kolaylaştırın.",
+    "CriticalAsset Maintain, iş emirlerini, önleyici bakımı, varlıkları ve tesisleri yönetmek için ücretsiz, açık kaynaklı bir CMMS'dir. Bakım operasyonlarınızı bugün kolaylaştırın.",
   'overview.keywords':
-    'CMMS, bilgisayarlı bakım yönetim sistemi, EAM, kurumsal varlık yönetimi, açık kaynaklı CMMS, ücretsiz bakım yazılımı, iş emri yönetimi, önleyici bakım, varlık takibi, tesis yönetimi, bakım takip yazılımı, ekipman bakımı, Atlas CMMS',
-  'pricing.title': 'Fiyatlandırma - Atlas CMMS',
+    'CMMS, bilgisayarlı bakım yönetim sistemi, EAM, kurumsal varlık yönetimi, açık kaynaklı CMMS, ücretsiz bakım yazılımı, iş emri yönetimi, önleyici bakım, varlık takibi, tesis yönetimi, bakım takip yazılımı, ekipman bakımı, CriticalAsset Maintain',
+  'pricing.title': 'Fiyatlandırma - CriticalAsset Maintain',
   'pricing.description':
-    "Atlas CMMS için esnek fiyatlandırma planları. Bakım operasyonlarınızı optimize etmek için açık kaynaklı CMMS'mizin Bulut ve Kendi Sunucunuzda Barındırılan sürümleri arasından seçim yapın.",
+    "CriticalAsset Maintain için esnek fiyatlandırma planları. Bakım operasyonlarınızı optimize etmek için açık kaynaklı CMMS'mizin Bulut ve Kendi Sunucunuzda Barındırılan sürümleri arasından seçim yapın.",
   'free_cmms.hero.subtitle': 'Ücretsiz CMMS Yazılımı',
   'free_cmms.hero.title':
     'İş Emirlerini ve Varlıkları Yönetin - Sonsuza Kadar Ücretsiz',

@@ -1568,18 +1568,18 @@ const locale = {
   cut_costs_performance:
     'Csökkentse a karbantartási szoftverköltségeket a teljesítmény feláldozása nélkül',
   'free_cmms.title':
-    'Atlas Ingyenes GMAO Szoftver | Nincs szükség hitelkártyára',
+    'CriticalAsset Maintain Ingyenes GMAO Szoftver | Nincs szükség hitelkártyára',
   'free_cmms.description':
     'Ingyenes GMAO szoftver — nem próbaverzió. Karbantartás, eszközök és munkarendelések kezelése azonnal. Nincs szükség hitelkártyára.',
   'free_cmms.keywords':
     'ingyenes gmao, karbantartás-kezelő szoftver, ingyenes munkarendelés szoftver, eszköz-követés, megelőző karbantartás',
   'overview.description':
-    'Az Atlas CMMS egy ingyenes, nyílt forráskódú GMAO a munkarendelések, a megelőző karbantartás, az eszközök és a létesítmények kezelésére. Egyszerűsítse karbantartási folyamatait még ma.',
+    'Az CriticalAsset Maintain egy ingyenes, nyílt forráskódú GMAO a munkarendelések, a megelőző karbantartás, az eszközök és a létesítmények kezelésére. Egyszerűsítse karbantartási folyamatait még ma.',
   'overview.keywords':
-    'GMAO, számítógépes karbantartás-kezelő rendszer, EAM, vállalati eszközkezelés, nyílt forráskódú GMAO, ingyenes karbantartási szoftver, munkarendelés-kezelés, megelőző karbantartás, eszköz-követés, létesítménykezelés, karbantartás-követő szoftver, berendezés-karbantartás, Atlas CMMS',
-  'pricing.title': 'Árazás - Atlas CMMS',
+    'GMAO, számítógépes karbantartás-kezelő rendszer, EAM, vállalati eszközkezelés, nyílt forráskódú GMAO, ingyenes karbantartási szoftver, munkarendelés-kezelés, megelőző karbantartás, eszköz-követés, létesítménykezelés, karbantartás-követő szoftver, berendezés-karbantartás, CriticalAsset Maintain',
+  'pricing.title': 'Árazás - CriticalAsset Maintain',
   'pricing.description':
-    'Rugalmas árazási tervek az Atlas CMMS-hez. Válasszon nyílt forráskódú GMAO rendszerünk Cloud és Self-Hosted verziói közül a karbantartási folyamatok optimalizálásához.',
+    'Rugalmas árazási tervek az CriticalAsset Maintain-hez. Válasszon nyílt forráskódú GMAO rendszerünk Cloud és Self-Hosted verziói közül a karbantartási folyamatok optimalizálásához.',
   'free_cmms.hero.subtitle': 'Ingyenes GMAO Szoftver',
   'free_cmms.hero.title':
     'Munkarendelések és eszközök kezelése - Örökké ingyenes',

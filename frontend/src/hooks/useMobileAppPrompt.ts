@@ -32,9 +32,10 @@ export function useMobileAppPrompt(): UseMobileAppPromptReturn {
 
       setIsMobile(isMobileDevice);
 
-      // Show prompt only if mobile and not previously dismissed
+      // Disabled: CriticalAsset Maintain has no mobile app yet (phase 2).
+      // The mobile story is the responsive web app until then.
       const isDismissed = localStorage.getItem(PROMPT_DISMISSED_KEY);
-      if (isMobileDevice && !isDismissed) {
+      if (false && isMobileDevice && !isDismissed) {
         const timer = setTimeout(() => {
           setShouldShowPrompt(true);
         }, PROMPT_DELAY_MS);

@@ -33,7 +33,7 @@ import HelpTwoToneIcon from '@mui/icons-material/HelpTwoTone';
 import PhoneAndroidTwoToneIcon from '@mui/icons-material/PhoneAndroidTwoTone';
 import CloseIcon from '@mui/icons-material/Close';
 import { QRCodeSVG } from 'qrcode.react';
-import { homeUrl } from '../../../../config';
+import { homeUrl, appVersion } from '../../../../config';
 
 const DotLegend = styled('span')(
   ({ theme }) => `
@@ -378,7 +378,9 @@ function HeaderUserbox() {
           )}
           <MenuItem
             onClick={() => {
-              window.open('https://grashjs.github.io/user-guide');
+              window.open(
+                `https://github.com/Cpotenzone/criticalasset-maintain/tree/${appVersion}/dev-docs`
+              );
             }}
           >
             <ListItemIcon>

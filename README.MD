@@ -1,11 +1,14 @@
 <p align="center"><img src="frontend/public/static/images/logo/logo.png" width="80"></p>
-<h1 align="center">Atlas CMMS</h1>
+<h1 align="center">CriticalAsset Maintain</h1>
 
-[Atlas CMMS](https://github.com/grashjs/cmms) is a powerful, self-hosted maintenance management system designed for both
+CriticalAsset Maintain is a powerful, self-hosted maintenance management system designed for both
 web and mobile platforms using Docker. It simplifies and automates the management of maintenance activities, making it
 ideal for IT managers or developers looking to implement solutions that keep their organization's assets running
 smoothly.
 Think of it like **Jira for technicians**.
+
+CriticalAsset Maintain is a fork of [Atlas CMMS](https://github.com/grashjs/cmms) (AGPL-3.0), rebranded and maintained
+by CriticalAsset. See [NOTICE.md](./NOTICE.md) for what changed.
 
 **Example industries**
 
@@ -16,10 +19,6 @@ Think of it like **Jira for technicians**.
 - Public Sector (infrastructure and public buildings)
 - Educational Institutions (campus maintenance)
 - Utility Companies (power, water, and energy systems)
-
-**Demo website**
-
-- https://atlas-cmms.com
 
 **Screenshots**:
 <div align="center">
@@ -83,7 +82,7 @@ We'd love to have **new contributors**, so feel free to join us!
    docker-compose up -d
    ```
 
-Go to http://localhost:3000 to access Atlas CMMS.
+Go to http://localhost:3000 to access CriticalAsset Maintain.
 
 Need customization or production setup? Continue reading below ↓
 
@@ -115,7 +114,7 @@ Need customization or production setup? Continue reading below ↓
 | GCP_PROJECT_ID              | No       | The Google Cloud project ID, also found in the `GCP_JSON` file.                                                                                                                                                                                                                                                     | (empty)               |
 | GCP_BUCKET_NAME             | No       | GCP Bucket Name                                                                                                                                                                                                                                                                                                     | (empty)               |
 | MAIL_RECIPIENTS             | No       | Comma-separated email addresses of the super admins where to send information emails like new signups. You can provide your email address.                                                                                                                                                                          | (empty)               |
-| LICENSE_KEY                 | No       | [Atlas CMMS license key](https://atlas-cmms.com/pricing?type=selfhosted) to get access to advanced features.                                                                                                                                                                                                        | (empty)               |
+| LICENSE_KEY                 | No       | Upstream (Atlas CMMS) commercial license key mechanism, inherited from the AGPL fork base. Not used by CriticalAsset Maintain.                                                                                                                                                                                      | (empty)               |
 | ENABLE_SSO                  | No       | Enables or disables SSO. (`true` or `false` ) Requires `OAUTH2_PROVIDER`, `OAUTH2_CLIENT_ID` and `OAUTH2_CLIENT_SECRET`. Make sure to add `PUBLIC_SERVER_URL` as authorized origin and `${PUBLIC_SERVER_URL}/api/oauth2/callback/${OAUTH2_PROVIDER}` as authorized redirection URI in your Oauth2 provider settings | false                 |
 | OAUTH2_PROVIDER             | No       | Oauth2 provider `google` or `microsoft`                                                                                                                                                                                                                                                                             | (empty)               |
 | OAUTH2_CLIENT_ID            | No       | Oauth2 Client ID                                                                                                                                                                                                                                                                                                    | (empty)               |
@@ -130,22 +129,17 @@ also [setup TLS](./dev-docs/Set%20up%20TLS.md)
 
 ### Mobile app
 
-You can use the [Android app](https://play.google.com/store/apps/details?id=com.atlas.cmms)
-or [iOS App](https://apps.apple.com/fr/app/atlas-cmms/id6751547284) and configure it with
-your custom backend server url: `${PUBLIC_SERVER_URL}/api`
+Not yet published — the CriticalAsset Maintain mobile app is a phase 2 item. Until then, the responsive web app
+covers the mobile experience.
 
 ## Getting help
 
 ### Docs
 
-[Usage guide](https://docs.atlas-cmms.com)
-
 [Super admin docs](./dev-docs)
 
-[Join our Discord server](https://discord.gg/cHqyVRYpkA)
-
 If you still have questions after reading the docs, concerns, bug reports, etc., please file an issue in this
-repository's Issue Tracker or email [contact@atlas-cmms.com](8mailto:contact@atlas-cmms.com).
+repository's Issue Tracker or email [support@criticalasset.com](mailto:support@criticalasset.com).
 
 ## Supported languages
 
@@ -172,11 +166,6 @@ repository's Issue Tracker or email [contact@atlas-cmms.com](8mailto:contact@atl
 - [Website](frontend) with React/Typescript
 - [Mobile](mobile) with React Native.
 
-## Need Professional Help?
-
-Don't want to handle the maintenance and management yourself? We offer a complete done-for-you
-service. [Please reach out to us](mailto:contact@atlas-cmms.com)
-
 ## 🤝 Looking to contribute?
 
 We welcome contributions! You can help by:
@@ -188,17 +177,9 @@ We welcome contributions! You can help by:
 
 Check CONTRIBUTING.md inside each subproject for details.
 
-You can also join our [Discord server](https://discord.gg/cHqyVRYpkA)
-
 ## Open source licensing info
 
-Atlas CMMS is dual-licensed:
+CriticalAsset Maintain is licensed under [AGPL-3.0](./LICENSE) only — free and open source. Unlike its upstream
+(Atlas CMMS), it does not offer a separate commercial license; see [NOTICE.md](./NOTICE.md).
 
-- [AGPLv3 License](./LICENSE) — Free and open source.
-- [Commercial License](./COMMERCIAL_LICENSE.MD) — Required for white labeling, custom branding, and advanced features.
-
-To enable commercial features, you must set a valid `LICENSE_KEY`.  
-For commercial licenses, visit [atlas-cmms.com/pricing?type=selfhosted](https://atlas-cmms.com/pricing?type=selfhosted)
-or email us at [contact@atlas-cmms.com](mailto:contact@atlas-cmms.com).
-
-<img src="https://api.star-history.com/svg?repos=grashjs/cmms&type=Date"/>
+<img src="https://api.star-history.com/svg?repos=Cpotenzone/criticalasset-maintain&type=Date"/>

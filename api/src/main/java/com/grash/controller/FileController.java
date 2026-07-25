@@ -188,13 +188,13 @@ public class FileController {
 
 //    @GetMapping("/download/tos")
 //    public byte[] downloadTOS() {
-//        return storageServiceFactory.getStorageService().download("terms and privacy/Atlas CMMS Terms of service
+//        return storageServiceFactory.getStorageService().download("terms and privacy/CriticalAsset Maintain Terms of service
 //        .pdf");
 //    }
 //
 //    @GetMapping("/download/privacy-policy")
 //    public byte[] downloadPrivacyPolicy() {
-//        return storageServiceFactory.getStorageService().download("terms and privacy/Atlas CMMS privacy policy.pdf");
+//        return storageServiceFactory.getStorageService().download("terms and privacy/CriticalAsset Maintain privacy policy.pdf");
 //    }
 }
 

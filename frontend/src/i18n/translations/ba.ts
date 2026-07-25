@@ -1375,6 +1375,7 @@ const locale = {
   resolved: 'Riješeno',
   average: 'Prosjek',
   documentation: 'Dokumentacija',
+  source_code: 'Source code',
   days_before_pm_notification: 'Obavijesti prije radnog naloga za zakazane',
   estimated_start_date: 'Očekivani datum početka',
   no_file_linked_to_wo: 'Nema datoteke priložene ovom radnom nalogu',
@@ -1698,18 +1699,18 @@ const locale = {
   cut_costs_performance:
     'Smanjite troškove softvera za održavanje bez žrtvovanja performansi',
   'free_cmms.title':
-    'Atlas Besplatni CMMS Softver | Nije potrebna kreditna kartica',
+    'CriticalAsset Maintain Besplatni CMMS Softver | Nije potrebna kreditna kartica',
   'free_cmms.description':
     'Besplatni CMMS softver — nije probni period. Upravljajte održavanjem, imovinom i radnim nalozima odmah. Nije potrebna kreditna kartica.',
   'free_cmms.keywords':
     'besplatni cmms, softver za upravljanje održavanjem, besplatni softver za radne naloge, praćenje imovine, preventivno održavanje',
   'overview.description':
-    'Atlas CMMS je besplatni CMMS otvorenog koda za upravljanje radnim nalozima, preventivnim održavanjem, imovinom i objektima. Pojednostavite operacije održavanja već danas.',
+    'CriticalAsset Maintain je besplatni CMMS otvorenog koda za upravljanje radnim nalozima, preventivnim održavanjem, imovinom i objektima. Pojednostavite operacije održavanja već danas.',
   'overview.keywords':
-    'CMMS, kompjuterizovani sistem upravljanja održavanjem, EAM, upravljanje korporativnom imovinom, cmms otvorenog koda, besplatni softver za održavanje, upravljanje radnim nalozima, preventivno održavanje, praćenje imovine, upravljanje objektima, softver za praćenje održavanja, održavanje opreme, Atlas CMMS',
-  'pricing.title': 'Cijene - Atlas CMMS',
+    'CMMS, kompjuterizovani sistem upravljanja održavanjem, EAM, upravljanje korporativnom imovinom, cmms otvorenog koda, besplatni softver za održavanje, upravljanje radnim nalozima, preventivno održavanje, praćenje imovine, upravljanje objektima, softver za praćenje održavanja, održavanje opreme, CriticalAsset Maintain',
+  'pricing.title': 'Cijene - CriticalAsset Maintain',
   'pricing.description':
-    'Fleksibilni planovi cijena za Atlas CMMS. Birajte između Cloud i Self-Hosted verzija našeg CMMS-a otvorenog koda za optimizaciju vaših operacija održavanja.',
+    'Fleksibilni planovi cijena za CriticalAsset Maintain. Birajte između Cloud i Self-Hosted verzija našeg CMMS-a otvorenog koda za optimizaciju vaših operacija održavanja.',
   'free_cmms.hero.subtitle': 'Besplatni CMMS Softver',
   'free_cmms.hero.title':
     'Upravljajte radnim nalozima i imovinom - Zauvijek besplatno',

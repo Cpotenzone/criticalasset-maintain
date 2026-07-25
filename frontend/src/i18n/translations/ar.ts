@@ -1320,6 +1320,7 @@ const locale = {
   resolved: 'تم الحل',
   average: 'متوسط',
   documentation: 'التوثيق',
+  source_code: 'Source code',
   days_before_pm_notification: 'إشعارات ما قبل أوامر العمل المجدولة',
   estimated_start_date: 'تاريخ البدء المتوقع',
   no_file_linked_to_wo: 'لا يوجد ملف مرفق بأمر العمل هذا',

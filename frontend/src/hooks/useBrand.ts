@@ -17,13 +17,13 @@ interface BrandConfig extends BrandRawConfig {
 }
 export function useBrand(): BrandConfig {
   const defaultBrand: Omit<BrandConfig, 'logo'> = {
-    name: 'Atlas CMMS',
-    shortName: 'Atlas',
-    website: 'https://www.atlas-cmms.com',
-    mail: 'contact@atlas-cmms.com',
-    phone: '+212 6 30 69 00 50',
-    addressStreet: '410, Boulevard Zerktouni, Hamad, №1',
-    addressCity: 'Casablanca-Morocco 20040'
+    name: 'CriticalAsset Maintain',
+    shortName: 'CriticalAsset',
+    website: 'https://www.criticalasset.com',
+    mail: 'support@criticalasset.com',
+    phone: '',
+    addressStreet: '',
+    addressCity: ''
   };
   const isLicenseValid = useLicenseEntitlement('BRANDING');
   return {

@@ -1403,18 +1403,18 @@ const locale = {
   construction: '建筑业',
   trusted_by_maintenance_teams: '深受各行业维护团队的信赖',
   cut_costs_performance: '在不牺牲性能的情况下降低维护软件成本',
-  'free_cmms.title': 'Atlas 免费 CMMS 软件 | 无需信用卡',
+  'free_cmms.title': 'CriticalAsset Maintain 免费 CMMS 软件 | 无需信用卡',
   'free_cmms.description':
     '免费 CMMS 软件 —— 并非试用版。立即管理维护、资产和工单。无需信用卡。',
   'free_cmms.keywords':
     '免费 cmms, 维护管理软件, 免费工单软件, 资产跟踪, 预防性维护',
   'overview.description':
-    'Atlas CMMS 是一款免费、开源的 CMMS，用于管理工单、预防性维护、资产和设施。立即优化您的维护业务。',
+    'CriticalAsset Maintain 是一款免费、开源的 CMMS，用于管理工单、预防性维护、资产和设施。立即优化您的维护业务。',
   'overview.keywords':
-    'CMMS, 计算机化维护管理系统, EAM, 企业资产管理, 开源 CMMS, 免费维护软件, 工单管理, 预防性维护, 资产跟踪, 设施管理, 维护跟踪软件, 设备维护, Atlas CMMS',
-  'pricing.title': '价格 - Atlas CMMS',
+    'CMMS, 计算机化维护管理系统, EAM, 企业资产管理, 开源 CMMS, 免费维护软件, 工单管理, 预防性维护, 资产跟踪, 设施管理, 维护跟踪软件, 设备维护, CriticalAsset Maintain',
+  'pricing.title': '价格 - CriticalAsset Maintain',
   'pricing.description':
-    'Atlas CMMS 灵活的定价计划。在我们的开源 CMMS 的云端版本和自托管版本之间进行选择，以优化您的维护业务。',
+    'CriticalAsset Maintain 灵活的定价计划。在我们的开源 CMMS 的云端版本和自托管版本之间进行选择，以优化您的维护业务。',
   'free_cmms.hero.subtitle': '免费 CMMS 软件',
   'free_cmms.hero.title': '管理工单和资产 - 永久免费',
   'free_cmms.hero.description':

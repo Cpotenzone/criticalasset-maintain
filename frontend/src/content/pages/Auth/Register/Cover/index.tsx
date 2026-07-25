@@ -158,7 +158,7 @@ function RegisterCover() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { logo } = useBrand();
   const icons = {
-    Atlas: logo.dark,
+    Brand: logo.dark,
     FirebaseAuth: '/static/images/logo/firebase.svg',
     JWT: '/static/images/logo/jwt.svg',
     Amplify: '/static/images/logo/amplify.svg'
@@ -168,27 +168,27 @@ function RegisterCover() {
     {
       title: 'request_system',
       description: 'work-requests.checks.0',
-      image: icons.Atlas
+      image: icons.Brand
     },
     {
       title: 'eam.title',
       description: 'eam.description.short',
-      image: icons.Atlas
+      image: icons.Brand
     },
     {
       title: 'preventive_maintenance',
       description: 'pm.descriptions.0',
-      image: icons.Atlas
+      image: icons.Brand
     },
     {
       title: 'work_orders',
       description: 'work-orders.description.short',
-      image: icons.Atlas
+      image: icons.Brand
     },
     {
       title: 'parts_inventory',
       description: 'part.description.short',
-      image: icons.Atlas
+      image: icons.Brand
     }
   ];
   return (

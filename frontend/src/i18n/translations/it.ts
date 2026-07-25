@@ -1399,6 +1399,7 @@ const locale = {
   resolved: 'Risolto',
   average: 'Media',
   documentation: 'Documentazione',
+  source_code: 'Source code',
   days_before_pm_notification: 'Notifiche di ordini di lavoro pre-programmati',
   estimated_start_date: 'Data di inizio prevista',
   no_file_linked_to_wo: 'Nessun file allegato a questo ordine di lavoro',
@@ -1717,18 +1718,18 @@ const locale = {
     'Approvato da squadre di manutenzione in vari settori',
   cut_costs_performance: 'Riduci i costi senza compromettere le prestazioni',
   'free_cmms.title':
-    'Software CMMS Gratuito Atlas | Nessuna carta di credito richiesta',
+    'Software CMMS Gratuito CriticalAsset Maintain | Nessuna carta di credito richiesta',
   'free_cmms.description':
     "Software CMMS gratuito — non è una versione di prova. Gestisci manutenzione, risorse e ordini di lavoro all'istante. Nessuna carta di credito richiesta.",
   'free_cmms.keywords':
     'cmms gratuito, software gestione manutenzione, software ordini di lavoro gratuito, tracciamento risorse, manutenzione preventiva',
   'overview.description':
-    'Atlas CMMS è un CMMS gratuito e open source per gestire ordini di lavoro, manutenzione preventiva, risorse e strutture. Semplifica le tue operazioni di manutenzione oggi stesso.',
+    'CriticalAsset Maintain è un CMMS gratuito e open source per gestire ordini di lavoro, manutenzione preventiva, risorse e strutture. Semplifica le tue operazioni di manutenzione oggi stesso.',
   'overview.keywords':
-    'CMMS, sistema di gestione della manutenzione computerizzato, EAM, gestione delle risorse aziendali, cmms open source, software di manutenzione gratuito, gestione degli ordini di lavoro, manutenzione preventiva, tracciamento delle risorse, gestione delle strutture, software di tracciamento della manutenzione, manutenzione delle apparecchiature, Atlas CMMS',
-  'pricing.title': 'Prezzi - Atlas CMMS',
+    'CMMS, sistema di gestione della manutenzione computerizzato, EAM, gestione delle risorse aziendali, cmms open source, software di manutenzione gratuito, gestione degli ordini di lavoro, manutenzione preventiva, tracciamento delle risorse, gestione delle strutture, software di tracciamento della manutenzione, manutenzione delle apparecchiature, CriticalAsset Maintain',
+  'pricing.title': 'Prezzi - CriticalAsset Maintain',
   'pricing.description':
-    'Piani tariffari flessibili per Atlas CMMS. Scegli tra le versioni Cloud e Self-Hosted del nostro CMMS open source per ottimizzare le tue operazioni di manutenzione.',
+    'Piani tariffari flessibili per CriticalAsset Maintain. Scegli tra le versioni Cloud e Self-Hosted del nostro CMMS open source per ottimizzare le tue operazioni di manutenzione.',
   'free_cmms.hero.subtitle': 'Software CMMS Gratuito',
   'free_cmms.hero.title':
     'Gestisci Ordini di Lavoro e Risorse - Gratis per sempre',

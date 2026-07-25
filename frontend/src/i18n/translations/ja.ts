@@ -1353,6 +1353,7 @@ const locale = {
   resolved: '解決済み',
   average: '平均',
   documentation: 'ドキュメント',
+  source_code: 'Source code',
   days_before_pm_notification: '予定されているPMの事前作業指示通知',
   estimated_start_date: '予定開始日',
   no_file_linked_to_wo: 'この作業指示にファイルは添付されていません',

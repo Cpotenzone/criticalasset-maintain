@@ -89,6 +89,12 @@ export const brandRawConfig: BrandRawConfig = getRuntimeValue('BRAND_CONFIG')
 
 export const demoLink: string = getRuntimeValue('DEMO_LINK');
 
+// AGPL-3.0 §13: pins the in-app "Source code" link to the running image's
+// git tag. Set via the VERSION env var at deploy time; falls back to the
+// default branch when unset (e.g. local dev).
+export const appVersion: string = getRuntimeValue('VERSION', 'main');
+export const sourceCodeUrl = `https://github.com/Cpotenzone/criticalasset-maintain/tree/${appVersion}`;
+
 export const isWhiteLabeled: boolean = !!(customLogoPaths || brandRawConfig);
 
 export const IS_ORIGINAL_CLOUD = !isWhiteLabeled && isCloudVersion;

@@ -1444,6 +1444,7 @@ const deJSON = {
   resolved: 'Gelöst',
   average: 'Durchschnitt',
   documentation: 'Dokumentation',
+  source_code: 'Source code',
   days_before_pm_notification:
     'Vorab-Benachrichtigungen für geplante Arbeitsaufträge',
   estimated_start_date: 'Geschätztes Startdatum',
@@ -1740,18 +1741,18 @@ const deJSON = {
     'Verwendet von Wartungsteams in verschiedenen Branchen',
   cut_costs_performance: 'Kosten sparen, ohne Leistung zu verlieren',
   'free_cmms.title':
-    'Atlas Kostenlose CMMS-Software | Keine Kreditkarte erforderlich',
+    'CriticalAsset Maintain Kostenlose CMMS-Software | Keine Kreditkarte erforderlich',
   'free_cmms.description':
     'Kostenlose CMMS-Software — keine Testversion. Verwalten Sie Wartung, Anlagen und Arbeitsaufträge sofort. Keine Kreditkarte erforderlich.',
   'free_cmms.keywords':
     'kostenloses cmms, wartungsmanagement-software, kostenlose arbeitsauftrag-software, anlagenverfolgung, vorbeugende wartung',
   'overview.description':
-    'Atlas CMMS ist ein kostenloses Open-Source-CMMS zur Verwaltung von Arbeitsaufträgen, vorbeugender Wartung, Anlagen und Einrichtungen. Optimieren Sie noch heute Ihre Wartungsarbeiten.',
+    'CriticalAsset Maintain ist ein kostenloses Open-Source-CMMS zur Verwaltung von Arbeitsaufträgen, vorbeugender Wartung, Anlagen und Einrichtungen. Optimieren Sie noch heute Ihre Wartungsarbeiten.',
   'overview.keywords':
-    'CMMS, computergestütztes wartungsmanagementsystem, EAM, enterprise asset management, open-source-cmms, kostenlose wartungssoftware, arbeitsauftragsverwaltung, vorbeugende wartung, anlagenverfolgung, facility management, wartungsverfolgungssoftware, gerätewartung, Atlas CMMS',
-  'pricing.title': 'Preise - Atlas CMMS',
+    'CMMS, computergestütztes wartungsmanagementsystem, EAM, enterprise asset management, open-source-cmms, kostenlose wartungssoftware, arbeitsauftragsverwaltung, vorbeugende wartung, anlagenverfolgung, facility management, wartungsverfolgungssoftware, gerätewartung, CriticalAsset Maintain',
+  'pricing.title': 'Preise - CriticalAsset Maintain',
   'pricing.description':
-    'Flexible Preispläne für Atlas CMMS. Wählen Sie zwischen Cloud- und selbstgehosteten Versionen unseres Open-Source-CMMS, um Ihre Wartungsarbeiten zu optimieren.',
+    'Flexible Preispläne für CriticalAsset Maintain. Wählen Sie zwischen Cloud- und selbstgehosteten Versionen unseres Open-Source-CMMS, um Ihre Wartungsarbeiten zu optimieren.',
   'free_cmms.hero.subtitle': 'Kostenlose CMMS-Software',
   'free_cmms.hero.title':
     'Verwalten Sie Arbeitsaufträge und Anlagen - Für immer kostenlos',

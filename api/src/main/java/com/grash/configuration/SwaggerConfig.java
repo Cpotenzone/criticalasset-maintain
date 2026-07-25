@@ -11,7 +11,7 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi publicApi() {
         return GroupedOpenApi.builder()
-                .group("atlas-cmms")
+                .group("criticalasset-maintain")
                 .pathsToMatch("/**")
                 .build();
     }

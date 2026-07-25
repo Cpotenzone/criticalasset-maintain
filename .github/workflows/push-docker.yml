@@ -1,83 +1,96 @@
-name: Build and Push Docker Images
+name: Build, Push, and Deploy
 concurrency:
   group: docker-build-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 on:
   push:
-    branches:
-      - main
     tags:
       - 'v*'
+
+env:
+  PROJECT_ID: gen-lang-client-0978140778
+  REGION: us-west1
+  REGISTRY: us-west1-docker.pkg.dev
+  # Dedicated service account, scoped to this repo only via the shared
+  # github-pool's attribute.repository condition — not the shared
+  # castle-github-deploy account (least privilege: this runs from a public repo).
+  DEPLOY_SA: maintain-github-deploy@gen-lang-client-0978140778.iam.gserviceaccount.com
+  RUN_SA: ca-osint-maintain-run@gen-lang-client-0978140778.iam.gserviceaccount.com
+  WORKLOAD_IDENTITY_PROVIDER: projects/398493233636/locations/global/workloadIdentityPools/github-pool/providers/github-provider
+
+permissions:
+  contents: read
+  id-token: write
 
 jobs:
   build-and-push-backend:
     runs-on: ubuntu-latest
     env:
-      BACKEND_IMAGE: intelloop/atlas-cmms-backend
+      BACKEND_IMAGE: us-west1-docker.pkg.dev/gen-lang-client-0978140778/maintain/api
+    outputs:
+      tag: ${{ steps.vars.outputs.DOCKER_TAG }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: google-github-actions/auth@v2
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Determine Docker tag
-        id: vars
-        run: |
-          if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
-            TAG_NAME="${GITHUB_REF#refs/tags/}"
-          else
-            TAG_NAME="latest"
-          fi
-          echo "DOCKER_TAG=$TAG_NAME" >> $GITHUB_OUTPUT
-
-      - name: Build and push backend image
-        uses: docker/build-push-action@v6
+          workload_identity_provider: ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ env.DEPLOY_SA }}
+      - run: gcloud auth configure-docker ${{ env.REGISTRY }} --quiet
+      - id: vars
+        run: echo "DOCKER_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+      - uses: docker/build-push-action@v6
         with:
           context: ./api
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
             ${{ env.BACKEND_IMAGE }}:${{ steps.vars.outputs.DOCKER_TAG }}
+            ${{ env.BACKEND_IMAGE }}:latest
 
   build-and-push-frontend:
     runs-on: ubuntu-latest
     env:
-      FRONTEND_IMAGE: intelloop/atlas-cmms-frontend
+      FRONTEND_IMAGE: us-west1-docker.pkg.dev/gen-lang-client-0978140778/maintain/web
+    outputs:
+      tag: ${{ steps.vars.outputs.DOCKER_TAG }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: google-github-actions/auth@v2
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Determine Docker tag
-        id: vars
-        run: |
-          if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
-            TAG_NAME="${GITHUB_REF#refs/tags/}"
-          else
-            TAG_NAME="latest"
-          fi
-          echo "DOCKER_TAG=$TAG_NAME" >> $GITHUB_OUTPUT
-
-      - name: Build and push frontend image
-        uses: docker/build-push-action@v6
+          workload_identity_provider: ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ env.DEPLOY_SA }}
+      - run: gcloud auth configure-docker ${{ env.REGISTRY }} --quiet
+      - id: vars
+        run: echo "DOCKER_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+      - uses: docker/build-push-action@v6
         with:
           context: ./frontend
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
             ${{ env.FRONTEND_IMAGE }}:${{ steps.vars.outputs.DOCKER_TAG }}
+            ${{ env.FRONTEND_IMAGE }}:latest
+
+  deploy:
+    needs: [build-and-push-backend, build-and-push-frontend]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ env.DEPLOY_SA }}
+      - uses: google-github-actions/setup-gcloud@v2
+      - name: Deploy API
+        run: |
+          gcloud run deploy ca-osint-maintain-api \
+            --image=us-west1-docker.pkg.dev/${{ env.PROJECT_ID }}/maintain/api:${{ needs.build-and-push-backend.outputs.tag }} \
+            --project=${{ env.PROJECT_ID }} --region=${{ env.REGION }} \
+            --service-account=${{ env.RUN_SA }}
+      - name: Deploy web
+        run: |
+          gcloud run deploy ca-osint-maintain-web \
+            --image=us-west1-docker.pkg.dev/${{ env.PROJECT_ID }}/maintain/web:${{ needs.build-and-push-frontend.outputs.tag }} \
+            --project=${{ env.PROJECT_ID }} --region=${{ env.REGION }} \
+            --service-account=${{ env.RUN_SA }}
