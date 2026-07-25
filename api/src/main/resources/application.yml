@@ -195,6 +195,11 @@ sendgrid:
   contact-list-id: ${SENDGRID_CONTACT_LIST_ID:}
   from:
     email: ${SENDGRID_FROM_EMAIL:}
+twilio:
+  account-sid: ${TWILIO_ACCOUNT_SID:}
+  api-key-sid: ${TWILIO_API_KEY_SID:}
+  api-key-secret: ${TWILIO_API_KEY_SECRET:}
+  from-number: ${TWILIO_FROM_NUMBER:}
 intercom:
   token: ${INTERCOM_TOKEN:}
 springdoc:

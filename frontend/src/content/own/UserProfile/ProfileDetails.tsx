@@ -64,6 +64,14 @@ function ProfileDetails() {
       emailUpdatesForRequests: {
         value: userSettings?.emailUpdatesForRequests,
         title: t('email_updates_requests')
+      },
+      smsNotified: {
+        value: userSettings?.smsNotified,
+        title: t('sms_notifications')
+      },
+      smsUpdatesForWorkOrders: {
+        value: userSettings?.smsUpdatesForWorkOrders,
+        title: t('sms_updates_wo')
       }
       // dailyEmailSummary: { value: userSettings?., title: t('Daily Summary Emails') },
       // emailUpdatesForPurchaseOrders: {

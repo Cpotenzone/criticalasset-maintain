@@ -8,9 +8,11 @@ import com.grash.mapper.NotificationMapper;
 import com.grash.model.Notification;
 import com.grash.model.User;
 import com.grash.model.PushNotificationToken;
+import com.grash.model.enums.NotificationType;
 import com.grash.repository.NotificationRepository;
 import io.github.jav.exposerversdk.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,11 +35,15 @@ public class NotificationService {
     private final NotificationMapper notificationMapper;
     private final PushNotificationTokenService pushNotificationTokenService;
     private final SimpMessageSendingOperations messagingTemplate;
+    private final SmsService smsService;
+    @Value("${frontend.url}")
+    private String frontendUrl;
 
     @Async
     public void create(Notification notification) {
         Notification savedNotification = notificationRepository.save(notification);
         messagingTemplate.convertAndSend("/notifications/" + notification.getUser().getId(), savedNotification);
+        sendSmsIfOptedIn(notification);
     }
 
     @Async
@@ -56,6 +62,28 @@ public class NotificationService {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        notifications.forEach(this::sendSmsIfOptedIn);
+    }
+
+    /**
+     * Best-effort, silent by design (see SmsService) — never lets a texting
+     * failure affect the in-app/push notification this rides along with.
+     */
+    private void sendSmsIfOptedIn(Notification notification) {
+        if (!smsService.isConfigured()) return;
+        try {
+            User user = notification.getUser();
+            if (user.getUserSettings() != null && user.getUserSettings().shouldSmsUpdatesForWorkOrders()) {
+                String body = notification.getMessage();
+                if (notification.getNotificationType() == NotificationType.WORK_ORDER
+                        && notification.getResourceId() != null) {
+                    body += " " + frontendUrl + "/app/work-orders/" + notification.getResourceId();
+                }
+                smsService.send(user.getPhone(), body);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public Notification update(Long id, NotificationPatchDTO notificationsPatchDTO) {

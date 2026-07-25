@@ -75,6 +75,16 @@ export default function UserProfile({
       value: userSettings?.emailUpdatesForPurchaseOrders,
       title: t('po_emails'),
       accessor: 'emailUpdatesForPurchaseOrders'
+    },
+    {
+      value: userSettings?.smsNotified,
+      title: t('sms_notifications'),
+      accessor: 'smsNotified'
+    },
+    {
+      value: userSettings?.smsUpdatesForWorkOrders,
+      title: t('sms_updates_wo'),
+      accessor: 'smsUpdatesForWorkOrders'
     }
   ];
 

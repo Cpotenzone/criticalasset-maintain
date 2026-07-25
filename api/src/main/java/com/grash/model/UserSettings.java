@@ -31,6 +31,17 @@ public class UserSettings {
     @Schema(description = "Whether stats for assigned work orders are shown")
     private boolean statsForAssignedWorkOrders = true;
 
+    // Opt-in (unlike email/push): SMS costs money to send, so existing
+    // users shouldn't start getting texted just because this rolled out.
+    @Schema(description = "Whether SMS notifications are enabled")
+    private boolean smsNotified = false;
+    @Schema(description = "Whether SMS updates for work orders are enabled")
+    private boolean smsUpdatesForWorkOrders = true;
+
+    public boolean shouldSmsUpdatesForWorkOrders() {
+        return smsNotified && smsUpdatesForWorkOrders;
+    }
+
     public boolean shouldEmailUpdatesForWorkOrders() {
         return emailNotified && emailUpdatesForWorkOrders;
     }

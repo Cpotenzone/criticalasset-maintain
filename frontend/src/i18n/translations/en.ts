@@ -981,6 +981,8 @@ const locale = {
   email_notifications: 'Email notifications',
   email_updates_wo: 'Email Updates for Work Orders and Messages',
   email_updates_requests: 'Email Updates for Requested Work Orders',
+  sms_notifications: 'SMS notifications',
+  sms_updates_wo: 'Text me for Work Order updates',
   po_emails: 'Purchase Request Emails',
   required_job_title: 'The Job title field is required',
   required_old_password: 'Please provide the current password.',

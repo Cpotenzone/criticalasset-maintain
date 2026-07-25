@@ -225,4 +225,6 @@
              relativeToChangelogFile="true"/>
     <include file="changelog/2026_07_16_00000000001_create_unaccent.xml"
              relativeToChangelogFile="true"/>
+    <include file="changelog/2026_07_25_00000000001_add_sms_preferences.xml"
+             relativeToChangelogFile="true"/>
 </databaseChangeLog>
