@@ -25,9 +25,32 @@ KEY_P8="$HOME/.appstoreconnect/private_keys/AuthKey_${ASC_KEY_ID}.p8"
 TEAM="C7GCEESE2V"
 SCHEME="AtlasCMMS"                            # internal Xcode project/scheme name, unchanged (see NOTICE.md)
 WORKSPACE="ios/AtlasCMMS.xcworkspace"
-PY="${PYTHON:-python3}"
 
 [ -f "$KEY_P8" ] || { echo "ERROR: ASC key not found at $KEY_P8"; exit 1; }
+
+# PyJWT must actually be importable by whatever $PY resolves to — silently
+# falling back to a bare `python3` that lacks it fails *after* a successful
+# upload (the build-number resolver runs first and works fine standalone,
+# but a later JWT-signing step would crash — a "silent half-ship"). Prefer
+# an explicit $PYTHON if set, else probe python3, else fail loudly up front.
+PY="${PYTHON:-python3}"
+if ! "$PY" -c "import jwt, cryptography" >/dev/null 2>&1; then
+  echo "ERROR: '$PY' can't import pyjwt/cryptography." >&2
+  echo "  Fix: pip3 install pyjwt cryptography (or) export PYTHON=/path/to/a/python/with/them" >&2
+  exit 1
+fi
+
+# Each .xcarchive is ~300MB+ and DerivedData balloons across builds — a
+# disk-full mid-archive fails with an opaque `ld: write() failed, errno=28`,
+# not an obvious "out of space" message. Bail early with a clear reason
+# instead, and clear this project's own DerivedData first (pure cache).
+rm -rf "$HOME/Library/Developer/Xcode/DerivedData/AtlasCMMS-"* 2>/dev/null || true
+AVAIL_GB=$(df -g / | awk 'NR==2 {print $4}')
+if [ "$AVAIL_GB" -lt 3 ]; then
+  echo "ERROR: only ${AVAIL_GB}GiB free on / — need a few GiB of headroom for the archive." >&2
+  echo "  Free up space (e.g. rm -rf ~/Library/Developer/Xcode/DerivedData/*) and retry." >&2
+  exit 1
+fi
 
 SHORT=$(grep -A1 'MARKETING_VERSION' ios/AtlasCMMS.xcodeproj/project.pbxproj | grep -oE '[0-9]+\.[0-9]+(\.[0-9]+)?' | head -1)
 
