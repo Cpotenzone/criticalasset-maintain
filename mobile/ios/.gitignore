@@ -28,3 +28,8 @@ project.xcworkspace
 
 # CocoaPods
 /Pods/
+
+# App Store Connect API ids (never commit)
+ios/scripts/asc.env
+mobile/ios/scripts/asc.env
+scripts/asc.env
