@@ -52,6 +52,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private PasswordEncoder passwordEncoder;
     @Autowired
     private BrandingService brandingService;
+    @Value("${allowed-sso-domains}")
+    private String[] allowedSsoDomains;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -116,6 +118,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         User user = new User();
         user.setEmail(email);
         String emailDomain = user.getEmail().split("@")[1];
+        if (allowedSsoDomains != null && allowedSsoDomains.length != 0
+                && Arrays.stream(allowedSsoDomains).noneMatch(allowedDomain -> allowedDomain.equalsIgnoreCase(emailDomain))) {
+            throw new CustomException("Your organization's domain is not authorized for SSO sign-in", HttpStatus.FORBIDDEN);
+        }
         List<User> users = userRepository.findBySSOCompany(emailDomain);
         if (!users.isEmpty())
             throw new CustomException("You must be invited to your organization", HttpStatus.BAD_REQUEST);

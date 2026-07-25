@@ -130,6 +130,7 @@ storage:
     json-path: ${GCP_JSON_PATH:}
 
 allowed-organization-admins: ${ALLOWED_ORGANIZATION_ADMINS:}
+allowed-sso-domains: ${ALLOWED_SSO_DOMAINS:}
 cloud-version: ${CLOUD_VERSION:false}
 enable-sso: ${ENABLE_SSO:false}
 oauth2:
