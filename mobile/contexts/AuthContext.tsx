@@ -65,6 +65,7 @@ export type FieldConfigurationsType = 'workOrder' | 'request';
 interface AuthContextValue extends AuthState {
   method: 'JWT';
   login: (email: string, password: string, ldap?: boolean) => Promise<void>;
+  loginWithToken: (accessToken: string) => Promise<void>;
   logout: () => void;
   reviewEligible: boolean;
   register: (values: any) => Promise<void>;
@@ -486,6 +487,7 @@ const AuthContext = createContext<AuthContextValue>({
   method: 'JWT',
   login: (email?: string, password?: string, ldap?: boolean) =>
     Promise.resolve(),
+  loginWithToken: () => Promise.resolve(),
   logout: () => Promise.resolve(),
   register: () => Promise.resolve(),
   getInfos: () => Promise.resolve(),
@@ -779,6 +781,13 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
       { headers: await authHeader(true) }
     );
     const { accessToken } = response;
+    return loginInternal(accessToken);
+  };
+
+  // Entry point for SSO: the mobile app never handles a password, just the
+  // JWT the backend hands back after Google auth completes in the in-app
+  // browser session (see hooks/useGoogleSSO.ts).
+  const loginWithToken = async (accessToken: string): Promise<void> => {
     return loginInternal(accessToken);
   };
 
@@ -1171,6 +1180,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
         ...state,
         method: 'JWT',
         login,
+        loginWithToken,
         logout,
         register,
         getInfos,

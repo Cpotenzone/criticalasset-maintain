@@ -17,6 +17,8 @@ const locale = {
     "When whiteboards and sticky notes are chaos, and you need a CMMS software that's easy enough for your team to actually use - try CriticalAsset Maintain",
   try_grash: 'Try CriticalAsset Maintain',
   login: 'Log In',
+  continue_with_google: 'Continue with Google',
+  sso_login_failed: 'Google sign-in failed. Please try again.',
   start_trial: 'Start a Free trial',
   'home.what': 'What',
   'home.you_will_have': "You'll have",

@@ -27,14 +27,13 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>atlascmms</string>
-          <string>com.cmms.atlas</string>
+          <string>criticalassetmaintain</string>
         </array>
       </dict>
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>exp+atlas-cmms</string>
+          <string>exp+criticalasset-maintain</string>
         </array>
       </dict>
     </array>

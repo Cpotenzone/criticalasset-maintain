@@ -5,6 +5,7 @@ import { AuthStackScreenProps } from '../../types';
 import { Formik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import useAuth from '../../hooks/useAuth';
+import useGoogleSSO from '../../hooks/useGoogleSSO';
 import { useContext, useEffect, useState } from 'react';
 import { Button, HelperText, Text, TextInput } from 'react-native-paper';
 import { CustomSnackBarContext } from '../../contexts/CustomSnackBarContext';
@@ -22,6 +23,7 @@ export default function LoginScreen({
   const { t } = useTranslation();
   const { showSnackBar } = useContext(CustomSnackBarContext);
   const { login } = useAuth();
+  const { signInWithGoogle, loading: ssoLoading } = useGoogleSSO();
   const theme = useAppTheme();
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const toggleShowPassword = () => setShowPassword((value) => !value);
@@ -125,6 +127,23 @@ export default function LoginScreen({
               >
                 {t('login')}
               </Button>
+              {!ldapEnabled && (
+                <Button
+                  icon="google"
+                  mode="outlined"
+                  loading={ssoLoading}
+                  disabled={ssoLoading}
+                  onPress={async () => {
+                    const result = await signInWithGoogle();
+                    if (result === 'error') {
+                      showSnackBar(t('sso_login_failed'), 'error');
+                    }
+                  }}
+                  style={{ marginTop: 12 }}
+                >
+                  {t('continue_with_google')}
+                </Button>
+              )}
               {!ldapEnabled && (
                 <>
                   <Text style={{ marginVertical: 20 }}>

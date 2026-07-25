@@ -11,6 +11,7 @@ import { Formik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { phoneRegExp } from '../../utils/validators';
 import useAuth from '../../hooks/useAuth';
+import useGoogleSSO from '../../hooks/useGoogleSSO';
 import { IS_LOCALHOST } from '../../config';
 import { useContext, useState } from 'react';
 import {
@@ -29,6 +30,7 @@ export default function RegisterScreen({
 }: AuthStackScreenProps<'Register'>) {
   const { t } = useTranslation();
   const { register } = useAuth();
+  const { signInWithGoogle, loading: ssoLoading } = useGoogleSSO();
   const { showSnackBar } = useContext(CustomSnackBarContext);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const theme = useTheme();
@@ -71,6 +73,21 @@ export default function RegisterScreen({
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollView}>
+        <Button
+          icon="google"
+          mode="outlined"
+          loading={ssoLoading}
+          disabled={ssoLoading}
+          onPress={async () => {
+            const result = await signInWithGoogle();
+            if (result === 'error') {
+              showSnackBar(t('sso_login_failed'), 'error');
+            }
+          }}
+          style={{ marginBottom: 20 }}
+        >
+          {t('continue_with_google')}
+        </Button>
         <Formik
           initialValues={getFieldsAndShapes()[0]}
           validationSchema={Yup.object().shape(getFieldsAndShapes()[1])}
