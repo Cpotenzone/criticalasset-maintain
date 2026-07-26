@@ -55,13 +55,15 @@
       <true/>
     </dict>
     <key>NSCameraUsageDescription</key>
-    <string>Allow Atlas to use the camera to scan.</string>
+    <string>Allow CriticalAsset Maintain to use the camera to scan.</string>
     <key>NSMicrophoneUsageDescription</key>
-    <string>Allow Atlas to use the microphone for audio notes.</string>
+    <string>Allow CriticalAsset Maintain to use the microphone for audio notes and voice-filled work orders.</string>
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>Allow CriticalAsset Maintain to use speech recognition to fill in work orders from your voice.</string>
     <key>NSPhotoLibraryAddUsageDescription</key>
-    <string>Allow Atlas to save photos to your photo library when you export or download attachments.</string>
+    <string>Allow CriticalAsset Maintain to save photos to your photo library when you export or download attachments.</string>
     <key>NSPhotoLibraryUsageDescription</key>
-    <string>Allow Atlas to access your photo library to attach images to work orders and asset records.</string>
+    <string>Allow CriticalAsset Maintain to access your photo library to attach images to work orders and asset records.</string>
     <key>NSUserNotificationUsageDescription</key>
     <string>Allow notifications for work order updates.</string>
     <key>UILaunchStoryboardName</key>

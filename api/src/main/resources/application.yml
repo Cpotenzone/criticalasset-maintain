@@ -200,6 +200,11 @@ twilio:
   api-key-sid: ${TWILIO_API_KEY_SID:}
   api-key-secret: ${TWILIO_API_KEY_SECRET:}
   from-number: ${TWILIO_FROM_NUMBER:}
+# CriticalAsset's own served models (CLEO) — the only AI this app calls.
+# Auth is a GCP identity token minted from the metadata server (see
+# ExpertClient), not a shared secret — only resolves on Cloud Run/GCE.
+expert-models:
+  base-url: ${EXPERT_MODELS_BASE_URL:https://criticalasset-experts-398493233636.us-central1.run.app}
 intercom:
   token: ${INTERCOM_TOKEN:}
 springdoc:

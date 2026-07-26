@@ -2,6 +2,8 @@ package com.grash.controller;
 
 import com.grash.advancedsearch.SearchCriteria;
 import com.grash.dto.*;
+import com.grash.dto.workOrder.WorkOrderAiDraftDTO;
+import com.grash.dto.workOrder.WorkOrderAiDraftRequestDTO;
 import com.grash.dto.workOrder.WorkOrderPatchDTO;
 import com.grash.dto.workOrder.WorkOrderPostDTO;
 import com.grash.dto.workOrder.WorkOrderSendReportDTO;
@@ -45,6 +47,7 @@ public class WorkOrderController {
     private final LocationService locationService;
     private final PartService partService;
     private final FileMapper fileMapper;
+    private final WorkOrderAiDraftService workOrderAiDraftService;
 
     @PostMapping("/search")
     @PreAuthorize("permitAll()")
@@ -118,6 +121,13 @@ public class WorkOrderController {
         WorkOrder createdWorkOrder = workOrderService.createByUser(workOrderReq, user);
         return workOrderMapper.toShowDto(createdWorkOrder);
 
+    }
+
+    @PostMapping("/ai-draft")
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    public WorkOrderAiDraftDTO aiDraft(@Parameter(description = "Free text or voice transcript to draft a work " +
+                                                          "order from") @Valid @RequestBody WorkOrderAiDraftRequestDTO request) {
+        return workOrderAiDraftService.draftFromText(request.getText());
     }
 
     @GetMapping("/part/{id}")

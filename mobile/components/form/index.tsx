@@ -490,6 +490,7 @@ export default function Form(props: OwnProps) {
         style={{ flex: 1 }}
       >
         <Formik<IHash<any>>
+          enableReinitialize
           validationSchema={props.validation || validationSchema}
           validateOnChange={true}
           validateOnBlur={true}

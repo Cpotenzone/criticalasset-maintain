@@ -3,6 +3,7 @@ import { View } from '../../components/Themed';
 import Form from '../../components/form';
 import * as Yup from 'yup';
 import { StyleSheet } from 'react-native';
+import { Button, Text } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import {
   getCustomFieldsIFields,
@@ -22,6 +23,9 @@ import { useAppTheme } from '../../custom-theme';
 import { getErrorMessage } from '../../utils/api';
 import { CustomFieldEntityType } from '../../models/customField';
 import useUnsavedChanges from '../../hooks/useUnsavedChanges';
+import useVoiceWorkOrderDraft, {
+  WorkOrderAiDraft
+} from '../../hooks/useVoiceWorkOrderDraft';
 
 export default function CreateWorkOrderScreen({
   navigation,
@@ -36,8 +40,18 @@ export default function CreateWorkOrderScreen({
   const { showSnackBar } = useContext(CustomSnackBarContext);
   const dispatch = useDispatch();
   const { customFields } = useSelector((state) => state.customFields);
+  const [aiDraft, setAiDraft] = useState<WorkOrderAiDraft | null>(null);
 
   useUnsavedChanges(navigation, isFormDirty);
+
+  const { isListening, isDrafting, startListening, stopListening } =
+    useVoiceWorkOrderDraft((draft) => {
+      if (draft.success) {
+        setAiDraft(draft);
+      } else {
+        showSnackBar(t('ai_draft_failed'), 'error');
+      }
+    });
 
   const defaultShape: { [key: string]: any } = {
     title: Yup.string().required(t('required_wo_title')),
@@ -63,6 +77,26 @@ export default function CreateWorkOrderScreen({
   };
   return (
     <View style={styles.container}>
+      <View style={styles.voiceDraftContainer}>
+        <Button
+          icon={isListening ? 'stop-circle' : 'microphone'}
+          mode="outlined"
+          loading={isDrafting}
+          disabled={isDrafting}
+          onPress={isListening ? stopListening : startListening}
+        >
+          {isListening
+            ? t('stop_and_fill')
+            : isDrafting
+            ? t('drafting')
+            : t('fill_from_voice')}
+        </Button>
+        {aiDraft?.success && (
+          <Text style={styles.voiceDraftAppliedText}>
+            {t('ai_draft_applied')}
+          </Text>
+        )}
+      </View>
       <Form
         fields={[
           ...getFieldsAndShapes()[0],
@@ -96,7 +130,14 @@ export default function CreateWorkOrderScreen({
                 value: route.params.asset.id.toString()
               }
             : null,
-          estimatedDuration: 1
+          estimatedDuration: 1,
+          ...(aiDraft?.success
+            ? {
+                title: aiDraft.title,
+                description: aiDraft.description,
+                priority: aiDraft.priority
+              }
+            : {})
         }}
         onChange={() => setIsFormDirty(true)}
         onSubmit={async (values) => {
@@ -129,5 +170,14 @@ export default function CreateWorkOrderScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1
+  },
+  voiceDraftContainer: {
+    paddingHorizontal: 15,
+    paddingTop: 15,
+    alignItems: 'flex-start'
+  },
+  voiceDraftAppliedText: {
+    marginTop: 6,
+    fontSize: 12
   }
 });
