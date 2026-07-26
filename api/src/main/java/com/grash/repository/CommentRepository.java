@@ -10,6 +10,8 @@ public interface CommentRepository extends JpaRepository<Comment, Long>,
 
     long countByWorkOrderId(Long workOrderId);
 
+    java.util.List<Comment> findByWorkOrder_Id(Long workOrderId);
+
     @Query("SELECT COUNT(c) FROM Comment c WHERE c.workOrder.id = :workOrderId AND c.files IS NOT EMPTY")
     long countByWorkOrderIdWithFiles(Long workOrderId);
 }

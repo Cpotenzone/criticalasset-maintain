@@ -33,6 +33,15 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
     Optional<User> findByIdAndCompany_Id(Long id, Long companyId);
 
+    /**
+     * Match an inbound SMS sender to a user by the last 10 digits of the
+     * phone number, ignoring stored formatting (Twilio sends E.164, users
+     * type whatever they like into their profile).
+     */
+    @Query(value = "SELECT * FROM own_user WHERE RIGHT(REGEXP_REPLACE(COALESCE(phone, ''), '[^0-9]', '', 'g'), 10) " +
+            "= :lastTenDigits AND enabled = true ORDER BY id LIMIT 1", nativeQuery = true)
+    Optional<User> findFirstByPhoneLastDigits(@Param("lastTenDigits") String lastTenDigits);
+
     @Query("select u from User u where u.company.id=:id and u.role.code not in :roleCodes")
     Collection<User> findWorkersByCompany(@Param("id") Long id, @Param("roleCodes") List<RoleCode> roleCodes);
 

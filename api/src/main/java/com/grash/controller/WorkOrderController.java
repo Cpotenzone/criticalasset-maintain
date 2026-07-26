@@ -48,6 +48,7 @@ public class WorkOrderController {
     private final PartService partService;
     private final FileMapper fileMapper;
     private final WorkOrderAiDraftService workOrderAiDraftService;
+    private final WorkOrderAiInsightsService workOrderAiInsightsService;
 
     @PostMapping("/search")
     @PreAuthorize("permitAll()")
@@ -128,6 +129,14 @@ public class WorkOrderController {
     public WorkOrderAiDraftDTO aiDraft(@Parameter(description = "Free text or voice transcript to draft a work " +
                                                           "order from") @Valid @RequestBody WorkOrderAiDraftRequestDTO request) {
         return workOrderAiDraftService.draftFromText(request.getText());
+    }
+
+    @GetMapping("/{id}/ai-insights")
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    public AiInsightsDTO aiInsights(@PathVariable("id") Long id, HttpServletRequest req) {
+        User user = userService.whoami(req);
+        WorkOrder workOrder = workOrderService.checkAccessToWorkOrderId(id, user);
+        return workOrderAiInsightsService.generate(workOrder);
     }
 
     @GetMapping("/part/{id}")

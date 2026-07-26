@@ -30,11 +30,12 @@ import java.util.concurrent.ExecutionException;
  * criticalasset-osint's own Python process today, behind a browser-session-
  * only endpoint we can't call machine-to-machine (see NOTICE.md).
  * <p>
- * MAX (criticalasset-osint's mep-v4 evaluation bench) is NOT wired in: as of
- * this writing mep-v4 isn't loaded on the serving fleet (confirmed via
- * /v1/models — only base, water-v3, mep-v3, water-v41 are up), so a MAX call
- * would just hang/fail. Revisit once ca-osint's MAX_ROSTER points at a model
- * that's actually being served.
+ * MAX (criticalasset-osint's mep-v4 evaluation bench: mep-v4 solo at
+ * temperature 0) is wired via {@link #maxOrCleo}: the mep-v4 adapter was
+ * added to the serving fleet's --lora-modules roster on 2026-07-25, matching
+ * ca-osint's MAX_ROSTER. If mep-v4 ever drops off the roster again the call
+ * fails fast and maxOrCleo transparently falls back to CLEO, reporting which
+ * engine actually answered so the UI never mislabels the source.
  * <p>
  * Best-effort by design: auth (GCP identity token via the metadata server,
  * so this only ever works when actually running on Cloud Run — no shared
@@ -52,9 +53,17 @@ public class ExpertClient {
 
     private static final String WATER_V3 = "criticalasset-water-v3";
     private static final String MEP_V3 = "criticalasset-mep-v3";
+    private static final String MEP_V4 = "criticalasset-mep-v4";
     // The merge pass runs on the production water champion, same as CLEO —
     // tolerant of messy input, which is the point of the panel.
     private static final String SYNTHESIZER = WATER_V3;
+
+    public static final String ENGINE_CLEO = "CLEO";
+    public static final String ENGINE_MAX = "MAX";
+
+    /** An expert reply plus which virtual model actually produced it. */
+    public record ExpertAnswer(String content, String engine) {
+    }
 
     private static final HttpClient HTTP = HttpClient.newBuilder()
             .connectTimeout(Duration.ofSeconds(5))
@@ -98,6 +107,41 @@ public class ExpertClient {
         if (waterAnswer != null) return java.util.Optional.of(waterAnswer);
         if (mepAnswer != null) return java.util.Optional.of(mepAnswer);
         return java.util.Optional.empty();
+    }
+
+    /**
+     * MAX: mep-v4 solo at temperature 0 — deterministic engineering review,
+     * same composition as ca-osint's MAX bench. Empty if the model is off
+     * the serving roster or the call fails; never throws.
+     */
+    public java.util.Optional<String> max(String systemPrompt, String userContent) {
+        if (!isConfigured()) return java.util.Optional.empty();
+        String answer = await(CompletableFuture.supplyAsync(() -> {
+            try {
+                return chatCompletion(MEP_V4, systemPrompt, userContent, 0.0);
+            } catch (Exception e) {
+                log.warn("MAX (mep-v4) call failed", e);
+                return null;
+            }
+        }).orTimeout(LEG_TIMEOUT.toSeconds(), java.util.concurrent.TimeUnit.SECONDS)
+                .exceptionally(e -> {
+                    log.warn("MAX (mep-v4) timed out");
+                    return null;
+                }));
+        return java.util.Optional.ofNullable(answer);
+    }
+
+    /**
+     * MAX with CLEO fallback, tagged with whichever engine actually answered
+     * — callers surface the tag so the product never claims a MAX answer
+     * came from MAX when CLEO stood in.
+     */
+    public java.util.Optional<ExpertAnswer> maxOrCleo(String systemPrompt, String userContent) {
+        java.util.Optional<String> maxAnswer = max(systemPrompt, userContent);
+        if (maxAnswer.isPresent()) {
+            return java.util.Optional.of(new ExpertAnswer(maxAnswer.get(), ENGINE_MAX));
+        }
+        return cleo(systemPrompt, userContent).map(c -> new ExpertAnswer(c, ENGINE_CLEO));
     }
 
     private CompletableFuture<String> callLegAsync(String model, String systemPrompt, String userContent) {

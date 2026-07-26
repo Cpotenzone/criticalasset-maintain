@@ -77,7 +77,9 @@ public class NotificationService {
                 String body = notification.getMessage();
                 if (notification.getNotificationType() == NotificationType.WORK_ORDER
                         && notification.getResourceId() != null) {
-                    body += " " + frontendUrl + "/app/work-orders/" + notification.getResourceId();
+                    Long id = notification.getResourceId();
+                    body += " " + frontendUrl + "/app/work-orders/" + id
+                            + "\nReply DONE " + id + " / START " + id + ", or '#" + id + " your note'.";
                 }
                 smsService.send(user.getPhone(), body);
             }

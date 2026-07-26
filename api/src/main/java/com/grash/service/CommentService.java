@@ -102,6 +102,10 @@ public class CommentService {
         return commentRepository.findAll(specification);
     }
 
+    public List<Comment> findByWorkOrder(Long workOrderId) {
+        return commentRepository.findByWorkOrder_Id(workOrderId);
+    }
+
     public long countByWorkOrderId(Long workOrderId, User user) {
         workOrderService.checkAccessToWorkOrderId(workOrderId, user);
         return commentRepository.countByWorkOrderId(workOrderId);

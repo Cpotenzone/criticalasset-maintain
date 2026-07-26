@@ -48,6 +48,7 @@ public class AssetController {
     private final AssetService assetService;
     private final AssetMapper assetMapper;
     private final UserService userService;
+    private final AssetAiInsightsService assetAiInsightsService;
     private final LocationService locationService;
     private final PartService partService;
     private final MessageSource messageSource;
@@ -100,6 +101,16 @@ public class AssetController {
         User user = userService.whoami(req);
         Optional<Asset> optionalAsset = assetService.findById(id);
         return getAsset(optionalAsset, user);
+    }
+
+    @GetMapping("/{id}/ai-insights")
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    public com.grash.dto.AiInsightsDTO aiInsights(@PathVariable("id") Long id, HttpServletRequest req) {
+        User user = userService.whoami(req);
+        Optional<Asset> optionalAsset = assetService.findById(id);
+        // same visibility rule as getById — reuse it for the access check side effect
+        getAsset(optionalAsset, user);
+        return assetAiInsightsService.generate(optionalAsset.get());
     }
 
     private AssetShowDTO getAsset(Optional<Asset> optionalAsset, User user) {

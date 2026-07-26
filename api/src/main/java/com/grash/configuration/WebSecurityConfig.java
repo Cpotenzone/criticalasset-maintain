@@ -71,6 +71,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/auth/activate-account**").permitAll()
                         .requestMatchers("/demo/generate-account").permitAll()
                         .requestMatchers("/webhooks/**").permitAll()
+                        // Twilio inbound SMS — gated by shared-secret key param, see SmsInboundController
+                        .requestMatchers("/sms/inbound").permitAll()
                         .requestMatchers("/paddle/create-checkout-session").permitAll()
                         .requestMatchers("/auth/reset-pwd-confirm**").permitAll()
                         //request-portal

@@ -200,6 +200,10 @@ twilio:
   api-key-sid: ${TWILIO_API_KEY_SID:}
   api-key-secret: ${TWILIO_API_KEY_SECRET:}
   from-number: ${TWILIO_FROM_NUMBER:}
+  # Random shared secret in the inbound webhook URL (?key=...) — Twilio's
+  # HMAC signatures need the account Auth Token, which we deliberately
+  # don't hold (API Key auth only), so the URL secret is the gate.
+  inbound-webhook-key: ${TWILIO_INBOUND_WEBHOOK_KEY:}
 # CriticalAsset's own served models (CLEO) — the only AI this app calls.
 # Auth is a GCP identity token minted from the metadata server (see
 # ExpertClient), not a shared secret — only resolves on Cloud Run/GCE.

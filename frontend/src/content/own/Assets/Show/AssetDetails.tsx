@@ -31,6 +31,7 @@ import AssetStatusSelect from '../components/AssetStatusSelect';
 import Loading from '../../Analytics/Loading';
 import { PermissionEntity } from '../../../../models/owns/role';
 import SplitButton from '../../components/SplitButton';
+import AiInsightsCard from '../../components/AiInsightsCard';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { PlanFeature } from '../../../../models/owns/subscriptionPlan';
@@ -204,6 +205,11 @@ const AssetDetails = ({ asset, loading, onCopy }: PropsType) => {
   return (
     <Box sx={{ px: 4 }}>
       <Grid container spacing={2}>
+        {asset && (
+          <Grid item xs={12}>
+            <AiInsightsCard url={`assets/${asset.id}/ai-insights`} />
+          </Grid>
+        )}
         <Grid item xs={12}>
           <Card sx={{ p: 2 }}>
             <Grid container spacing={2} padding={2}>

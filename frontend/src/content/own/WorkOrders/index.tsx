@@ -16,6 +16,7 @@ import {
   Stack,
   Tab,
   Tabs,
+  TextField,
   Tooltip,
   Typography
 } from '@mui/material';
@@ -50,8 +51,11 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import {
   formatCustomFields,
   formatSelect,
-  formatSelectMultiple
+  formatSelectMultiple,
+  getPriorityLabel
 } from '../../../utils/formatters';
+import api from '../../../utils/api';
+import AutoAwesomeTwoToneIcon from '@mui/icons-material/AutoAwesomeTwoTone';
 import {
   addWorkOrder,
   deleteWorkOrder,
@@ -228,6 +232,14 @@ function WorkOrders() {
   };
   const [openAddModal, setOpenAddModal] = useState<boolean>(false);
   const [openDiscardDialog, setOpenDiscardDialog] = useState<boolean>(false);
+  const [aiDraftText, setAiDraftText] = useState<string>('');
+  const [aiDrafting, setAiDrafting] = useState<boolean>(false);
+  const [aiDraft, setAiDraft] = useState<{
+    success: boolean;
+    title?: string;
+    description?: string;
+    priority?: string;
+  } | null>(null);
   const [isFormDirty, setIsFormDirty] = useState<boolean>(false);
   const [copyWorkOrderData, setCopyWorkOrderData] = useState<WorkOrder | null>(
     null
@@ -460,6 +472,8 @@ function WorkOrders() {
     setOpenAddModal(false);
     if (copyWorkOrderData) handleOpenDetails(newWorkOrder.id);
     setCopyWorkOrderData(null);
+    setAiDraft(null);
+    setAiDraftText('');
     showSnackBar(t('wo_create_success'), 'success');
   };
   const onCreationFailure = (err) =>
@@ -807,10 +821,63 @@ function WorkOrders() {
         }}
       >
         <Box>
+          {!copyWorkOrderData && (
+            <Box sx={{ mb: 2 }}>
+              <Stack direction="row" spacing={1} alignItems="flex-start">
+                <TextField
+                  fullWidth
+                  size="small"
+                  multiline
+                  maxRows={3}
+                  placeholder={t('ai_intake_placeholder')}
+                  value={aiDraftText}
+                  onChange={(event) => setAiDraftText(event.target.value)}
+                />
+                <Button
+                  variant="outlined"
+                  startIcon={
+                    aiDrafting ? (
+                      <CircularProgress size={14} />
+                    ) : (
+                      <AutoAwesomeTwoToneIcon />
+                    )
+                  }
+                  disabled={aiDrafting || !aiDraftText.trim()}
+                  onClick={() => {
+                    setAiDrafting(true);
+                    api
+                      .post<{
+                        success: boolean;
+                        title?: string;
+                        description?: string;
+                        priority?: string;
+                      }>('work-orders/ai-draft', { text: aiDraftText })
+                      .then((draft) => {
+                        if (draft.success) {
+                          setAiDraft(draft);
+                        } else {
+                          showSnackBar(t('ai_draft_failed'), 'error');
+                        }
+                      })
+                      .catch(() => showSnackBar(t('ai_draft_failed'), 'error'))
+                      .finally(() => setAiDrafting(false));
+                  }}
+                >
+                  {t('ai_fill')}
+                </Button>
+              </Stack>
+              {aiDraft?.success && (
+                <Typography variant="caption" color="primary">
+                  {t('ai_draft_applied')}
+                </Typography>
+              )}
+            </Box>
+          )}
           <Form
             fields={getFieldsAndShapes()[0]}
             validation={Yup.object().shape(getFieldsAndShapes()[1])}
             submitText={t('add')}
+            enableReinitialize
             values={
               copyWorkOrderData
                 ? {
@@ -838,7 +905,19 @@ function WorkOrders() {
                           value: locationParamObject.id
                         }
                       : null,
-                    estimatedDuration: 1
+                    estimatedDuration: 1,
+                    ...(aiDraft?.success
+                      ? {
+                          title: aiDraft.title,
+                          description: aiDraft.description,
+                          priority: aiDraft.priority
+                            ? {
+                                label: getPriorityLabel(aiDraft.priority, t),
+                                value: aiDraft.priority
+                              }
+                            : undefined
+                        }
+                      : {})
                   }
             }
             onChange={() => setIsFormDirty(true)}

@@ -44,6 +44,7 @@ import LinkTwoToneIcon from '@mui/icons-material/LinkTwoTone';
 import ArchiveTwoToneIcon from '@mui/icons-material/ArchiveTwoTone';
 import PictureAsPdfTwoToneIcon from '@mui/icons-material/PictureAsPdfTwoTone';
 import PriorityWrapper from '../../components/PriorityWrapper';
+import AiInsightsCard from '../../components/AiInsightsCard';
 import TimerTwoToneIcon from '@mui/icons-material/TimerTwoTone';
 import {
   changeWorkOrderStatus,
@@ -595,6 +596,9 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
         {currentTab === 'details' && (
           <Box>
             <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <AiInsightsCard url={`work-orders/${workOrder.id}/ai-insights`} />
+              </Grid>
               <Grid
                 item
                 xs={12}

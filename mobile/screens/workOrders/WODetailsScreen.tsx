@@ -75,7 +75,7 @@ import WorkOrder from '../../models/workOrder';
 import Labor from '../../models/labor';
 import { AudioPlayer } from '../../components/AudioPlayer';
 import { Task } from '../../models/tasks';
-import { getErrorMessage } from '../../utils/api';
+import api, { getErrorMessage } from '../../utils/api';
 import ImageView from 'react-native-image-viewing';
 import { getCustomFieldValuesForDetails } from '../../models/form';
 import CommentItem from '../../components/CommentItem';
@@ -151,6 +151,12 @@ export default function WODetailsScreen({
   const insets = useSafeAreaInsets();
   const scrollViewRef = useRef<ScrollView>(null);
   const [isImageViewerOpen, setIsImageViewerOpen] = useState<boolean>(false);
+  const [aiInsightsLoading, setAiInsightsLoading] = useState<boolean>(false);
+  const [aiInsights, setAiInsights] = useState<{
+    success: boolean;
+    insights?: string;
+    engine?: string;
+  } | null>(null);
   const dispatch = useDispatch();
   const { partQuantitiesByWorkOrder, loadingPartQuantities } = useSelector(
     (state) => state.partQuantities
@@ -836,6 +842,53 @@ export default function WODetailsScreen({
                     color={getPriorityColor(workOrder.priority, theme)}
                     backgroundColor={'transparent'}
                   />
+                )}
+              </View>
+              <View style={{ marginTop: 15, alignItems: 'flex-start' }}>
+                <Button
+                  icon="creation"
+                  mode="outlined"
+                  compact
+                  loading={aiInsightsLoading}
+                  disabled={aiInsightsLoading}
+                  onPress={() => {
+                    setAiInsightsLoading(true);
+                    api
+                      .get<{
+                        success: boolean;
+                        insights?: string;
+                        engine?: string;
+                      }>(`work-orders/${workOrder.id}/ai-insights`)
+                      .then((response) => {
+                        if (response.success) {
+                          setAiInsights(response);
+                        } else {
+                          showSnackBar(t('ai_insights_failed'), 'error');
+                        }
+                      })
+                      .catch(() => showSnackBar(t('ai_insights_failed'), 'error'))
+                      .finally(() => setAiInsightsLoading(false));
+                  }}
+                >
+                  {aiInsights ? t('ai_regenerate') : t('ai_summary')}
+                </Button>
+                {aiInsights?.success && (
+                  <View
+                    style={{
+                      marginTop: 10,
+                      padding: 12,
+                      borderWidth: 1,
+                      borderRadius: 8,
+                      borderColor: theme.colors.outline
+                    }}
+                  >
+                    <Text variant="labelSmall" style={{ color: 'grey' }}>
+                      {t('ai_powered_by', { engine: aiInsights.engine })}
+                    </Text>
+                    <Text variant="bodyMedium" style={{ marginTop: 4 }}>
+                      {aiInsights.insights}
+                    </Text>
+                  </View>
                 )}
               </View>
               {workOrder.image && (
