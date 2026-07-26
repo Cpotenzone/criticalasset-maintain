@@ -44,15 +44,24 @@ if [ ! -d Pods ]; then
   pod install
 fi
 
-# --- Build number (apple-generic versioning → agvtool) ---
+# --- Version + build ---
+# This is an EXPO app: `expo prebuild` writes the marketing version and build
+# number LITERALLY into Info.plist (from app.config.ts), NOT via the Xcode
+# MARKETING_VERSION / CURRENT_PROJECT_VERSION build settings. So agvtool does
+# NOT change what actually uploads — the authoritative source is Info.plist.
+# Edit it directly. (If someone runs `expo prebuild` afterward it regenerates
+# Info.plist from app.config.ts, so for a durable bump also raise
+# expo.ios.buildNumber there — see DEPLOY-TESTFLIGHT.md.)
+INFOPLIST="AtlasCMMS/Info.plist"
+PB=/usr/libexec/PlistBuddy
 if [ "$BUMP" = "1" ]; then
-  CUR=$(xcrun agvtool what-version -terse)
+  CUR=$($PB -c "Print :CFBundleVersion" "$INFOPLIST")
   NEXT=$((CUR + 1))
-  xcrun agvtool new-version -all "$NEXT" >/dev/null
-  echo "▸ bumped build $CUR → $NEXT"
+  $PB -c "Set :CFBundleVersion $NEXT" "$INFOPLIST"
+  echo "▸ bumped build $CUR → $NEXT (Info.plist)"
 fi
-BUILD=$(xcrun agvtool what-version -terse)
-MKT=$(grep -m1 'MARKETING_VERSION' AtlasCMMS.xcodeproj/project.pbxproj | grep -oE '[0-9]+\.[0-9]+([0-9.]*)')
+BUILD=$($PB -c "Print :CFBundleVersion" "$INFOPLIST")
+MKT=$($PB -c "Print :CFBundleShortVersionString" "$INFOPLIST")
 ARCHIVE="build/AtlasCMMS-${MKT}b${BUILD}.xcarchive"
 
 echo "▸ archiving ${MKT} (${BUILD})  [scheme ${SCHEME}]"

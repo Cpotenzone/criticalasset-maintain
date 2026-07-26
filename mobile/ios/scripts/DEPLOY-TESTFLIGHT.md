@@ -14,7 +14,7 @@ this app's **React Native / Expo + CocoaPods** setup.
 | ASC Apple ID (`ASC_APP_ID`) | `6794545308` |
 | Apple team | `C7GCEESE2V` (same as App #1 → same API key works) |
 | Build | `.xcworkspace` **AtlasCMMS.xcworkspace**, scheme **AtlasCMMS**, CocoaPods |
-| Versioning | apple-generic (build bumps via `agvtool`) |
+| Versioning | **Expo** — version + build are LITERAL in `AtlasCMMS/Info.plist` (written from `app.config.ts` by `expo prebuild`), NOT Xcode build settings. `--bump` edits `Info.plist` via PlistBuddy. Marketing train is currently **1.0.43**. |
 
 ## One-time setup
 1. `cp scripts/asc.env.example scripts/asc.env` and fill it in (already done here:
@@ -37,9 +37,11 @@ and **`Pods/`** (auto-runs `pod install` if missing).
 
 ## Gotchas (every one of these bit App #1 — all handled here)
 1. **Build numbers must strictly increase *within a marketing version (train)*.**
-   `--bump` does `agvtool current+1`. If ASC already has a higher build on the
-   `1.0` train, set it explicitly: `xcrun agvtool new-version -all <n>` first.
-   (Different marketing versions have independent build numbers.)
+   `--bump` does `PlistBuddy CFBundleVersion current+1` on `AtlasCMMS/Info.plist`.
+   ⚠️ A parallel agent also ships this app — **check ASC's max build on the
+   current train first** (see Verify below) and set it explicitly if needed:
+   `/usr/libexec/PlistBuddy -c "Set :CFBundleVersion <n>" AtlasCMMS/Info.plist`.
+   agvtool / `MARKETING_VERSION` do NOT control the upload here (Expo literals).
 2. **`testflight-submit.py` runs under `$PY` (PyJWT), not system `python3`.**
    Wrong interpreter → the submit step crashes silently *after* a successful
    upload (a half-ship). The script already uses `$PY`.
