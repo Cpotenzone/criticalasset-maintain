@@ -8,17 +8,21 @@ export default function OauthSuccess() {
   const { loginInternal } = useAuth();
   const token = searchParams.get('token');
   useEffect(() => {
-    if (token) {
-      loginInternal(token);
-      // Mobile app's expo-web-browser auth session is watching for a
-      // redirect to this scheme to know the OAuth flow finished and hand
-      // the token back to the app (see mobile/hooks/useGoogleSSO.ts). A
-      // no-op on desktop/regular mobile browsers — there's no app
-      // registered for the scheme there, so nothing happens.
-      window.location.href = `criticalassetmaintain://oauth2/success?token=${encodeURIComponent(
-        token
-      )}`;
-    }
+    if (!token) return;
+    // Hand the token to the mobile app FIRST. Its expo-web-browser auth session
+    // is watching for this scheme and closes the in-app browser the instant it
+    // sees the redirect, returning to the native app. Order matters:
+    // loginInternal() logs into the web SPA and navigates it to the dashboard —
+    // if that runs first, the web app renders *inside* the mobile in-app browser
+    // instead of handing back (the "it opens a browser inside the app" bug).
+    window.location.href = `criticalassetmaintain://oauth2/success?token=${encodeURIComponent(
+      token
+    )}`;
+    // Desktop/regular-browser fallback only: the scheme above is unhandled there
+    // (no app registered), so complete the web sign-in a beat later. On mobile
+    // the browser has already closed by now, so this never runs.
+    const t = setTimeout(() => loginInternal(token), 600);
+    return () => clearTimeout(t);
   }, [token]);
   return <SuspenseLoader />;
 }
