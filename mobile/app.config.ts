@@ -9,7 +9,10 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: 'CriticalAsset Maintain',
   slug: 'criticalasset-maintain',
-  version: '1.0.0',
+  // Keep in step with ios/AtlasCMMS/Info.plist — that plist is what actually
+  // ships (we archive the committed .xcodeproj), but `expo prebuild` would
+  // regenerate it from here, so stale values here silently undo a release.
+  version: '1.0.43',
   orientation: 'portrait',
   icon: './assets/images/icon.png',
   scheme: 'criticalassetmaintain',
@@ -29,7 +32,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   ios: {
     bundleIdentifier: 'com.criticalasset.maintain',
-    buildNumber: '1',
+    buildNumber: '5',
     jsEngine: 'hermes',
     supportsTablet: false,
     runtimeVersion: '1.0.0',
