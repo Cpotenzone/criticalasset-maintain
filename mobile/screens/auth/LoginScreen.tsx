@@ -135,8 +135,11 @@ export default function LoginScreen({
                   disabled={ssoLoading}
                   onPress={async () => {
                     const result = await signInWithGoogle();
-                    if (result === 'error') {
-                      showSnackBar(t('sso_login_failed'), 'error');
+                    if (result.type === 'error') {
+                      showSnackBar(
+                        result.message ?? t('sso_login_failed'),
+                        'error'
+                      );
                     }
                   }}
                   style={{ marginTop: 12 }}

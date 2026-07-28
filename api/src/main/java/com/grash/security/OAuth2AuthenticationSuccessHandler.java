@@ -3,6 +3,7 @@ package com.grash.security;
 import com.grash.exception.CustomException;
 import com.grash.factory.MailServiceFactory;
 import com.grash.model.Company;
+import com.grash.model.Role;
 import com.grash.model.User;
 import com.grash.model.Subscription;
 import com.grash.repository.UserRepository;
@@ -52,8 +53,18 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private PasswordEncoder passwordEncoder;
     @Autowired
     private BrandingService brandingService;
+    @Autowired
+    @Lazy
+    private RoleService roleService;
+    @Autowired
+    @Lazy
+    private UserService userService;
     @Value("${allowed-sso-domains}")
     private String[] allowedSsoDomains;
+    @Value("${allowed-organization-admins}")
+    private String[] allowedOrganizationAdmins;
+    @Value("${sso-default-role:Technician}")
+    private String ssoDefaultRole;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -119,12 +130,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         user.setEmail(email);
         String emailDomain = user.getEmail().split("@")[1];
         if (allowedSsoDomains != null && allowedSsoDomains.length != 0
-                && Arrays.stream(allowedSsoDomains).noneMatch(allowedDomain -> allowedDomain.equalsIgnoreCase(emailDomain))) {
+                && Arrays.stream(allowedSsoDomains).noneMatch(allowedDomain -> allowedDomain.trim().equalsIgnoreCase(emailDomain))) {
             throw new CustomException("Your organization's domain is not authorized for SSO sign-in", HttpStatus.FORBIDDEN);
         }
-        List<User> users = userRepository.findBySSOCompany(emailDomain);
-        if (!users.isEmpty())
-            throw new CustomException("You must be invited to your organization", HttpStatus.BAD_REQUEST);
         user.setEnabled(true);
         user.setCreatedViaSso(true);
         user.setSsoProvider(provider);
@@ -134,6 +142,59 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         user.setUsername(utils.generateStringId());
         user.setPassword(passwordEncoder.encode(utils.generateStringId()));
 
+        // When the instance nominates organization admins, every other account —
+        // SSO included — belongs to the organization they own rather than to a
+        // company of its own. Without that setting we keep upstream's behaviour
+        // and give the first user of a domain their own company.
+        Optional<Company> organizationCompany = findOrganizationCompany();
+        return organizationCompany.isPresent()
+                ? joinOrganization(user, organizationCompany.get())
+                : createOwnCompany(user, emailDomain);
+    }
+
+    /**
+     * The company owned by the first {@code allowed-organization-admins} entry that
+     * actually owns one. Empty when the setting is unset (self-hosted default).
+     */
+    private Optional<Company> findOrganizationCompany() {
+        if (allowedOrganizationAdmins == null || allowedOrganizationAdmins.length == 0) {
+            return Optional.empty();
+        }
+        return Arrays.stream(allowedOrganizationAdmins)
+                .map(String::trim)
+                .filter(admin -> !admin.isEmpty())
+                .map(companyService::findByOwnerEmailAndOwnsCompany)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .findFirst();
+    }
+
+    private User joinOrganization(User user, Company company) {
+        Role role = findRole(company, ssoDefaultRole);
+        user.setOwnsCompany(false);
+        user.setCompany(company);
+        user.setRole(role);
+
+        if (role.isPaid()) {
+            userService.checkUsageBasedLimit(1);
+            long paidUsers = userRepository.findByCompany_Id(company.getId()).stream()
+                    .filter(companyUser -> companyUser.isEnabled() && companyUser.isEnabledInSubscriptionAndPaid())
+                    .count();
+            if (paidUsers + 1 > company.getSubscription().getUsersCount()) {
+                throw new CustomException("Your organization has reached the maximum number of users for its " +
+                        "subscription", HttpStatus.FORBIDDEN);
+            }
+        }
+
+        User savedUser = userRepository.save(user);
+        notifySuperAdmins(savedUser, company);
+        return savedUser;
+    }
+
+    private User createOwnCompany(User user, String emailDomain) {
+        List<User> users = userRepository.findBySSOCompany(emailDomain);
+        if (!users.isEmpty())
+            throw new CustomException("You must be invited to your organization", HttpStatus.BAD_REQUEST);
         try {
             Subscription subscription = Subscription.builder()
                     .usersCount(300)
@@ -151,33 +212,48 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             companyService.create(company);
 
             user.setOwnsCompany(true);
-            user.setRole(company.getCompanySettings().getRoleList().stream()
-                    .filter(role -> role.getName().equals("Administrator"))
-                    .findFirst().get());
+            user.setRole(findRole(company, "Administrator"));
 
             user.setCompany(company);
             User savedUser = userRepository.save(user);
 
-            // Send notification to super admins about new SSO account
-            if (recipients != null && recipients.length > 0) {
-                try {
-                    mailServiceFactory.getMailService().sendHtmlMessage(
-                            recipients,
-                            "New " + brandingService.getBrandConfig().getShortName() + " SSO registration",
-                            user.getFirstName() + " " + user.getLastName() +
-                                    " just created an account via SSO from company " + company.getName() +
-                                    ".\nEmail: " + user.getEmail()
-                    );
-                } catch (Exception e) {
-                    log.error("Failed to send notification email about new SSO user", e);
-                }
-            }
+            notifySuperAdmins(savedUser, company);
 
             return savedUser;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error creating user {} from SSO", user.getEmail(), e);
             throw new CustomException("Error creating user from SSO: " + e.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * A newly built {@link Company} carries no roles of its own, so resolve against
+     * the instance-wide default roles plus any the company has since defined.
+     */
+    private Role findRole(Company company, String roleName) {
+        List<Role> candidates = company.getId() == null
+                ? roleService.findDefaultRoles()
+                : roleService.findByCompany(company.getId());
+        return candidates.stream()
+                .filter(role -> role.getName().equalsIgnoreCase(roleName))
+                .findFirst()
+                .orElseThrow(() -> new CustomException("SSO role \"" + roleName + "\" not found on this instance",
+                        HttpStatus.INTERNAL_SERVER_ERROR));
+    }
+
+    private void notifySuperAdmins(User user, Company company) {
+        if (recipients == null || recipients.length == 0) return;
+        try {
+            mailServiceFactory.getMailService().sendHtmlMessage(
+                    recipients,
+                    "New " + brandingService.getBrandConfig().getShortName() + " SSO registration",
+                    user.getFirstName() + " " + user.getLastName() +
+                            " just created an account via SSO from company " + company.getName() +
+                            ".\nEmail: " + user.getEmail()
+            );
+        } catch (Exception e) {
+            log.error("Failed to send notification email about new SSO user", e);
         }
     }
 
