@@ -45,7 +45,7 @@ import static org.mockito.Mockito.*;
 @MockitoSettings(strictness = Strictness.LENIENT)
 class OAuth2AuthenticationSuccessHandlerTest {
 
-    private static final String ORGANIZATION_ADMIN = "casey@nofriction.io";
+    private static final String ORGANIZATION_ADMIN = "casey@criticalasset.com";
     private static final String SUCCESS_URL = "https://maintain.criticalcopilot.com/oauth2/success";
     private static final String FAILURE_URL = "https://maintain.criticalcopilot.com/oauth2/failure";
 
