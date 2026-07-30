@@ -213,8 +213,14 @@ twilio:
 # still mints a GCP identity token from the metadata server, anything else uses
 # the api-key below (see ExpertClient). Pointing this back at Cloud Run is then a
 # one-line rollback that cannot leave auth mismatched with the endpoint.
+# NOTE the default base-url is still the retired Cloud Run host: the endpoint
+# follows the KEY, so a deploy before CA_EXPERTS_KEY lands is a no-op rather than
+# an outage (Google is still serving at 1 instance and scales to zero only once
+# every consumer has moved). Set both together to cut over:
+#   EXPERT_MODELS_BASE_URL=https://experts.aws.criticalcopilot.com
+#   CA_EXPERTS_KEY=<key>
 expert-models:
-  base-url: ${EXPERT_MODELS_BASE_URL:https://experts.aws.criticalcopilot.com}
+  base-url: ${EXPERT_MODELS_BASE_URL:https://criticalasset-experts-398493233636.us-central1.run.app}
   api-key: ${CA_EXPERTS_KEY:}
 intercom:
   token: ${INTERCOM_TOKEN:}
