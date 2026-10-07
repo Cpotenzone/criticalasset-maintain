@@ -8,10 +8,11 @@ on:
       - 'v*'
   workflow_dispatch:
 
-# Maintain left Cloud Run on 2026-08-01. api + web are Docker containers under
-# systemd on EC2 i-0ed39f799ead6a666 (us-east-1c), ports 8084 / 8085, behind
-# ALB dr-castle-alb. Database is the `maintain` database on RDS
-# ca-osint-db.cq3koyyq42za.us-east-1.rds.amazonaws.com (sslmode=require).
+# Maintain left Cloud Run on 2026-08-01 and the EC2 box on 2026-08-03. api +
+# web are ECS Fargate services (maintain-api, maintain-web) on cluster ca-prod
+# behind ALB dr-castle-alb; a deploy forces a new deployment of each service
+# so it pulls the :prod image pushed here. Database is the `maintain` database
+# on RDS ca-osint-db.cq3koyyq42za.us-east-1.rds.amazonaws.com (sslmode=require).
 #
 # Auth is OIDC. This repo is PUBLIC, so the role's trust policy is scoped to
 # this repository and mints 1-hour sessions — there is no long-lived key here.
@@ -82,5 +83,5 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
           role-session-name: gha-maintain-deploy-${{ github.run_id }}
 
-      - name: Deploy to the serve box
+      - name: Roll the ECS services onto :prod and measure
         run: ./scripts/aws-deploy.sh
