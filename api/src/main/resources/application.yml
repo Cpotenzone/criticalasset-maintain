@@ -116,7 +116,13 @@ management:
 api:
   host: ${PUBLIC_API_URL}
 storage:
+  # S3 | GCP | MINIO. Production is S3 since the GCP→AWS migration
+  # (2026-08-01); credentials come from the instance role, so there is nothing
+  # else to set beyond the bucket.
   type: ${STORAGE_TYPE}
+  s3:
+    bucket: ${STORAGE_S3_BUCKET:}
+    region: ${STORAGE_S3_REGION:us-east-1}
   minio:
     endpoint: ${MINIO_ENDPOINT:}
     bucket: ${MINIO_BUCKET:}
@@ -205,22 +211,21 @@ twilio:
   # don't hold (API Key auth only), so the URL secret is the gate.
   inbound-webhook-key: ${TWILIO_INBOUND_WEBHOOK_KEY:}
 # CriticalAsset's own served models (CLEO / MAX) — the only AI this app calls.
-# Since the 2026-07-30 AWS cutover these are served from CriticalAsset's own AWS
-# account behind a simple static bearer key. Set CA_EXPERTS_KEY (the value is
-# archived at s3://criticalasset-dr-archive/keys/aws-serve-api-key).
+# Served from CriticalAsset's own AWS account behind a static bearer key. Set
+# CA_EXPERTS_KEY (it is in the `maintain/env` Secrets Manager document; the
+# value is also archived at s3://criticalasset-dr-archive/keys/aws-serve-api-key).
 #
 # Auth FOLLOWS THE URL rather than being a separate switch: an *.run.app base-url
-# still mints a GCP identity token from the metadata server, anything else uses
-# the api-key below (see ExpertClient). Pointing this back at Cloud Run is then a
-# one-line rollback that cannot leave auth mismatched with the endpoint.
-# NOTE the default base-url is still the retired Cloud Run host: the endpoint
-# follows the KEY, so a deploy before CA_EXPERTS_KEY lands is a no-op rather than
-# an outage (Google is still serving at 1 instance and scales to zero only once
-# every consumer has moved). Set both together to cut over:
-#   EXPERT_MODELS_BASE_URL=https://experts.aws.criticalcopilot.com
-#   CA_EXPERTS_KEY=<key>
+# mints a GCP identity token from the metadata server, anything else uses the
+# api-key below (see ExpertClient). That coupling means the two can never be
+# configured inconsistently.
+#
+# The default is now the AWS endpoint — the whole fleet moved off GCP on
+# 2026-08-01 and the Cloud Run serving is pinned to min-instances=0 with a
+# ~19-minute cold start, i.e. not a rollback target. Do NOT point this back at
+# a *.run.app host expecting it to work.
 expert-models:
-  base-url: ${EXPERT_MODELS_BASE_URL:https://criticalasset-experts-398493233636.us-central1.run.app}
+  base-url: ${EXPERT_MODELS_BASE_URL:https://experts.criticalcopilot.com}
   api-key: ${CA_EXPERTS_KEY:}
 intercom:
   token: ${INTERCOM_TOKEN:}

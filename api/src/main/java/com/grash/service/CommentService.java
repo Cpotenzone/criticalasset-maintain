@@ -8,6 +8,7 @@ import com.grash.factory.MailServiceFactory;
 import com.grash.mapper.CommentMapper;
 import com.grash.model.*;
 import com.grash.model.enums.NotificationType;
+import com.grash.model.enums.webhook.WebhookEvent;
 import com.grash.repository.CommentRepository;
 import com.grash.repository.UserRepository;
 import com.grash.utils.Helper;
@@ -39,6 +40,7 @@ public class CommentService {
     private final EntityManager em;
     private final UserRepository userRepository;
     private final NotificationService notificationService;
+    private final WebhookDispatchService webhookDispatchService;
     private final MessageSource messageSource;
     private final MailServiceFactory mailServiceFactory;
 
@@ -55,6 +57,16 @@ public class CommentService {
 
         Set<User> notifiedUsers = getNotifiedUsers(savedComment, workOrder, user);
         sendCommentNotifications(savedComment, workOrder, notifiedUsers, user, false);
+
+        // NEW_COMMENT_ON_WORK_ORDER was declared but never fired. CriticalCopilot
+        // listens for it so a technician's note (and its photos) reach the ticket
+        // without waiting for the poll.
+        Map<String, Object> webhookPayload = new HashMap<>();
+        webhookPayload.put("workOrderId", workOrder.getId());
+        webhookPayload.put("commentId", savedComment.getId());
+        webhookPayload.put("userId", user.getId());
+        webhookDispatchService.dispatchWebhook(user.getCompany(), WebhookEvent.NEW_COMMENT_ON_WORK_ORDER,
+                webhookPayload, "newComment", commentMapper.toShowDto(savedComment), null, null, null, null, null);
 
         return savedComment;
     }

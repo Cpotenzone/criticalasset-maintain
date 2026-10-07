@@ -390,9 +390,28 @@ export default function LocationDetails(props: LocationDetailsProps) {
                         </IconButton>
                       }
                     >
+                      {floorPlan.image?.url && (
+                        <Box
+                          component="img"
+                          src={floorPlan.image.thumbnailUrl || floorPlan.image.url}
+                          alt={floorPlan.name}
+                          onClick={() => window.open(floorPlan.image.url, '_blank', 'noopener')}
+                          sx={{
+                            width: 160,
+                            height: 100,
+                            objectFit: 'cover',
+                            borderRadius: 1,
+                            mr: 2,
+                            cursor: 'zoom-in',
+                            border: `1px solid ${theme.colors.alpha.black[10]}`
+                          }}
+                        />
+                      )}
                       <ListItemText
                         primary={floorPlan.name}
-                        secondary={`${floorPlan.area} m²`}
+                        secondary={
+                          floorPlan.area ? `${floorPlan.area} m²` : t('floor_plan')
+                        }
                       />
                     </ListItem>
                   </ListItemButton>

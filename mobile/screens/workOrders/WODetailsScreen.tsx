@@ -151,6 +151,59 @@ export default function WODetailsScreen({
   const insets = useSafeAreaInsets();
   const scrollViewRef = useRef<ScrollView>(null);
   const [isImageViewerOpen, setIsImageViewerOpen] = useState<boolean>(false);
+  // Every picture on this work order the viewer can page through: the hero
+  // image, image attachments (the plan with the pin, the floor with the
+  // equipment dotted, the drawing sheet), and the location's floor plans.
+  const [viewerImages, setViewerImages] = useState<{ uri: string }[]>([]);
+  const [viewerIndex, setViewerIndex] = useState<number>(0);
+  const [floorPlans, setFloorPlans] = useState<
+    { id: number; name: string; url: string; thumbnailUrl?: string | null }[]
+  >([]);
+  const isImageFile = (name: string) =>
+    /\.(png|jpe?g|webp|gif|heic)$/i.test(name || '');
+  const openImages = (images: { uri: string }[], index: number) => {
+    if (!images.length) return;
+    setViewerImages(images);
+    setViewerIndex(Math.max(0, index));
+    setIsImageViewerOpen(true);
+  };
+  useEffect(() => {
+    const locationId = workOrder?.location?.id;
+    if (!locationId) {
+      setFloorPlans([]);
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      try {
+        const own = await api.get<any[]>(`floor-plans/location/${locationId}`);
+        const children = await api
+          .get<any[]>(`locations/children/${locationId}`)
+          .catch(() => []);
+        const nested = (
+          await Promise.all(
+            (children || []).map((c: any) =>
+              api.get<any[]>(`floor-plans/location/${c.id}`).catch(() => [])
+            )
+          )
+        ).flat();
+        const plans = [...(own || []), ...nested]
+          .filter((fp) => fp?.image?.url)
+          .map((fp) => ({
+            id: fp.id,
+            name: fp.name,
+            url: fp.image.url,
+            thumbnailUrl: fp.image.thumbnailUrl
+          }));
+        if (!cancelled) setFloorPlans(plans);
+      } catch {
+        if (!cancelled) setFloorPlans([]);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [workOrder?.location?.id]);
   const [aiInsightsLoading, setAiInsightsLoading] = useState<boolean>(false);
   const [aiInsights, setAiInsights] = useState<{
     success: boolean;
@@ -892,12 +945,84 @@ export default function WODetailsScreen({
                 )}
               </View>
               {workOrder.image && (
-                <TouchableOpacity onPress={() => setIsImageViewerOpen(true)}>
+                <TouchableOpacity
+                  onPress={() =>
+                    openImages(
+                      [
+                        { uri: workOrder.image.url },
+                        ...workOrder.files
+                          .filter((f) => isImageFile(f.name))
+                          .map((f) => ({ uri: f.url }))
+                      ],
+                      0
+                    )
+                  }
+                >
                   <Image
                     style={{ height: 200, marginTop: 20 }}
                     source={{ uri: workOrder.image.url }}
                   />
                 </TouchableOpacity>
+              )}
+              {!!workOrder.files.filter((f) => isImageFile(f.name)).length && (
+                <View style={{ marginTop: 12 }}>
+                  <Text style={{ color: theme.colors.onSurfaceVariant, marginBottom: 6 }}>
+                    {t('plans_and_photos', { defaultValue: 'Plans & photos' })}
+                  </Text>
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                    {workOrder.files
+                      .filter((f) => isImageFile(f.name))
+                      .map((f, idx, all) => (
+                        <TouchableOpacity
+                          key={f.id}
+                          onPress={() =>
+                            openImages(
+                              all.map((x) => ({ uri: x.url })),
+                              idx
+                            )
+                          }
+                          style={{ marginRight: 8 }}
+                        >
+                          <Image
+                            style={{ width: 160, height: 110, borderRadius: 8 }}
+                            source={{ uri: f.url }}
+                          />
+                          <Text numberOfLines={1} style={{ width: 160, fontSize: 11 }}>
+                            {f.name}
+                          </Text>
+                        </TouchableOpacity>
+                      ))}
+                  </ScrollView>
+                </View>
+              )}
+              {!!floorPlans.length && (
+                <View style={{ marginTop: 12 }}>
+                  <Text style={{ color: theme.colors.onSurfaceVariant, marginBottom: 6 }}>
+                    {t('floor_plans')}
+                  </Text>
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                    {floorPlans.map((fp, idx, all) => (
+                      <TouchableOpacity
+                        key={fp.id}
+                        onPress={() =>
+                          openImages(
+                            all.map((x) => ({ uri: x.url })),
+                            idx
+                          )
+                        }
+                        style={{ marginRight: 8 }}
+                      >
+                        <Image
+                          style={{ width: 200, height: 130, borderRadius: 8 }}
+                          source={{ uri: fp.thumbnailUrl || fp.url }}
+                        />
+                        <Text numberOfLines={1} style={{ width: 200, fontSize: 11 }}>
+                          {fp.name}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
+                </View>
               )}
               <View style={{ marginTop: 20 }}>
                 <TouchableOpacity
@@ -1406,10 +1531,10 @@ export default function WODetailsScreen({
                 style={[styles.fabStyle]}
               />
             )}
-          {workOrder.image && (
+          {!!viewerImages.length && (
             <ImageView
-              images={[{ uri: workOrder.image.url }]}
-              imageIndex={0}
+              images={viewerImages}
+              imageIndex={viewerIndex}
               visible={isImageViewerOpen}
               onRequestClose={() => setIsImageViewerOpen(false)}
             />
