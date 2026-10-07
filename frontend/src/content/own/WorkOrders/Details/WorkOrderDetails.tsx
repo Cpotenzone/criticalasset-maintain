@@ -91,7 +91,10 @@ import AddFileModal from './AddFileModal';
 import CommentsSection from './CommentsSection';
 import { useLicenseEntitlement } from '../../../../hooks/useLicenseEntitlement';
 import { getCustomFieldValuesForDetails } from '../../type';
-import { getErrorMessage } from '../../../../utils/api';
+import api, { getErrorMessage } from '../../../../utils/api';
+import FloorPlan from '../../../../models/owns/floorPlan';
+import Map from '../../components/Map';
+import { googleMapsConfig } from '../../../../config';
 import { getCommentsCountByWorkOrder } from '../../../../slices/comment';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import CloseIcon from '@mui/icons-material/Close';
@@ -209,6 +212,54 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
   const [isImageViewerOpen, setIsImageViewerOpen] = useState<boolean>(false);
   const [currentImage, setCurrentImage] = useState<string>();
   const [currentImages, setCurrentImages] = useState<string[]>();
+  // The plans behind this work order: every FloorPlan on its location and
+  // the location's children (CriticalCopilot files one per floor), plus the
+  // location itself for the map. Read-only; a failure leaves the cards out.
+  const [floorPlans, setFloorPlans] = useState<FloorPlan[]>([]);
+  const [locationDetail, setLocationDetail] = useState<{
+    latitude?: number;
+    longitude?: number;
+    name?: string;
+    address?: string;
+  } | null>(null);
+  const isImageFile = (name: string) => /\.(png|jpe?g|webp|gif)$/i.test(name || '');
+  const imageFiles = (workOrder?.files ?? []).filter((f) => isImageFile(f.name));
+  useEffect(() => {
+    const locationId = workOrder?.location?.id;
+    if (!locationId) {
+      setFloorPlans([]);
+      setLocationDetail(null);
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      try {
+        const [loc, own, children] = await Promise.all([
+          api.get<any>(`locations/${locationId}`).catch(() => null),
+          api.get<FloorPlan[]>(`floor-plans/location/${locationId}`).catch(() => []),
+          api.get<any[]>(`locations/children/${locationId}`).catch(() => [])
+        ]);
+        const nested = (
+          await Promise.all(
+            (children || []).map((c: any) =>
+              api.get<FloorPlan[]>(`floor-plans/location/${c.id}`).catch(() => [])
+            )
+          )
+        ).flat();
+        if (cancelled) return;
+        setLocationDetail(loc);
+        setFloorPlans([...(own || []), ...nested].filter((fp) => fp?.image?.url));
+      } catch {
+        if (!cancelled) {
+          setFloorPlans([]);
+          setLocationDetail(null);
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [workOrder?.location?.id]);
 
   const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -551,7 +602,12 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
             )}
           </Box>
           <Typography variant="h2">{workOrder?.title}</Typography>
-          <Typography variant="h6">{workOrder?.description}</Typography>
+          <Typography
+            variant="body1"
+            sx={{ whiteSpace: 'pre-wrap', mt: 1, lineHeight: 1.5 }}
+          >
+            {workOrder?.description}
+          </Typography>
         </Box>
         <Box>
           {hasEditPermission(PermissionEntity.WORK_ORDERS, workOrder) && (
@@ -731,11 +787,107 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
                     src={workOrder.image.url}
                     style={{ borderRadius: 5, height: 250, cursor: 'pointer' }}
                     onClick={() => {
-                      setImageState([workOrder.image.url], workOrder.image.url);
+                      setImageState(
+                        [workOrder.image.url, ...imageFiles.map((f) => f.url)],
+                        workOrder.image.url
+                      );
                     }}
                   />
                 </Grid>
               )}
+              {!!imageFiles.length && (
+                <Grid item xs={12}>
+                  <Typography variant="h6" sx={{ mb: 1 }}>
+                    {t('plans_and_photos', { defaultValue: 'Plans & photos' })}
+                  </Typography>
+                  <Box sx={{ display: 'flex', gap: 1.5, flexWrap: 'wrap' }}>
+                    {imageFiles.map((f) => (
+                      <Box key={f.id} sx={{ width: 220 }}>
+                        <Box
+                          component="img"
+                          src={f.url}
+                          alt={f.name}
+                          onClick={() =>
+                            setImageState(
+                              imageFiles.map((x) => x.url),
+                              f.url
+                            )
+                          }
+                          sx={{
+                            width: 220,
+                            height: 150,
+                            objectFit: 'cover',
+                            borderRadius: 1,
+                            cursor: 'zoom-in',
+                            border: `1px solid ${theme.colors.alpha.black[10]}`
+                          }}
+                        />
+                        <Typography variant="caption" noWrap display="block" title={f.name}>
+                          {f.name}
+                        </Typography>
+                      </Box>
+                    ))}
+                  </Box>
+                </Grid>
+              )}
+              {!!floorPlans.length && (
+                <Grid item xs={12}>
+                  <Typography variant="h6" sx={{ mb: 1 }}>
+                    {t('floor_plans')}
+                  </Typography>
+                  <Box sx={{ display: 'flex', gap: 1.5, flexWrap: 'wrap' }}>
+                    {floorPlans.map((fp) => (
+                      <Box key={fp.id} sx={{ width: 280 }}>
+                        <Box
+                          component="img"
+                          src={fp.image.thumbnailUrl || fp.image.url}
+                          alt={fp.name}
+                          onClick={() =>
+                            setImageState(
+                              floorPlans.map((x) => x.image.url),
+                              fp.image.url
+                            )
+                          }
+                          sx={{
+                            width: 280,
+                            height: 180,
+                            objectFit: 'cover',
+                            borderRadius: 1,
+                            cursor: 'zoom-in',
+                            border: `1px solid ${theme.colors.alpha.black[10]}`
+                          }}
+                        />
+                        <Typography variant="caption" noWrap display="block" title={fp.name}>
+                          {fp.name}
+                        </Typography>
+                      </Box>
+                    ))}
+                  </Box>
+                </Grid>
+              )}
+              {googleMapsConfig.apiKey &&
+                locationDetail?.latitude != null &&
+                locationDetail?.longitude != null && (
+                  <Grid item xs={12}>
+                    <Typography variant="h6" sx={{ mb: 1 }}>
+                      {t('location')}
+                    </Typography>
+                    <Map
+                      dimensions={{ width: 600, height: 260 }}
+                      locations={[
+                        {
+                          id: workOrder.location.id,
+                          title: locationDetail.name || workOrder.location.name,
+                          address: locationDetail.address || '',
+                          coordinates: {
+                            lat: locationDetail.latitude,
+                            lng: locationDetail.longitude
+                          }
+                        }
+                      ]}
+                    />
+                  </Grid>
+                )}
               {detailsFieldsToRender(workOrder).map((field, index) => (
                 <BasicField key={index} {...field} />
               ))}

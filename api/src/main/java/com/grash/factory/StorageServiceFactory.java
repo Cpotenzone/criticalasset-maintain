@@ -3,6 +3,7 @@ package com.grash.factory;
 import com.grash.model.enums.StorageType;
 import com.grash.service.GCPService;
 import com.grash.service.MinioService;
+import com.grash.service.S3Service;
 import com.grash.service.StorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,9 +17,12 @@ public class StorageServiceFactory {
 
     private final GCPService gcpService;
     private final MinioService minioService;
+    private final S3Service s3Service;
 
     public StorageService getStorageService() {
         switch (storageType) {
+            case S3:
+                return s3Service;
             case GCP:
                 return gcpService;
             default:

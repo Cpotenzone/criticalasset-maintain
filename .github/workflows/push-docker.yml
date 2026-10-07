@@ -1,4 +1,4 @@
-name: Build, Push, and Deploy
+name: Build, Push, and Deploy (AWS)
 concurrency:
   group: docker-build-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -6,95 +6,82 @@ on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
+
+# Maintain left Cloud Run on 2026-08-01 and the EC2 box on 2026-08-03. api +
+# web are ECS Fargate services (maintain-api, maintain-web) on cluster ca-prod
+# behind ALB dr-castle-alb; a deploy forces a new deployment of each service
+# so it pulls the :prod image pushed here. Database is the `maintain` database
+# on RDS ca-osint-db.cq3koyyq42za.us-east-1.rds.amazonaws.com (sslmode=require).
+#
+# Auth is OIDC. This repo is PUBLIC, so the role's trust policy is scoped to
+# this repository and mints 1-hour sessions — there is no long-lived key here.
+# Delete the old GCP_SA_KEY-shaped secrets from the repo settings now that this
+# is cut over.
 
 env:
-  PROJECT_ID: gen-lang-client-0978140778
-  REGION: us-west1
-  REGISTRY: us-west1-docker.pkg.dev
-  # Dedicated service account, scoped to this repo only via the shared
-  # github-pool's attribute.repository condition — not the shared
-  # castle-github-deploy account (least privilege: this runs from a public repo).
-  DEPLOY_SA: maintain-github-deploy@gen-lang-client-0978140778.iam.gserviceaccount.com
-  RUN_SA: ca-osint-maintain-run@gen-lang-client-0978140778.iam.gserviceaccount.com
-  WORKLOAD_IDENTITY_PROVIDER: projects/398493233636/locations/global/workloadIdentityPools/github-pool/providers/github-provider
+  AWS_REGION: us-east-1
+  ECR_REGISTRY: 886781462397.dkr.ecr.us-east-1.amazonaws.com
 
 permissions:
   contents: read
   id-token: write
 
 jobs:
-  build-and-push-backend:
+  build-and-push:
     runs-on: ubuntu-latest
-    env:
-      BACKEND_IMAGE: us-west1-docker.pkg.dev/gen-lang-client-0978140778/maintain/api
     outputs:
       tag: ${{ steps.vars.outputs.DOCKER_TAG }}
     steps:
       - uses: actions/checkout@v4
       - uses: docker/setup-buildx-action@v3
-      - uses: google-github-actions/auth@v2
+
+      - uses: aws-actions/configure-aws-credentials@v4
         with:
-          workload_identity_provider: ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ env.DEPLOY_SA }}
-      - run: gcloud auth configure-docker ${{ env.REGISTRY }} --quiet
+          role-to-assume: arn:aws:iam::886781462397:role/maintain-github-deploy
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: gha-maintain-${{ github.run_id }}
+
+      - uses: aws-actions/amazon-ecr-login@v2
+
       - id: vars
-        run: echo "DOCKER_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
-      - uses: docker/build-push-action@v6
+        run: echo "DOCKER_TAG=${GITHUB_REF#refs/tags/}" >> "$GITHUB_OUTPUT"
+
+      # The serve box is amd64. arm64 (for self-hosters on Pi/Apple Silicon) is
+      # QEMU-emulated on GitHub's amd64 runners and was taking 40+ minutes for
+      # the frontend alone; self-hosters wanting arm64 already have `build:` in
+      # docker-compose.yml.
+      - name: Build and push api
+        uses: docker/build-push-action@v6
         with:
           context: ./api
           push: true
-          # Cloud Run only runs amd64 — arm64 (for self-hosters on Pi/Apple
-          # Silicon) is QEMU-emulated on GitHub's amd64 runners and was
-          # taking 40+ minutes for the frontend build alone. Self-hosters
-          # wanting arm64 already have `build:` in docker-compose.yml.
           platforms: linux/amd64
           tags: |
-            ${{ env.BACKEND_IMAGE }}:${{ steps.vars.outputs.DOCKER_TAG }}
-            ${{ env.BACKEND_IMAGE }}:latest
+            ${{ env.ECR_REGISTRY }}/maintain-api:${{ steps.vars.outputs.DOCKER_TAG }}
+            ${{ env.ECR_REGISTRY }}/maintain-api:prod
 
-  build-and-push-frontend:
-    runs-on: ubuntu-latest
-    env:
-      FRONTEND_IMAGE: us-west1-docker.pkg.dev/gen-lang-client-0978140778/maintain/web
-    outputs:
-      tag: ${{ steps.vars.outputs.DOCKER_TAG }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: docker/setup-buildx-action@v3
-      - uses: google-github-actions/auth@v2
-        with:
-          workload_identity_provider: ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ env.DEPLOY_SA }}
-      - run: gcloud auth configure-docker ${{ env.REGISTRY }} --quiet
-      - id: vars
-        run: echo "DOCKER_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
-      - uses: docker/build-push-action@v6
+      - name: Build and push web
+        uses: docker/build-push-action@v6
         with:
           context: ./frontend
           push: true
           platforms: linux/amd64
           tags: |
-            ${{ env.FRONTEND_IMAGE }}:${{ steps.vars.outputs.DOCKER_TAG }}
-            ${{ env.FRONTEND_IMAGE }}:latest
+            ${{ env.ECR_REGISTRY }}/maintain-web:${{ steps.vars.outputs.DOCKER_TAG }}
+            ${{ env.ECR_REGISTRY }}/maintain-web:prod
 
   deploy:
-    needs: [build-and-push-backend, build-and-push-frontend]
+    needs: build-and-push
     runs-on: ubuntu-latest
     steps:
-      - uses: google-github-actions/auth@v2
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
         with:
-          workload_identity_provider: ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ env.DEPLOY_SA }}
-      - uses: google-github-actions/setup-gcloud@v2
-      - name: Deploy API
-        run: |
-          gcloud run deploy ca-osint-maintain-api \
-            --image=us-west1-docker.pkg.dev/${{ env.PROJECT_ID }}/maintain/api:${{ needs.build-and-push-backend.outputs.tag }} \
-            --project=${{ env.PROJECT_ID }} --region=${{ env.REGION }} \
-            --service-account=${{ env.RUN_SA }}
-      - name: Deploy web
-        run: |
-          gcloud run deploy ca-osint-maintain-web \
-            --image=us-west1-docker.pkg.dev/${{ env.PROJECT_ID }}/maintain/web:${{ needs.build-and-push-frontend.outputs.tag }} \
-            --project=${{ env.PROJECT_ID }} --region=${{ env.REGION }} \
-            --service-account=${{ env.RUN_SA }}
+          role-to-assume: arn:aws:iam::886781462397:role/maintain-github-deploy
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: gha-maintain-deploy-${{ github.run_id }}
+
+      - name: Roll the ECS services onto :prod and measure
+        run: ./scripts/aws-deploy.sh
