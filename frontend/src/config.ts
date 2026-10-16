@@ -41,7 +41,8 @@ export const zendeskKey = '';
 export const googleTrackingId = getRuntimeValue('GOOGLE_TRACKING_ID');
 export const oauth2Provider = getRuntimeValue('OAUTH2_PROVIDER') as
   | 'GOOGLE'
-  | 'MICROSOFT';
+  | 'MICROSOFT'
+  | 'COGNITO';
 
 export const isEmailVerificationEnabled =
   getRuntimeValue('INVITATION_VIA_EMAIL') === 'true';

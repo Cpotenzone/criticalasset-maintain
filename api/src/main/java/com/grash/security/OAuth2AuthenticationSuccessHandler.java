@@ -265,6 +265,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 email = (String) attributes.get("email");
                 break;
             case "github":
+            case "cognito":
                 email = (String) attributes.get("email");
                 break;
             case "microsoft":
@@ -289,6 +290,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         switch (registrationId) {
             case "google":
             case "microsoft":
+            case "cognito":
                 return (String) attributes.get("sub");
             case "github":
                 return String.valueOf(attributes.get("id"));
@@ -301,7 +303,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         switch (registrationId) {
             case "google":
             case "microsoft":
-                return (String) attributes.get("given_name");
+            case "cognito":
+                String givenName = (String) attributes.get("given_name");
+                return givenName != null ? givenName : "User";
             case "github":
                 String name = (String) attributes.get("name");
                 return name != null ? name.split(" ")[0] : "User";
@@ -319,6 +323,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 String[] parts = name != null ? name.split(" ") : new String[]{"User"};
                 return parts.length > 1 ? parts[1] : "";
             case "microsoft":
+            case "cognito":
                 String lastName = (String) attributes.get("family_name");
                 if (lastName == null) {
                     lastName = "";

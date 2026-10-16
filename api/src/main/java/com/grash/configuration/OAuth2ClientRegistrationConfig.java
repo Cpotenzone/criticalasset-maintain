@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.ClientRegistrations;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
@@ -17,7 +18,7 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 @ConditionalOnProperty(name = "enable-sso", havingValue = "true")
 public class OAuth2ClientRegistrationConfig {
 
-    public enum Oauth2Provider {GOOGLE, MICROSOFT}
+    public enum Oauth2Provider {GOOGLE, MICROSOFT, COGNITO}
 
     @Value("${api.host}")
     private String PUBLIC_API_URL;
@@ -50,6 +51,30 @@ public class OAuth2ClientRegistrationConfig {
                     .userInfoUri("https://graph.microsoft.com/oidc/userinfo")
                     .userNameAttributeName("sub")
                     .build();
+            // Amazon Cognito — or any OpenID Connect issuer: every endpoint comes
+            // from the issuer's discovery document. With no client secret the
+            // registration is a PUBLIC client and Spring Security applies PKCE by
+            // itself, so no secret has to exist anywhere: the pool's app client is
+            // created with --no-generate-secret and trusts only the callback URL.
+            case COGNITO -> {
+                String issuer = System.getenv("OAUTH2_ISSUER_URI");
+                if (issuer == null || issuer.isBlank()) {
+                    throw new IllegalStateException("OAUTH2_ISSUER_URI is required when OAUTH2_PROVIDER=cognito");
+                }
+                ClientRegistration.Builder builder = ClientRegistrations.fromIssuerLocation(issuer)
+                        .registrationId("cognito")
+                        .clientId(clientId)
+                        .redirectUri(PUBLIC_API_URL + "/oauth2/callback/{registrationId}")
+                        .scope("openid", "email", "profile")
+                        .userNameAttributeName("sub");
+                if (clientSecret == null || clientSecret.isBlank()) {
+                    builder.clientAuthenticationMethod(ClientAuthenticationMethod.NONE);
+                } else {
+                    builder.clientSecret(clientSecret)
+                            .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC);
+                }
+                yield builder.build();
+            }
             default -> throw new IllegalArgumentException("Unsupported provider: " + provider);
         };
         return new InMemoryClientRegistrationRepository(registration);
