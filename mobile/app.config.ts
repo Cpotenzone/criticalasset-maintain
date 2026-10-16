@@ -57,7 +57,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     favicon: './assets/images/favicon.png'
   },
   extra: {
-    API_URL: apiUrl
+    API_URL: apiUrl,
+    // Which backend sign-in registration the app opens (see hooks/useGoogleSSO.ts).
+    OAUTH2_PROVIDER: process.env.OAUTH2_PROVIDER ?? 'cognito'
   },
   plugins: [
     'react-native-nfc-manager',

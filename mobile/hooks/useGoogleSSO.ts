@@ -1,3 +1,4 @@
+import Constants from 'expo-constants';
 import * as WebBrowser from 'expo-web-browser';
 import { useState } from 'react';
 import { getApiUrl } from '../config';
@@ -13,6 +14,13 @@ import useAuth from './useAuth';
 // No backend changes needed; the backend doesn't know or care this call came
 // from mobile.
 const REDIRECT_URL = 'criticalassetmaintain://oauth2/success';
+
+// The backend exposes exactly one sign-in registration (OAUTH2_PROVIDER on
+// the API) and the app must ask for the same one. Since 2026-10 that is
+// Amazon Cognito; OAUTH2_PROVIDER in app.config.ts overrides it.
+const OAUTH2_PROVIDER: string =
+  (Constants.expoConfig?.extra?.OAUTH2_PROVIDER as string | undefined) ??
+  'cognito';
 
 export type SSOResult = {
   type: 'success' | 'cancelled' | 'error';
@@ -37,7 +45,7 @@ export default function useGoogleSSO() {
     setLoading(true);
     try {
       const apiUrl = await getApiUrl();
-      const authorizeUrl = `${apiUrl}oauth2/authorize/google`;
+      const authorizeUrl = `${apiUrl}oauth2/authorize/${OAUTH2_PROVIDER}`;
       const result = await WebBrowser.openAuthSessionAsync(
         authorizeUrl,
         REDIRECT_URL
