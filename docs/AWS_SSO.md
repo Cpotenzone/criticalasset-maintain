@@ -27,6 +27,8 @@ is unused.
 | Hosted sign-in | `https://criticalasset-sso.auth.us-east-1.amazoncognito.com` |
 | App client | `maintain` — `4hk6r23e5dhfmm7gfqvnddtsja` (public, authorization code + PKCE, scopes `openid email profile`) |
 | Users | invite-only (`AllowAdminCreateUserOnly`); Cognito mails a temporary password |
+| Sign-in choices | Cognito directory (password, **passkey**, **email one-time code**) and **Google** (identity provider `Google`, the client below) — since 2026-10-21. Apple and Identity Center: see below |
+| Google client | `398493233636-46o958t51r0uscprqfnvhs36nq7q90s3.apps.googleusercontent.com` (project `gen-lang-client-0978140778`); its authorized redirect must include `https://criticalasset-sso.auth.us-east-1.amazoncognito.com/oauth2/idpresponse` |
 
 Add a person:
 
@@ -40,7 +42,40 @@ aws cognito-idp admin-create-user --user-pool-id us-east-1_cDIJ2pDwx --username 
 Their Maintain account must already exist with the same email (or `ALLOWED_SSO_DOMAINS` and
 `ALLOWED_ORGANIZATION_ADMINS` let the success handler create it inside the organization).
 
-## Phase 2 — IAM Identity Center as the sign-in source
+## Adding a sign-in choice
+
+Every provider is one `create-identity-provider` on the pool, then `update-user-pool-client` with the
+**full** provider list (`UpdateUserPoolClient` resets anything not passed):
+
+```
+aws cognito-idp update-user-pool-client --user-pool-id us-east-1_cDIJ2pDwx --client-id 4hk6r23e5dhfmm7gfqvnddtsja \
+  --client-name maintain --allowed-o-auth-flows code --allowed-o-auth-flows-user-pool-client \
+  --allowed-o-auth-scopes openid email profile \
+  --callback-urls https://maintain-api.criticalcopilot.com/oauth2/callback/cognito \
+  --logout-urls https://maintain.criticalcopilot.com/ \
+  --supported-identity-providers COGNITO Google \
+  --explicit-auth-flows ALLOW_REFRESH_TOKEN_AUTH ALLOW_USER_SRP_AUTH ALLOW_USER_AUTH \
+  --prevent-user-existence-errors ENABLED --profile dr --region us-east-1
+```
+
+### Apple
+
+Needs, from the Apple developer account: a **Services ID** (Sign in with Apple enabled; domain
+`criticalasset-sso.auth.us-east-1.amazoncognito.com`, return URL
+`https://criticalasset-sso.auth.us-east-1.amazoncognito.com/oauth2/idpresponse`), the **Team ID**,
+and a **Sign in with Apple key** (its Key ID and the downloaded `.p8`). Then, run by the person who
+holds the key:
+
+```
+aws cognito-idp create-identity-provider --user-pool-id us-east-1_cDIJ2pDwx --provider-name SignInWithApple \
+  --provider-type SignInWithApple \
+  --provider-details client_id=<services id>,team_id=<team id>,key_id=<key id>,private_key="$(cat <path>.p8)",authorize_scopes="email name" \
+  --attribute-mapping email=email,username=sub --profile dr --region us-east-1
+```
+
+and add `SignInWithApple` to `--supported-identity-providers` above.
+
+## IAM Identity Center as a sign-in choice
 
 Identity Center cannot be an OpenID provider for a custom app, but it can be a SAML identity
 provider *behind* the Cognito pool, so the hosted page offers "Sign in with Identity Center".
