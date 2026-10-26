@@ -139,6 +139,13 @@ allowed-organization-admins: ${ALLOWED_ORGANIZATION_ADMINS:}
 allowed-sso-domains: ${ALLOWED_SSO_DOMAINS:}
 cloud-version: ${CLOUD_VERSION:false}
 enable-sso: ${ENABLE_SSO:false}
+# Sign-in migration (docs/AWS_SSO.md "Google and Apple preview"): Google / Apple
+# sign-ins federated through the Cognito pool are admitted only for the preview
+# emails until SSO_FEDERATED_MODE=open. Cognito username/password is never gated.
+sso:
+  federated:
+    mode: ${SSO_FEDERATED_MODE:preview}
+    preview-emails: ${SSO_FEDERATED_PREVIEW_EMAILS:casey@criticalasset.com}
 oauth2:
   success-redirect-url: ${PUBLIC_FRONT_URL}/oauth2/success
   failure-redirect-url: ${PUBLIC_FRONT_URL}/oauth2/failure
