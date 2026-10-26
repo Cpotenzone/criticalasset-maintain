@@ -10,6 +10,7 @@ import com.grash.repository.UserRepository;
 import com.grash.service.*;
 import com.grash.utils.Helper;
 import com.grash.utils.Utils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,19 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     @Value("${sso-default-role:Technician}")
     private String ssoDefaultRole;
 
+    /**
+     * Sign-in migration (Google / Apple through the shared Cognito pool). "preview":
+     * a FEDERATED Cognito sign-in (its ID token carries `identities`) is admitted only
+     * for {@link #federatedPreviewEmails}; "open" admits it like any other. Cognito-native
+     * sign-ins (username/password, today's path) are never gated here.
+     */
+    @Value("${sso.federated.mode:preview}")
+    private String federatedMode;
+    @Value("${sso.federated.preview-emails:casey@criticalasset.com}")
+    private String[] federatedPreviewEmails;
+
+    private static final ObjectMapper JSON = new ObjectMapper();
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException {
@@ -90,7 +104,21 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             Map<String, Object> attributes = oauth2User.getAttributes();
 
             // Get email from OAuth provider
-            String email = extractEmail(attributes, authToken.getAuthorizedClientRegistrationId());
+            String registrationId = authToken.getAuthorizedClientRegistrationId();
+            String email = extractEmail(attributes, registrationId);
+            // Sign-in migration gate: BEFORE any user lookup or creation.
+            String upstream = "cognito".equals(registrationId) ? federatedUpstream(attributes) : null;
+            String provider = "cognito".equals(registrationId)
+                    ? (upstream == null ? "cognito-native" : "cognito-" + upstream) : registrationId;
+            if (upstream != null) {
+                if (!isTrue(attributes.get("email_verified"))) {
+                    return refuse(provider, "email_not_verified");
+                }
+                if (!"open".equalsIgnoreCase(federatedMode == null ? "" : federatedMode.trim())
+                        && !previewAllowed(email)) {
+                    return refuse(provider, "sso_preview_only");
+                }
+            }
 
             // Find or create user
             Optional<User> userOptional = userRepository.findByEmailIgnoreCase(email);
@@ -114,6 +142,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             // Generate JWT token
             String token = jwtTokenProvider.createToken(user.getEmail(),
                     Collections.singletonList(user.getRole().getRoleType()));
+            signinResult(provider, "success", null, user);
             return UriComponentsBuilder.fromUriString(targetUrl)
                     .queryParam("token", token)
                     .build().toUriString();
@@ -123,6 +152,75 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                     .build().toUriString();
         }
 
+    }
+
+    /** "google" / "apple" for a federated Cognito ID token, "other" for an unknown IdP, null when native. */
+    static String federatedUpstream(Map<String, Object> attributes) {
+        Object raw = attributes.get("identities");
+        if (raw == null) {
+            return null;
+        }
+        List<Object> entries = null;
+        if (raw instanceof List<?> list) {
+            entries = new ArrayList<>(list);
+        } else if (raw instanceof String text && !text.isBlank()) {
+            try {
+                entries = new ArrayList<>(JSON.readValue(text, List.class));
+            } catch (Exception e) {
+                return "other";
+            }
+        }
+        if (entries == null || entries.isEmpty()) {
+            return null;
+        }
+        Object first = entries.stream()
+                .filter(e -> e instanceof Map<?, ?> m && isTrue(m.get("primary")))
+                .findFirst().orElse(entries.get(0));
+        Object name = first instanceof Map<?, ?> m ? m.get("providerName") : null;
+        if ("Google".equals(name)) return "google";
+        if ("SignInWithApple".equals(name)) return "apple";
+        return "other";
+    }
+
+    static boolean isTrue(Object value) {
+        return Boolean.TRUE.equals(value) || "true".equals(value);
+    }
+
+    private boolean previewAllowed(String email) {
+        if (federatedPreviewEmails == null || email == null) {
+            return false;
+        }
+        return Arrays.stream(federatedPreviewEmails)
+                .map(String::trim)
+                .anyMatch(allowed -> !allowed.isEmpty() && allowed.equalsIgnoreCase(email.trim()));
+    }
+
+    private String refuse(String provider, String code) {
+        signinResult(provider, "refused", code, null);
+        return UriComponentsBuilder.fromUriString(oAuth2Properties.getFailureRedirectUrl())
+                .queryParam("error", code)
+                .build().toUriString();
+    }
+
+    /** The sign-in audit record: one `signin.result` JSON line (no email, no token). */
+    private void signinResult(String provider, String outcome, String code, User user) {
+        try {
+            Map<String, Object> rec = new LinkedHashMap<>();
+            rec.put("surface", "maintain");
+            rec.put("outcome", outcome);
+            rec.put("provider", provider);
+            if (code != null) rec.put("code", code);
+            if (user != null) {
+                rec.put("user_id", user.getId());
+                rec.put("company_id", user.getCompany() == null ? null : user.getCompany().getId());
+                rec.put("role", user.getRole() == null ? null
+                        : (user.getRole().getRoleType() == null ? user.getRole().getName()
+                        : user.getRole().getRoleType().name()));
+            }
+            log.info("signin.result {}", JSON.writeValueAsString(rec));
+        } catch (Exception e) {
+            log.warn("signin.result could not be written", e);
+        }
     }
 
     private User createUserFromOAuth(String email, Map<String, Object> attributes, String provider) {

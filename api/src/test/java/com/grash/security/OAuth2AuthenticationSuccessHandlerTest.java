@@ -279,4 +279,92 @@ class OAuth2AuthenticationSuccessHandlerTest {
             verify(userRepository, never()).save(any(User.class));
         }
     }
+
+    // ── sign-in migration: federated Cognito preview gate ─────────────
+
+    private String signInCognito(String email, Map<String, Object> extra) {
+        Map<String, Object> attrs = new HashMap<>();
+        attrs.put("email", email);
+        attrs.put("sub", "cognito-sub");
+        attrs.put("given_name", "Ada");
+        attrs.put("family_name", "Lovelace");
+        attrs.putAll(extra);
+        OAuth2User oauth2User = mock(OAuth2User.class);
+        when(oauth2User.getAttributes()).thenReturn(attrs);
+        OAuth2AuthenticationToken token = mock(OAuth2AuthenticationToken.class);
+        when(token.getPrincipal()).thenReturn(oauth2User);
+        when(token.getAuthorizedClientRegistrationId()).thenReturn("cognito");
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getParameter("redirect_uri")).thenReturn(null);
+        return handler.determineTargetUrl(request, mock(HttpServletResponse.class), token);
+    }
+
+    private static Map<String, Object> google(Object emailVerified) {
+        Map<String, Object> m = new HashMap<>();
+        m.put("identities", "[{\"providerName\":\"Google\",\"userId\":\"1001\",\"primary\":\"true\"}]");
+        if (emailVerified != null) m.put("email_verified", emailVerified);
+        return m;
+    }
+
+    @Nested
+    class FederatedCognitoPreview {
+        @BeforeEach
+        void previewMode() {
+            ReflectionTestUtils.setField(handler, "federatedMode", "preview");
+            ReflectionTestUtils.setField(handler, "federatedPreviewEmails", new String[]{"casey@criticalasset.com"});
+        }
+
+        @Test
+        void allowlistedGoogleSignInIsAdmitted() {
+            String url = signInCognito("Casey@CriticalAsset.com", google("true"));
+            assertTrue(url.startsWith(SUCCESS_URL), "got: " + url);
+        }
+
+        @Test
+        void otherFederatedSignInIsRefusedBeforeAnyLookup() {
+            String url = signInCognito("ada@criticalasset.com", google(true));
+            assertTrue(url.startsWith(FAILURE_URL) && url.contains("error=sso_preview_only"), "got: " + url);
+            verify(userRepository, never()).findByEmailIgnoreCase(anyString());
+            verify(userRepository, never()).save(any(User.class));
+        }
+
+        @Test
+        void missingOrFalseEmailVerifiedIsRefused() {
+            for (Object v : new Object[]{null, false, "false"}) {
+                String url = signInCognito("casey@criticalasset.com", google(v));
+                assertTrue(url.contains("error=email_not_verified"), "value " + v + " got: " + url);
+            }
+            verify(userRepository, never()).save(any(User.class));
+        }
+
+        @Test
+        void appleIdentitiesAsAListAreFederatedToo() {
+            Map<String, Object> apple = new HashMap<>();
+            apple.put("identities", List.of(Map.of("providerName", "SignInWithApple", "userId", "001.a")));
+            apple.put("email_verified", true);
+            assertTrue(signInCognito("ada@criticalasset.com", apple).contains("error=sso_preview_only"));
+        }
+
+        @Test
+        void nativeCognitoSignInIsUnchanged() {
+            // username/password through the hosted UI: no identities claim, never gated
+            String url = signInCognito("ada@criticalasset.com", Map.of());
+            assertTrue(url.startsWith(SUCCESS_URL), "got: " + url);
+        }
+
+        @Test
+        void openModeAdmitsAnyFederatedSignIn() {
+            ReflectionTestUtils.setField(handler, "federatedMode", "open");
+            assertTrue(signInCognito("ada@criticalasset.com", google(true)).startsWith(SUCCESS_URL));
+            assertTrue(signInCognito("ada@criticalasset.com", google(null)).contains("error=email_not_verified"));
+        }
+    }
+
+    @Test
+    void federatedUpstreamParsesTheIdentitiesClaim() {
+        assertNull(OAuth2AuthenticationSuccessHandler.federatedUpstream(Map.of()));
+        assertEquals("google", OAuth2AuthenticationSuccessHandler.federatedUpstream(google(true)));
+        assertEquals("other", OAuth2AuthenticationSuccessHandler.federatedUpstream(
+                Map.of("identities", List.of(Map.of("providerName", "Facebook")))));
+    }
 }
