@@ -795,11 +795,15 @@ public class WorkOrderService {
 
     @Transactional
     public WorkOrder changeStatus(WorkOrderChangeStatusDTO dto, Long id, User user, String platform) {
-        Optional<WorkOrder> optionalWorkOrder = findById(id);
-        WorkOrder savedWorkOrder = optionalWorkOrder.get();
+        // A missing work order is the caller's 404, not our 500: a bare
+        // Optional.get() here answered 25k+ PATCHes for deleted work orders
+        // with NoSuchElementException (2026-10-07 to 2026-10-26).
+        WorkOrder savedWorkOrder = findById(id).orElseThrow(() -> new CustomException("Work Order not found",
+                HttpStatus.NOT_FOUND));
         em.detach(savedWorkOrder); // detach FIRST
         WorkOrder originalWorkOrder = savedWorkOrder;
-        WorkOrder mutableWO = findById(id).get(); // fresh managed copy
+        WorkOrder mutableWO = findById(id).orElseThrow(() -> new CustomException("Work Order not found",
+                HttpStatus.NOT_FOUND)); // fresh managed copy
 
         if (dto.getStatus() == null) throw new CustomException("Status can't be null", HttpStatus.NOT_ACCEPTABLE);
         if (mutableWO.getFirstTimeToReact() == null && !dto.getStatus().equals(Status.ON_HOLD))

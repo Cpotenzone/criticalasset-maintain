@@ -68,6 +68,10 @@ class WorkOrderControllerTest {
     @MockBean
     private FileMapper fileMapper;
     @MockBean
+    private WorkOrderAiDraftService workOrderAiDraftService;
+    @MockBean
+    private WorkOrderAiInsightsService workOrderAiInsightsService;
+    @MockBean
     private ApiKeyRepository apiKeyRepository;
     @MockBean
     private LicenseService licenseService;
@@ -383,6 +387,21 @@ class WorkOrderControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .content("{\"customers\":[{\"id\":1}],\"message\":\"test\"}"))
                     .andExpect(status().isBadRequest());
+        }
+
+        @Test
+        void changeStatus_missingWorkOrder_returns404WithBody() throws Exception {
+            setCurrentUser(clientUser);
+            when(userService.whoami(any())).thenReturn(clientUser);
+            when(workOrderService.changeStatus(any(), eq(22840L), eq(clientUser), isNull()))
+                    .thenThrow(new CustomException("Work Order not found", HttpStatus.NOT_FOUND));
+
+            mockMvc.perform(patch("/work-orders/22840/change-status")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content("{\"status\":\"ON_HOLD\"}"))
+                    .andExpect(status().isNotFound())
+                    .andExpect(jsonPath("$.success").value(false))
+                    .andExpect(jsonPath("$.message").value("Work Order not found"));
         }
 
         @Test

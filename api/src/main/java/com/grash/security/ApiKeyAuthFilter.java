@@ -1,5 +1,7 @@
 package com.grash.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.grash.dto.SuccessResponse;
 import com.grash.dto.license.LicenseEntitlement;
 import com.grash.exception.CustomException;
 import com.grash.model.ApiKey;
@@ -37,6 +39,7 @@ public class ApiKeyAuthFilter extends OncePerRequestFilter {
 
     private final Map<Long, Instant> lastUsedCache = new ConcurrentHashMap<>();
     private static final Duration UPDATE_INTERVAL = Duration.ofMinutes(5);
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private final LicenseService licenseService;
 
     @Override
@@ -65,6 +68,17 @@ public class ApiKeyAuthFilter extends OncePerRequestFilter {
                 });
             } catch (NoSuchAlgorithmException e) {
                 throw new RuntimeException(e);
+            } catch (CustomException ex) {
+                // A filter runs outside @RestControllerAdvice, so an exception
+                // escaping here became a 500. Answer with its own status and the
+                // same {"success","message"} body the controllers return.
+                SecurityContextHolder.clearContext();
+                response.setStatus(ex.getHttpStatus().value());
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write(OBJECT_MAPPER.writeValueAsString(
+                        new SuccessResponse(false, ex.getMessage())));
+                return;
             }
         }
 
