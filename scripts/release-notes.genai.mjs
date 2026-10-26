@@ -1,7 +1,11 @@
+// Runs on our own model, never Gemini (2026-10-26). GenAIScript's OpenAI
+// provider points at the experts serving with the CA_EXPERTS_KEY bearer:
+//   OPENAI_API_BASE=https://experts.criticalcopilot.com/v1 \
+//   OPENAI_API_KEY="$CA_EXPERTS_KEY" npx genaiscript run release-notes
 script({
     system: ["system"],
     temperature: 0.5,
-    model:"google:gemini-2.5-flash"
+    model:"openai:criticalasset-base"
 })
 
 const product = env.vars.product || "GenAIScript"
