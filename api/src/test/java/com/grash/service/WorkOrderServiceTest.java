@@ -895,6 +895,18 @@ class WorkOrderServiceTest {
         }
 
         @Test
+        void missingWorkOrder_throwsNotFoundInsteadOfNoSuchElement() {
+            // Production 2026-10-07..26: PATCH change-status on deleted work
+            // orders died on Optional.get() and answered 500.
+            when(workOrderRepository.findById(99L)).thenReturn(Optional.empty());
+            CustomException ex = assertThrows(CustomException.class,
+                    () -> workOrderService.changeStatus(dto, 99L, user, null));
+            assertEquals(HttpStatus.NOT_FOUND, ex.getHttpStatus());
+            assertEquals("Work Order not found", ex.getMessage());
+            verify(em, never()).detach(any());
+            verify(workOrderRepository, never()).saveAndFlush(any());
+        }
+        @Test
         void signatureWithoutLicense_throwsForbidden() {
             when(workOrderRepository.findById(1L)).thenReturn(Optional.of(wo));
             dto.setSignature("sig");
