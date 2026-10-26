@@ -103,3 +103,25 @@ aws cognito-idp update-user-pool-client --user-pool-id us-east-1_cDIJ2pDwx --cli
 ```
 
 `UpdateUserPoolClient` resets anything not passed, so always send the full client settings.
+
+## Google and Apple preview (sign-in migration, 2026-10-26)
+
+Google and Sign in with Apple reach maintain through the same Cognito pool, so the
+pool's IdP changes (shared with ca-osint and chat) can reach maintain before its own
+cutover. The success handler therefore gates **federated** Cognito sign-ins (an ID
+token with an `identities` claim), before any user lookup or creation:
+
+| `SSO_FEDERATED_MODE` | Federated Google / Apple | Cognito username/password |
+|---|---|---|
+| `preview` (default) | only `SSO_FEDERATED_PREVIEW_EMAILS` (default `casey@criticalasset.com`); others → `/oauth2/failure?error=sso_preview_only` | unchanged |
+| `open` (cutover) | everyone, under the existing domain allowlist | unchanged |
+
+A federated token without `email_verified=true` is refused (`error=email_not_verified`).
+Every sign-in writes one `signin.result {surface, outcome, provider, user_id, company_id, role}`
+log line (no email, no token).
+
+Preview entry point: `https://maintain-api.criticalcopilot.com/oauth2/authorize/cognito?idp=Google`
+(or `idp=SignInWithApple`) skips Cognito's chooser; any other `idp` value is ignored.
+
+Switch modes with `./scripts/aws-sso-mode.sh preview|open` (env-only roll, same image,
+verified at the destination). Rollback = `preview`.

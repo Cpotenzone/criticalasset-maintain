@@ -3,6 +3,7 @@ package com.grash.configuration;
 import com.grash.security.*;
 import com.grash.service.LicenseService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.ldap.authentication.LdapAuthenticationProvider;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -36,6 +38,8 @@ public class WebSecurityConfig {
     private final RateLimitFilter rateLimitFilter;
     private final CustomUserDetailsService customUserDetailsService;
     private final Optional<LdapAuthenticationProvider> ldapAuthenticationProvider;
+    // Present only when SSO is enabled (OAuth2ClientRegistrationConfig is conditional).
+    private final ObjectProvider<ClientRegistrationRepository> clientRegistrationRepository;
     @Value("${enable-sso}")
     private boolean enableSso;
     @Value("${ldap.enabled:false}")
@@ -92,8 +96,16 @@ public class WebSecurityConfig {
 
         // OAuth2 Configuration
         if (enableSso && licenseService.isSSOEnabled()) {
+            ClientRegistrationRepository registrations = clientRegistrationRepository.getIfAvailable();
             http.oauth2Login(oauth2 -> oauth2
-                    .authorizationEndpoint(endpoint -> endpoint.baseUri("/oauth2/authorize"))
+                    .authorizationEndpoint(endpoint -> {
+                        endpoint.baseUri("/oauth2/authorize");
+                        // ?idp=Google|SignInWithApple skips Cognito's chooser (sign-in preview link)
+                        if (registrations != null) {
+                            endpoint.authorizationRequestResolver(
+                                    new CognitoIdpHintResolver(registrations, "/oauth2/authorize"));
+                        }
+                    })
                     .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
                     .successHandler(oAuth2AuthenticationSuccessHandler)
                     .failureHandler(oAuth2AuthenticationFailureHandler)
